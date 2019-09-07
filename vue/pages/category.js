@@ -1,16 +1,16 @@
 var CateDetail = Vue.component('cate', {
   template: `
     <div class="container-fluid">
-    <div v-if="resultdata" class="row">
-        <div class="col-sm-10 offset-sm-1">
+    <div v-if="resultdata" class="row no-gutters justify-content-center align-items-center">
+        <div class="col-12">
             <b-breadcrumb :items="breadcrumbs" />
         </div>
     </div>
-    <div v-if="loading||error" class="row">
-        <div v-if="loading" class="col">
+    <div v-if="loading||error" class="row justify-content-center align-items-center">
+        <div v-if="loading" class="col align-self-center">
             <loading></loading>
         </div>
-        <div v-if="error" class="col">
+        <div v-if="error" class="col align-self-center">
           <error>
           <p slot="error">{{error}}</p>
           <p slot="error_msg">{{error_msg}}</p>
@@ -18,17 +18,16 @@ var CateDetail = Vue.component('cate', {
         </div>
     </div>
     <template v-if="!(error||loading)">
-        <div class="row justify-content-sm-center align-items-center">
-            <div class="col-2 col-xs-1">
-              <div class="d-flex">
-              <b-img class="thumbnail logo" :src="logo" :alt="event_title" />
-              </div>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12 d-flex">
+              <b-img class="thumbnail logo ml-auto" :src="logo" :alt="event_title" />
+              <h2 class="text-center bebas">{{ event_title }}
+              <span v-show="total_rounds" class="text-center d-block">{{ total_rounds }} Games   {{ total_players}} <i class="fas fa-users"></i> </span>
+              </h2>
             </div>
-            <div class="col-8 col-sm-auto col-xs-auto">
-                <h2 class="text-center bebas">{{ event_title }}
-                    <em v-show="total_rounds" class="mx-auto">{{ total_rounds }} rounds
-                    </em>
-                </h2>
+        </div>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12 d-flex justify-content-center align-items-center">
                 <div class="text-center">
                 <b-button @click="viewIndex=0" variant="link" class="text-decoration-none" :disabled="viewIndex==0" :pressed="viewIndex==0"><i class="fa fa-users" aria-hidden="true"></i> Players</b-button>
                 <b-button @click="viewIndex=1" variant="link" class="text-decoration-none" :disabled="viewIndex==1" :pressed="viewIndex==1"> <i class="fa fa-user-plus"></i> Pairings</b-button>
@@ -43,18 +42,15 @@ var CateDetail = Vue.component('cate', {
                 Scoreboard</b-button>
                 </div>
             </div>
-            <div class="col-2 col-sm-2 col-xs-3">
-                    <!-- Ad here -->
-            </div>
         </div>
         <div class="row justify-content-center align-items-center">
-            <div class="col-sm-10 offset-sm-1">
+            <div class="col-md-10 offset-md-1 col-12 d-flex flex-column">
               <h3 class="text-center bebas p-0 m-0"> {{tab_heading}}
               <span v-if="viewIndex >0 && viewIndex < 4">
               {{ currentRound }}
               </span>
               </h3>
-              <template class="text-center" v-if="showPagination">
+              <template v-if="showPagination">
                   <b-pagination align="center" :total-rows="total_rounds" v-model="currentRound" :per-page="1"
                       :hide-ellipsis="true" aria-label="Navigation" change="roundChange">
                   </b-pagination>
@@ -67,8 +63,8 @@ var CateDetail = Vue.component('cate', {
         <template v-else-if="viewIndex==5">
         <scoreboard></scoreboard>
         </template>
-        <div v-else-if="viewIndex==4" class="row justify-content-center align-items-center">
-            <div class="col-8 offset-1 col-sm-auto col-md-8 offset-md-1">
+        <div v-else-if="viewIndex==4" class="row d-flex justify-content-center align-items-center">
+            <div class="col-md-10 offset-md-0 col">
                 <b-tabs content-class="mt-3 statsTabs" pills small lazy no-fade  v-model="tabIndex">
                     <b-tab title="High Wins" lazy>
                         <hiwins  :resultdata="resultdata" :caption="caption">
@@ -98,7 +94,6 @@ var CateDetail = Vue.component('cate', {
                     <b-tab title="Ave Opp Scores">
                         <aveoppscores :caption="caption" :stats="fetchStats('ave_oppscore')"></aveoppscores>
                     </b-tab>
-
                     <b-tab title="High Spreads " lazy>
                         <hispread :resultdata="resultdata" :caption="caption"></hispread>
                     </b-tab>
@@ -108,19 +103,13 @@ var CateDetail = Vue.component('cate', {
 
                 </b-tabs>
             </div>
-            <div class="col-2 col-sm-2 col-md-2">
-                    <!-- Sponsors -->
-            </div>
         </div>
-        <div v-else class="row justify-content-md-center align-items-center">
-            <div class="col-8 offset-1 col-sm-auto  col-md-8 offset-md-1">
+        <div v-else class="row justify-content-center align-items-center">
+            <div class="col-md-8 offset-md-2 col-12">
                 <pairings v-if="viewIndex==1" :currentRound="currentRound" :resultdata="resultdata" :caption="caption"></pairings>
                 <results v-if="viewIndex==2" :currentRound="currentRound" :resultdata="resultdata" :caption="caption"></results>
                 <standings v-if="viewIndex==3" :currentRound="currentRound" :resultdata="resultdata" :caption="caption"></standings>
-            </div>
-            <div class="col-2 col-sm-2 col-md-2">
-                    <!-- Sponsors -->
-            </div>
+          </div>
         </div>
     </template>
 </div>
@@ -269,7 +258,7 @@ var CateDetail = Vue.component('cate', {
           break;
         case 7:
           this.showPagination = false;
-          this.tab_heading = 'Average Scores';
+          this.tab_heading = 'Average Opponent Scores';
           this.caption = 'Ranking by Average Opponent Scores';
           break;
         case 8:

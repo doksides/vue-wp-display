@@ -2,23 +2,23 @@ let mapGetters = Vuex.mapGetters;
 
 var Scoreboard = Vue.component('scoreboard',{
   template: `
-  <div class="row align-items-center justify-content-center">
-  <template v-if="loading||error" class="row">
-        <div v-if="loading" class="col">
+  <div class="row d-flex align-items-center justify-content-center">
+  <template v-if="loading||error">
+        <div v-if="loading" class="col align-self-center">
             <loading></loading>
         </div>
-        <div v-if="error" class="col">
+        <div v-if="error" class="col align-self-center">
             <error>
             <p slot="error">{{error}}</p>
             <p slot="error_msg">{{error_msg}}</p>
             </error>
         </div>
-    </template>
+  </template>
   <template v-else>
   <div class="col" id="scoreboard">
-    <div class="row" v-for="i in rowCount" :key="i">
-      <div class="col-lg-3 no-gutters" v-for="player in itemCountInRow(i)" :key="player.rank">
-        <b-media class="pb-0 mb-2 mr-2" vertical-align="center">
+    <div class="row no-gutters d-flex align-items-center justify-content-center" v-for="i in rowCount" :key="i">
+      <div class="col-lg-3 col-sm-6 col-12 " v-for="player in itemCountInRow(i)" :key="player.rank">
+        <b-media class="pb-0 mb-1 mr-1" vertical-align="center">
           <div slot="aside">
             <b-row class="justify-content-center">
               <b-col>

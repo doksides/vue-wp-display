@@ -6,27 +6,30 @@ var PlayerStats = Vue.component('playerstats', {
    <div class="row">
     <div class="col">
      <div class="animated fadeInLeft" id="pheader">
-        <div class="d-flex flex-row align-items-center align-content-center justify-content-around">
-          <div>
-              <h3 class="text-center bebas">{{playerName}}
-              <span class="d-inline-block flag-icon" :title="player.country_full"   :class="'flag-icon-'+player.country | lowercase"></span>
-              <i class="fa d-inline-block" v-bind:class="{'fa-male': player.gender === 'm','fa-female': player.gender === 'f' ,
-      'fa-users': player.is_team == 'yes'}" aria-hidden="true"></i>
-              </h3>
+      <div class="d-flex align-items-center align-content-center justify-content-center">
+         <div>
+            <h4 class="text-center bebas">{{playerName}}
+              <span class="d-block mx-auto"  style="font-size:small">
+                <i class="mx-auto flag-icon" :class="'flag-icon-'+player.country | lowercase" :title="player.country_full"></i>
+                <i class="ml-2 fa" :class="{'fa-male': player.gender == 'm',
+                  'fa-female': player.gender == 'f','fa-users': player.is_team == 'yes' }" aria-hidden="true">
+                </i>
+              </span>
+            </h4>
           </div>
           <div>
-                <img width="100px" height="100px" class="img-thumbnail img-fluid mx-auto d-block shadow-sm" :src="player.photo" />
+            <img width="100px" height="100px" class="img-thumbnail img-fluid mx-auto d-block shadow-sm" :src="player.photo" />
           </div>
           <div>
-              <h4 class="text-center WireOne">{{pstats.pPosition}} position</h4>
+            <h4 class="text-center yanone">{{pstats.pPosition}} position</h4>
           </div>
-        </div>
+      </div>
       </div> <!-- #pheader-->
         <div class="d-flex align-items-center justify-content-center">
-          <b-btn v-b-toggle.collapse1 class="m-3">Quick Stats</b-btn>
-          <b-btn v-b-toggle.collapse2 class="m-3">Round by Round </b-btn>
-          <b-btn v-b-toggle.collapse3 class="m-3">Charts</b-btn>
-          <b-button title="Close" size="sm" @click="closeCard()" variant="outline-danger" :disabled="!show" :pressed.sync="show"><i class="fas fa-times"></i></b-button>
+          <b-btn v-b-toggle.collapse1 class="m-1">Quick Stats</b-btn>
+          <b-btn v-b-toggle.collapse2 class="m-1">Round by Round </b-btn>
+          <b-btn v-b-toggle.collapse3 class="m-1">Charts</b-btn>
+          <b-button title="Close" size="sm" @click="closeCard()" class="m-1" variant="outline-danger" :disabled="!show" :pressed.sync="show"><i class="fas fa-times"></i></b-button>
         </div>
     </div>
     </div>
@@ -39,7 +42,7 @@ var PlayerStats = Vue.component('playerstats', {
                   <li class="list-group-item">Points:
                       <span>{{pstats.pPoints}} / {{total_rounds}}</span>
                   </li>
-                  <li class="list-group-item">Current rank:
+                  <li class="list-group-item">Rank:
                       <span>{{pstats.pRank}} </span>
                   </li>
                   <li class="list-group-item">Highest Score:
@@ -213,15 +216,15 @@ var PlayerStats = Vue.component('playerstats', {
 });
 var PlayerList =  Vue.component('allplayers',{
   template: `
-  <div class="row row-eq-height align-items-center" id="players-list">
+  <div class="row justify-content-center align-items-center" id="players-list">
       <template v-if="showStats">
          <playerstats :pstats="pStats"></playerstats>
       </template>
       <template v-else>
-    <div class="playerCols col-md-2 col-xs-6 col-sm-4 p-4 " v-for="player in players" :key="player.id" >
+    <div class="playerCols col-lg-2 col-sm-6 col-12 p-4 " v-for="player in players" :key="player.id" >
             <h4 class="mx-auto"><b-badge>{{player.tou_no}}</b-badge>
             {{player.post_title }}
-            <span class="d-block mx-auto">
+            <span class="d-block mx-auto"  style="font-size:small">
             <i class="mx-auto flag-icon" :class="'flag-icon-'+player.country | lowercase" :title="player.country_full"></i>
             <i class="ml-2 fa" :class="{'fa-male': player.gender == 'm',
         'fa-female': player.gender == 'f',
@@ -310,8 +313,8 @@ var PlayerList =  Vue.component('allplayers',{
 });
 
  var Results = Vue.component('results', {
-  template: `
-    <b-table sticky-header hover responsive-sm striped foot-clone :fields="results_fields" :items="result(currentRound)" head-variant="dark" class="animated fadeInUp">
+   template: `
+    <b-table hover responsive striped foot-clone :fields="results_fields" :items="result(currentRound)" head-variant="dark" class="animated fadeInUp">
         <template slot="table-caption">
             {{caption}}
         </template>
@@ -406,7 +409,7 @@ var PlayerList =  Vue.component('allplayers',{
 
 var Standings = Vue.component('standings',{
   template: `
-    <b-table sticky-header responsive-sm hover striped foot-clone :items="result(currentRound)" :fields="standings_fields" head-variant="dark" class="animated fadeInUp">
+    <b-table responsive hover striped foot-clone :items="result(currentRound)" :fields="standings_fields" head-variant="dark" class="animated fadeInUp">
         <template slot="table-caption">
             {{caption}}
         </template>
@@ -516,7 +519,7 @@ var Standings = Vue.component('standings',{
 
 const Pairings =Vue.component('pairings',  {
   template: `
-<table class="table table-sm table-hover table-responsive-sm table-striped  animated fadeInUp">
+<table class="table table-sm table-hover table-responsive table-striped  animated fadeInUp">
     <caption>{{caption}}</caption>
     <thead class="thead-dark">
         <tr>

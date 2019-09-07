@@ -1,6 +1,6 @@
  var LoWins = Vue.component('lowins', {
   template: `<!-- Low Winning Scores -->
-    <b-table sticky-header  responsive-sm hover striped foot-clone :items="getLowScore('win')" :fields="lowwins_fields" head-variant="dark">
+    <b-table responsive hover striped foot-clone :items="getLowScore('win')" :fields="lowwins_fields" head-variant="dark">
         <template slot="table-caption">
             {{caption}}
         </template>
@@ -46,7 +46,7 @@
 
  var HiWins =Vue.component('hiwins', {
   template: `<!-- High Winning Scores -->
-    <b-table sticky-header responsive-sm hover striped foot-clone :items="getHiScore('win')" :fields="highwins_fields" head-variant="dark">
+    <b-table  responsive hover striped foot-clone :items="getHiScore('win')" :fields="highwins_fields" head-variant="dark">
         <template slot="table-caption">
             {{caption}}
         </template>
@@ -93,7 +93,7 @@
  var HiLoss = Vue.component('hiloss', {
   template: `
     <!-- High Losing Scores -->
-   <b-table sticky-header responsive-sm hover striped foot-clone :items="getHiScore('loss')" :fields="hiloss_fields" head-variant="dark">
+   <b-table  responsive hover striped foot-clone :items="getHiScore('loss')" :fields="hiloss_fields" head-variant="dark">
         <template slot="table-caption">
             {{caption}}
         </template>
@@ -140,7 +140,7 @@
 
  var ComboScores = Vue.component('comboscores', {
   template: `
-  <b-table sticky-header responsive-sm hover striped foot-clone :items="hicombo()" :fields="hicombo_fields" head-variant="dark">
+  <b-table  responsive hover striped foot-clone :items="hicombo()" :fields="hicombo_fields" head-variant="dark">
     <template slot="table-caption">
         {{caption}}
     </template>
@@ -203,7 +203,7 @@
 
  var TotalScores = Vue.component('totalscores', {
   template: `
-    <b-table sticky-header  responsive-sm hover striped foot-clone :items="stats" :fields="totalscore_fields" head-variant="dark">
+    <b-table   responsive hover striped foot-clone :items="stats" :fields="totalscore_fields" head-variant="dark">
         <template slot="table-caption">
             {{caption}}
         </template>
@@ -256,7 +256,7 @@
 
  var TotalOppScores =Vue.component('oppscores', {
   template: `
-    <b-table sticky-header  responsive-sm hover striped foot-clone :items="stats" :fields="totaloppscore_fields" head-variant="dark">
+    <b-table   responsive hover striped foot-clone :items="stats" :fields="totaloppscore_fields" head-variant="dark">
             <template slot="table-caption">
                 {{caption}}
             </template>
@@ -309,7 +309,7 @@
 
  var AveScores = Vue.component('avescores', {
   template: `
-    <b-table sticky-header responsive-sm hover striped foot-clone :items="stats" :fields="avescore_fields" head-variant="dark">
+    <b-table  responsive hover striped foot-clone :items="stats" :fields="avescore_fields" head-variant="dark">
         <template slot="table-caption">
             {{caption}}
         </template>
@@ -361,7 +361,7 @@
 });
  var AveOppScores = Vue.component('aveoppscores', {
   template: `
-    <b-table sticky-header hover responsive-sm striped foot-clone :items="stats" :fields="aveoppscore_fields" head-variant="dark">
+    <b-table  hover responsive striped foot-clone :items="stats" :fields="aveoppscore_fields" head-variant="dark">
         <template slot="table-caption">
             {{caption}}
         </template>
@@ -414,7 +414,7 @@
 
  var LoSpread = Vue.component('lospread', {
   template: `
-    <b-table sticky-header responsive-sm hover striped foot-clone :items="loSpread()" :fields="lospread_fields" head-variant="dark">
+    <b-table  responsive hover striped foot-clone :items="loSpread()" :fields="lospread_fields" head-variant="dark">
         <template slot="table-caption">
             {{caption}}
         </template>
@@ -461,7 +461,7 @@
 
  const HiSpread =   Vue.component('hispread',{
   template: `
-    <b-table sticky-header responsive-sm hover striped foot-clone :items="hiSpread()" :fields="hispread_fields" head-variant="dark">
+    <b-table  responsive hover striped foot-clone :items="hiSpread()" :fields="hispread_fields" head-variant="dark">
         <template slot="table-caption">
             {{caption}}
         </template>
@@ -506,4 +506,3 @@
     },
   },
 });
-

@@ -41,7 +41,7 @@ h3,
 h4,
 h5,
 h6 {
-    margin: .2em auto;
+    margin: .1em auto;
     font-weight: 500;
     text-align: center;
     font-family: Oswald, Segoe, "Segoe UI", Optima, Helvetica, sans-serif;
@@ -63,9 +63,14 @@ body {
 }
 
 .breadcrumb{
-    margin-top: .5rem;
+    margin-top: .2rem;
 }
-
+.bebas{
+    font-family: Bebas, Geneva, FreeSans, sans-serif !important;
+}
+.yanone{
+    font-family: Yanone, Geneva, FreeSans, sans-serif !important;
+}
 section.jumbotron{
    font-family:  Bebas, Helvetica, FreeSans, Verdana, sans-serif;
    color: #555;
@@ -138,7 +143,7 @@ footer h4 {
 a, a:link, a:visited, a:hover{text-decoration: none !important}
 
 .media {
-    margin-bottom: .5rem;
+    margin-bottom: .2rem;
 }
 
 .tourney-list ul li {
@@ -171,8 +176,8 @@ img.logo {
 }
 
 h2>span {
-    font-size: small;
-    font-weight: 300;
+    font-size: 1.5rem;
+    font-weight: 100;
 }
 
 .pteam {
@@ -218,28 +223,11 @@ i.loading {
 .modal-title {
     text-align: center;
 }
-/* Equal column heights in playersList page*/
-.row-eq-height {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-}
-.row {
-    margin-bottom: 20px;
-}
-.row .row {
-    margin-top: 10px;
-    margin-bottom: 0;
-}
-
 .playerCols h4{
     font-family: Bebas, Geneva, FreeSans, sans-serif !important;
     font-size: 1.3em;
 }
-.bebas{
-    font-family: Bebas, Geneva, FreeSans, sans-serif !important;
-}
+
 .statTabs td{
     font-size:2vw !important;
 }
@@ -349,6 +337,7 @@ i.loading {
 /* Sticky Header */
 #pheader {
     transition: 0.2s; /* Add a transition effect (when scrolling - and font size is decreased) */
+
   }
 
 .sticky {

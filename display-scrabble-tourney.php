@@ -73,19 +73,16 @@ function func_load_vuescripts()
   wp_enqueue_style('display-scrabble', plugin_dir_url(__FILE__) . 'assets/css/site.css', 'bootstrap');
 
   // cached version used if possible
-  // wp_register_script('lodash', plugin_dir_url(__FILE__) . 'assets/js/lodash.min.js', []);
   $vuejs = date("ymd-Gis", filemtime(plugin_dir_path(__FILE__) . 'assets/js/vue.js'));
   wp_register_script('axios', plugins_url('assets/js/axios/axios.js', __FILE__));
-  wp_register_script('vue-router', plugin_dir_url(__FILE__) . 'assets/js/vue-router.js', 'vuejs', true);
-  wp_register_script('vuex', plugin_dir_url(__FILE__) . 'assets/js/vuex.js', 'vuejs', true);
+  wp_register_script('vue-router', plugin_dir_url(__FILE__) . 'assets/js/vue-router.min.js', 'vuejs', true);
+  wp_register_script('vuex', plugin_dir_url(__FILE__) . 'assets/js/vuex.min.js', 'vuejs', true);
   wp_register_script('vuejs', plugin_dir_url(__FILE__) . 'assets/js/vue.js', [], $vuejs);
   wp_register_script('apexCharts', plugins_url('assets/js/apexcharts.min.js', __FILE__), [], $vuejs);
   wp_register_script('vueApexCharts', plugins_url('assets/js/vue-apexcharts.js', __FILE__), [], $vuejs);
-  // wp_register_script('autoresponsive-vue', plugins_url('assets/js/autoresponsive-vue.js', __FILE__), [], $vuejs);
  wp_register_script('bootstrap-vue', plugin_dir_url(__FILE__) . 'assets/js/bootstrap-vue.min.js', 'vuejs', true);
  wp_register_script('es6-promise', plugin_dir_url(__FILE__) . 'assets/js/es6-promise.auto.js', 'vuex', true);
  wp_register_script('momentjs', plugin_dir_url(__FILE__) . 'assets/js/moment.min.js', 'bootstrap-vue', true);
-//  wp_register_script('requirejs', plugin_dir_url(__FILE__) . 'assets/js/require.js', [], true);
  wp_register_script('vuex-store', plugin_dir_url(__FILE__) . 'vue/store.js', 'vuex', true);
  wp_register_script('dst_main', plugin_dir_url(__FILE__) . 'vue/main.js', array('vuejs', 'axios', 'vue-router'), true);
  wp_register_script('tlist', plugin_dir_url(__FILE__) . 'vue/pages/list.js', array('vuejs'), true);
