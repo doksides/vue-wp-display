@@ -1,0 +1,126 @@
+<div class="container-fluid">
+    <div v-if="resultdata" class="row">
+        <div class="col">
+            <b-breadcrumb :items="breadcrumbs" />
+        </div>
+    </div>
+    <div v-if="loading||error" class="row justify-content-center">
+        <div v-show="loading" class="col">
+            <alert-loading></alert-loading>
+        </div>
+        <div v-if="error" class="col">
+            <alert-error>
+                <p slot="error">{{error}}</p>
+                <p slot="error_msg">{{error_msg}}</p>
+            </alert-error>
+        </div>
+    </div>
+
+    <div v-if="!(error||loading)" class="row justify-content-center">
+        <div class="col-3 col-md-3">
+            <b-img class="thumbnail logo float-right mx-1" :src="logo" :alt="event_title" />
+        </div>
+        <div class="col-9 col-sm-auto col-md-9">
+            <h2 class="ml-0 text-left">{{ event_title }}
+                <span v-show="total_rounds" class="d-block w-50 mt-1 mx-auto">({{ total_rounds }} games)
+                    <router-link v-show="slug" :to="{ name: 'Scoreboard', params: { slug: parent_slug,
+ event_slug: slug}}">Scoreboard</router-link>
+                </span>
+            </h2>
+        </div>
+    </div>
+    <div v-if="!(error||loading)" class="row no-gutters">
+        <player-list v-if="playerListState"></player-list>
+        <div :class="{'col-sm-9 offset-sm-1 ': playerListState,
+                'col-sm-12': !playerListState }">
+            <div class="row justify-content-center">
+                <div class="col-md-2 col-sm-10">
+                    <span class="d-inline-block mt-4 mb-2">
+                        <b-button size="sm" @click="playerListToggle" :pressed.sync="playerListState" v-b-tooltip.hover
+                            title="Click or press Enter to toggle players list" variant="outline-primary"><i class="fa"
+                                :class="{'fa-expand': !playerListState,
+                'fa-compress': playerListState }"
+                                aria-hidden="true"></i> {{ playerListCondition}} Players List</b-button>
+                    </span>
+                </div>
+                <div class="col-md-10 col-sm-10">
+                    <h4>Results and Statistics - {{tab_heading}} </h4>
+                    <template v-if="showPagination">
+                        <b-pagination align="center" :total-rows="total_rounds" v-model="currentRound" :per-page="1"
+                            :hide-ellipsis="true" aria-label="Navigation" change="roundChange">
+                        </b-pagination>
+                    </template>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <b-card no-body>
+                        <b-tabs card vertical pills nav-wrapper-class="col-sm-auto" v-model="tabIndex">
+                            <b-tab title="Pairings">
+                                <pairings-table :currentRound="currentRound" :resultdata="resultdata" :caption="caption">
+                                </pairings-table>
+                            </b-tab>
+                            <b-tab title="Results">
+                                <results-table :currentRound="currentRound" :resultdata="resultdata" :caption="caption">
+                                </results-table>
+                            </b-tab>
+                            <b-tab title="Standings" active>
+                                <standings-table :currentRound="currentRound" :resultdata="resultdata" :caption="caption">
+                                </standings-table>
+                            </b-tab>
+                            <b-tab title="High Winning Scores">
+                                <hiwins-table :resultdata="resultdata" :caption="caption">
+                                </hiwins-table>
+                            </b-tab>
+                            <b-tab title="High Losses">
+                                <hiloss-table :resultdata="resultdata" :caption="caption">
+                                </hiloss-table>
+                            </b-tab>
+                            <b-tab title="Low Winning Scores">
+                                <lowwin-table :resultdata="resultdata" :caption="caption">
+                                </lowwin-table>
+                            </b-tab>
+                            <b-tab title="Combined Scores">
+                                <combo-table :resultdata="resultdata" :caption="caption">
+                                </combo-table>
+                            </b-tab>
+                            <b-tab title="Total Scores">
+                                <totalscores-table :caption="caption" :stats="fetchStats('total_score')"></totalscores-table>
+                            </b-tab>
+                            <b-tab title="Total Opponent Scores">
+                                <totaloppscores-table :caption="caption" :stats="fetchStats('total_oppscore')"></totaloppscores-table>
+                            </b-tab>
+                            <b-tab title="Average Scores">
+                                <avescores-table :caption="caption" :stats="fetchStats('ave_score')"></avescores-table>
+                            </b-tab>
+                            <b-tab title="Average Opponent Scores">
+                                <aveoppscores-table :caption="caption" :stats="fetchStats('ave_oppscore')"></aveoppscores-table>
+                            </b-tab>
+                            <b-tab title="High Spread">
+                                <hispread-table :resultdata="resultdata" :caption="caption"></hispread-table>
+                            </b-tab>
+                            <b-tab title="Low Spread">
+                                <lospread-table :resultdata="resultdata" :caption="caption"></lospread-table>
+                            </b-tab>
+
+                            <!-- Temporarily remove tables
+
+            <b-tab title="Lucky Stiffs">
+              <luckystiff-table
+                :data ="luckystiff" :caption ="caption"
+              ></luckystiff-table>
+            </b-tab>
+            <b-tab title="Tuff Luck">
+              <tuffluck-table
+                :data ="tuffluck" :caption ="caption"
+              ></tuffluck-table>
+            </b-tab>
+
+            -->
+                        </b-tabs>
+                    </b-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

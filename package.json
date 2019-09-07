@@ -1,0 +1,19 @@
+{
+  "name": "display-scrabble-tourney",
+  "version": "1.0.0",
+  "description": "Display Scrabble Tournament (using VueJs) in WordPress",
+  "main": "index.js",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  },
+  "devDependencies": {
+    "babel-preset-stage-2": "^6.24.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel vue -d build"
+  },
+  "author": "David Okunmuyide",
+  "license": "ISC"
+}
