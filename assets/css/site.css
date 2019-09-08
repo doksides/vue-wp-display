@@ -337,7 +337,6 @@ i.loading {
 /* Sticky Header */
 #pheader {
     transition: 0.2s; /* Add a transition effect (when scrolling - and font size is decreased) */
-
   }
 
 .sticky {

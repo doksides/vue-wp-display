@@ -40,6 +40,8 @@ var CateDetail = Vue.component('cate', {
                 -->
                 <b-button  @click="viewIndex=5" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==5" :pressed="viewIndex==5"><i class="fas fa-chalkboard-teacher"></i>
                 Scoreboard</b-button>
+                <b-button  @click="viewIndex=6" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==6" :pressed="viewIndex==6"><i class="fas fa-chess-king"></i>
+                Top Performers</b-button>
                 </div>
             </div>
         </div>

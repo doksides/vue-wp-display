@@ -1,2 +1,10 @@
+test.html
 node_modules
+assets/*
+assets/js/*
+assets/flags/*
+assets/fonts/*
+assets/myfonts/*
+assets/css/*
+assets/images/*
 *~
