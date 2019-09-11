@@ -1,4 +1,4 @@
-let mapGetters = Vuex.mapGetters;
+
 var Scoreboard = Vue.component('scoreboard',{
   template: `
   <div class="row d-flex align-items-center justify-content-center">

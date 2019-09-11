@@ -1,117 +1,121 @@
 // let mapGetters = Vuex.mapGetters;
-
 var PlayerStats = Vue.component('playerstats', {
   template: `
-  <div class="col-lg-10 offset-lg-1">
-  <div class="row">
-    <div class="col animated fadeInLeftBig d-flex align-items-center justify-content-center mt-5" id="pheader">
-      <div>
-        <h4 class="text-center bebas mx-2 my-1">{{playerName}}
-          <span class="d-block mx-auto" style="font-size:small">
-            <i class="mx-auto flag-icon" :class="'flag-icon-'+player.country | lowercase"
-              :title="player.country_full"></i>
-            <i class="ml-2 fa" :class="{'fa-male': player.gender == 'm',
-                'fa-female': player.gender == 'f','fa-users': player.is_team == 'yes' }" aria-hidden="true">
-            </i>
-          </span>
-        </h4>
+  <div class="col-lg-10 offset-lg-1 justify-content-center">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <div class="animated fadeInLeftBig" id="pheader">
+          <div class="d-flex align-items-center align-content-center justify-content-center mt-5">
+            <div>
+              <h4 class="text-center bebas">{{playerName}}
+                <span class="d-block mx-auto" style="font-size:small">
+                  <i class="mx-3 flag-icon" :class="'flag-icon-'+player.country | lowercase"
+                    :title="player.country_full"></i>
+                  <i class="mx-3 fa" :class="{'fa-male': player.gender == 'm',
+                   'fa-female': player.gender == 'f','fa-users': player.is_team == 'yes' }" aria-hidden="true">
+                  </i>
+                </span>
+              </h4>
+            </div>
+            <div>
+              <img width="100px" height="100px" class="img-thumbnail img-fluid mx-3 d-block shadow-sm"
+                :src="player.photo" />
+            </div>
+            <div>
+              <h4 class="text-center yanone mx-3">{{pstats.pPosition}} position</h4>
+            </div>
+          </div>
+        </div> <!-- #pheader-->
+
+        <div class="d-flex align-items-center align-content-center justify-content-center">
+          <b-btn v-b-toggle.collapse1 class="m-1">Quick Stats</b-btn>
+          <b-btn v-b-toggle.collapse2 class="m-1">Round by Round </b-btn>
+          <b-btn v-b-toggle.collapse3 class="m-1">Charts</b-btn>
+          <b-button title="Close" size="sm" @click="closeCard()" class="m-1" variant="outline-danger" :disabled="!show"
+            :pressed.sync="show"><i class="fas fa-times"></i></b-button>
+        </div>
       </div>
-      <div>
-        <img width="100px" height="100px" class="img-thumbnail img-fluid mx-2 d-block shadow-sm"
-          :src="player.photo" />
+    </div>
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <b-collapse id="collapse1">
+          <b-card class="animated flipInX">
+            <div class="card-header text-center">Quick Stats</div>
+            <ul class="list-group list-group-flush stats">
+              <li class="list-group-item">Points:
+                <span>{{pstats.pPoints}} / {{total_rounds}}</span>
+              </li>
+              <li class="list-group-item">Rank:
+                <span>{{pstats.pRank}} </span>
+              </li>
+              <li class="list-group-item">Highest Score:
+                <span>{{pstats.pHiScore}}</span> in round <em>{{pstats.pHiScoreRounds}}</em>
+              </li>
+              <li class="list-group-item">Lowest Score:
+                <span>{{pstats.pLoScore}}</span> in round <em>{{pstats.pLoScoreRounds}}</em>
+              </li>
+              <li class="list-group-item">Ave Score:
+                <span>{{pstats.pAve}}</span>
+              </li>
+              <li class="list-group-item">Ave Opp Score:
+                <span>{{pstats.pAveOpp}}</span>
+              </li>
+            </ul>
+          </b-card>
+        </b-collapse>
+        <!---- Round By Round Results -->
+        <b-collapse id="collapse2">
+          <b-card class="animated fadeInUp">
+            <h4>Round By Round Summary </h4>
+            <ul class="list-group list-group-flush" v-for="(report, i) in pstats.pRbyR" :key="i">
+              <li v-html="report.report" v-if="report.result=='win'" class="list-group-item list-group-item-success">
+                {{report.report}}</li>
+              <li v-html="report.report" v-else-if="report.result =='draw'"
+                class="list-group-item list-group-item-warning">{{report.report}}</li>
+              <li v-html="report.report" v-else-if="report.result =='loss'"
+                class="list-group-item list-group-item-danger">{{report.report}}</li>
+              <li v-html="report.report" v-else-if="report.result =='AR'" class="list-group-item list-group-item-info">
+                {{report.report}}</li>
+              <li v-html="report.report" v-else class="list-group-item list-group-item-light">{{report.report}}</li>
+            </ul>
+          </b-card>
+        </b-collapse>
+        <!-- Charts -->
+        <b-collapse id="collapse3">
+          <b-card class="animated fadeInDown">
+            <div class="card-header text-center">Stats Charts</div>
+            <div class="d-flex align-items-center justify-content-center">
+              <div>
+                <b-button @click="updateChart('mixed')" variant="link" class="text-decoration-none ml-1"
+                  :disabled="chartModel=='mixed'" :pressed="chartModel=='mixed'"><i class="fas fa-file-csv"
+                    aria-hidden="true"></i> Mixed Scores</b-button>
+                <b-button @click="updateChart('rank')" variant="link" class="text-decoration-none ml-1"
+                  :disabled="chartModel=='rank'" :pressed="chartModel=='rank'"><i class="fas fa-chart-line"
+                    aria-hidden="true"></i> Rank per Rd</b-button>
+                <b-button @click="updateChart('wins')" variant="link" class="text-decoration-none ml-1"
+                  :disabled="chartModel=='wins'" :pressed="chartModel=='wins'"><i class="fas fa-balance-scale fa-stack"
+                    aria-hidden="true"></i> Starts/Replies Wins(%)</b-button>
+              </div>
+            </div>
+            <div id="chart">
+              <apexchart v-if="chartModel=='mixed'" type=line height=400 :options="chartOptions"
+                :series="seriesMixed" />
+              <apexchart v-if="chartModel=='rank'" type='line' height=400 :options="chartOptionsRank"
+                :series="seriesRank" />
+              <apexchart v-if="chartModel=='wins'" type=radialBar height=400 :options="chartOptRadial"
+                :series="seriesRadial" />
+            </div>
+          </b-card>
+        </b-collapse>
       </div>
-      <div>
-        <h4 class="text-center yanone mx-2 my-1">{{pstats.pPosition}} position</h4>
-      </div>
-    </div> <!-- #pheader-->
-    <div class="d-flex align-items-center justify-content-center">
-      <b-btn v-b-toggle.collapse1 class="m-1">Quick Stats</b-btn>
-      <b-btn v-b-toggle.collapse2 class="m-1">Round by Round </b-btn>
-      <b-btn v-b-toggle.collapse3 class="m-1">Charts</b-btn>
-      <b-button title="Close" size="sm" @click="closeCard()" class="m-1" variant="outline-danger" :disabled="!show"
-        :pressed.sync="show"><i class="fas fa-times"></i></b-button>
     </div>
   </div>
-<div class="row">
-  <div class="col">
-    <b-collapse id="collapse1">
-      <b-card class="animated flipInX">
-        <div class="card-header text-center">Quick Stats</div>
-        <ul class="list-group list-group-flush stats">
-          <li class="list-group-item">Points:
-            <span>{{pstats.pPoints}} / {{total_rounds}}</span>
-          </li>
-          <li class="list-group-item">Rank:
-            <span>{{pstats.pRank}} </span>
-          </li>
-          <li class="list-group-item">Highest Score:
-            <span>{{pstats.pHiScore}}</span> in round <em>{{pstats.pHiScoreRounds}}</em>
-          </li>
-          <li class="list-group-item">Lowest Score:
-            <span>{{pstats.pLoScore}}</span> in round <em>{{pstats.pLoScoreRounds}}</em>
-          </li>
-          <li class="list-group-item">Ave Score:
-            <span>{{pstats.pAve}}</span>
-          </li>
-          <li class="list-group-item">Ave Opp Score:
-            <span>{{pstats.pAveOpp}}</span>
-          </li>
-        </ul>
-      </b-card>
-    </b-collapse>
-    <!---- Round By Round Results -->
-    <b-collapse id="collapse2">
-      <b-card class="animated fadeInUp">
-        <h4>Round By Round Summary </h4>
-        <ul class="list-group list-group-flush" v-for="(report, i) in pstats.pRbyR" :key="i">
-          <li v-html="report.report" v-if="report.result=='win'" class="list-group-item list-group-item-success">
-            {{report.report}}</li>
-          <li v-html="report.report" v-else-if="report.result =='draw'"
-            class="list-group-item list-group-item-warning">{{report.report}}</li>
-          <li v-html="report.report" v-else-if="report.result =='loss'"
-            class="list-group-item list-group-item-danger">{{report.report}}</li>
-          <li v-html="report.report" v-else-if="report.result =='AR'" class="list-group-item list-group-item-info">
-            {{report.report}}</li>
-          <li v-html="report.report" v-else class="list-group-item list-group-item-light">{{report.report}}</li>
-        </ul>
-      </b-card>
-    </b-collapse>
-    <!-- Charts -->
-    <b-collapse id="collapse3">
-      <b-card class="animated fadeInDown">
-        <div class="card-header text-center">Stats Charts</div>
-        <div class="d-flex align-items-center justify-content-center">
-          <div>
-            <b-button @click="updateChart('mixed')" variant="link" class="text-decoration-none ml-1"
-              :disabled="chartModel=='mixed'" :pressed="chartModel=='mixed'"><i class="fas fa-file-csv"
-                aria-hidden="true"></i> Mixed Scores</b-button>
-            <b-button @click="updateChart('rank')" variant="link" class="text-decoration-none ml-1"
-              :disabled="chartModel=='rank'" :pressed="chartModel=='rank'"><i class="fas fa-chart-line"
-                aria-hidden="true"></i> Rank per Rd</b-button>
-            <b-button @click="updateChart('wins')" variant="link" class="text-decoration-none ml-1"
-              :disabled="chartModel=='wins'" :pressed="chartModel=='wins'"><i class="fas fa-balance-scale fa-stack"
-                aria-hidden="true"></i> Starts/Replies Wins(%)</b-button>
-          </div>
-        </div>
-        <div id="chart">
-          <apexchart v-if="chartModel=='mixed'" type=line height=400 :options="chartOptions" :series="seriesMixed" />
-          <apexchart v-if="chartModel=='rank'" type='line' height=400 :options="chartOptionsRank"
-            :series="seriesRank" />
-          <apexchart v-if="chartModel=='wins'" type=radialBar height=400 :options="chartOptRadial"
-            :series="seriesRadial" />
-        </div>
-      </b-card>
-    </b-collapse>
-    <!--</div> -->
-  </div>
-</div>
-</div>
   `,
   props: ['pstats'],
   components: {
     apexchart: VueApexCharts,
   },
-  data: function() {
+  data: function () {
     return {
       player: '',
       show: true,
@@ -127,37 +131,35 @@ var PlayerStats = Vue.component('playerstats', {
       chartOptRadial: player_radial_chart_config,
       chartOptions: player_mixed_chart_config,
       chartOptionsRank: player_rank_chart_config,
-    };
+    }
   },
-  mounted: function() {
+  mounted: function () {
     this.doScroll();
-    // console.log(this.showStats);
-    console.log(this.seriesRadial);
+    console.log(this.seriesRadial)
   },
-  created: function() {
+  created: function () {
     this.show = this.showStats;
     this.total_players = this.players.length;
     this.player = this.pstats.player[0];
     this.playerName = this.player.post_title;
-    var rounds = _.range(1, this.total_rounds + 1);
-    var rds = _.map(rounds, function(num) {
-      return 'Rd ' + num;
-    });
+    let rounds = _.range(1, this.total_rounds + 1);
+    let rds = _.map(rounds, function(num){ return 'Rd '+ num; });
     this.chartOptions.xaxis.categories = rds;
     this.allScores = _.flatten(this.pstats.allScores);
     this.allOppScores = _.flatten(this.pstats.allOppScores);
     this.allRanks = _.flatten(this.pstats.allRanks);
     this.updateChart(this.chartModel);
   },
+  beforeDestroy() {
+    this.closeCard();
+  },
   methods: {
-    doScroll: function() {
+    doScroll: function () {
       // When the user scrolls the page, execute myFunction
-      window.onscroll = function() {
-        myFunction();
-      };
+      window.onscroll = function() {myFunction()};
 
       // Get the header
-      var header = document.getElementById('pheader');
+      var header = document.getElementById("pheader");
 
       // Get the offset position of the navbar
       var sticky = header.offsetTop;
@@ -165,62 +167,61 @@ var PlayerStats = Vue.component('playerstats', {
 
       // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
       function myFunction() {
-        if (window.pageYOffset > sticky + h) {
-          header.classList.add('sticky');
+        if (window.pageYOffset > (sticky + h)) {
+          header.classList.add("sticky");
         } else {
-          header.classList.remove('sticky');
+          header.classList.remove("sticky");
         }
       }
+
     },
-    updateChart: function(type) {
+    updateChart: function (type) {
       //console.log('-------------Updating..-----------------------');
       this.chartModel = type;
       this.chartOptions.title.align = 'left';
       var firstName = _.trim(_.split(this.playerName, ' ', 2)[0]);
       if ('rank' == type) {
         // this. = 'bar';
-        this.chartOptionsRank.title.text = `Ranking: ${this.playerName}`;
+        this.chartOptionsRank.title.text =`Ranking: ${this.playerName}`;
         this.chartOptionsRank.yaxis.min = 0;
-        this.chartOptionsRank.yaxis.max = this.total_players;
-        this.seriesRank = [
-          {
-            name: `${firstName} rank this rd`,
-            data: this.allRanks,
-          },
-        ];
+        this.chartOptionsRank.yaxis.max =this.total_players;
+        this.seriesRank = [{
+          name: `${firstName} rank this rd`,
+          data: this.allRanks
+         }]
       }
-      if ('mixed' == type) {
+      if ('mixed'== type) {
         this.chartOptions.title.text = `Scores: ${this.playerName}`;
         this.chartOptions.yaxis.min = 100;
         this.chartOptions.yaxis.max = 900;
         this.seriesMixed = [
           {
             name: `${firstName}`,
-            data: this.allScores,
-          },
+            data: this.allScores
+           },
           {
-            name: 'Opponent',
-            data: this.allOppScores,
-          },
-        ];
+          name: 'Opponent',
+          data: this.allOppScores
+         }]
       }
       if ('wins' == type) {
-        this.chartOptRadial.labels = [];
-        this.chartOptRadial.colors = [];
-        this.chartOptRadial.labels.unshift('Starts: % Wins', 'Replies: % Wins');
+        this.chartOptRadial.labels= [];
+        this.chartOptRadial.colors =[];
+        this.chartOptRadial.labels.unshift('Starts: % Wins','Replies: % Wins');
         this.chartOptRadial.colors.unshift('#7CFC00', '#BDB76B');
         console.log(this.chartOptRadial);
-        var s = _.round(100 * (this.pstats.startWins / this.pstats.starts), 1);
-        var r = _.round(100 * (this.pstats.replyWins / this.pstats.replies), 1);
+        var s = _.round(100 * (this.pstats.startWins / this.pstats.starts),1);
+        var r = _.round(100 * (this.pstats.replyWins / this.pstats.replies),1);
         this.seriesRadial = [];
-        this.seriesRadial.unshift(s, r);
-        console.log(this.seriesRadial);
+        this.seriesRadial.unshift(s,r);
+        console.log(this.seriesRadial)
       }
+
     },
-    closeCard: function() {
-      // console.log('----------Closing Card--------------------------');
+    closeCard: function () {
+    // console.log('----------Closing Card--------------------------');
       this.$store.dispatch('DO_STATS', false);
-    },
+    }
   },
   computed: {
     ...mapGetters({
@@ -229,8 +230,9 @@ var PlayerStats = Vue.component('playerstats', {
       showStats: 'SHOWSTATS',
     }),
   },
+
 });
-var PlayerList = Vue.component('allplayers', {
+var PlayerList =  Vue.component('allplayers',{
   template: `
   <div class="row justify-content-center align-items-center" id="players-list">
       <template v-if="showStats">
@@ -258,9 +260,9 @@ var PlayerList = Vue.component('allplayers', {
       </template>
     </div>
     `,
-  components: {
-    playerstats: PlayerStats,
-  },
+    components: {
+      playerstats: PlayerStats,
+    },
   data: function() {
     return {
       pStats: {},
@@ -268,17 +270,17 @@ var PlayerList = Vue.component('allplayers', {
         center: true,
         block: true,
         rounded: 'circle',
-        fluid: true,
+        fluid : true,
         blank: true,
         blankColor: '#bbb',
         width: '80px',
         height: '80px',
-        class: 'shadow-sm',
-      },
-    };
+        class: 'shadow-sm'
+      }
+    }
   },
   methods: {
-    showPlayerStats: function(id) {
+    showPlayerStats: function (id) {
       this.$store.commit('COMPUTE_PLAYER_STATS', id);
       this.pStats.player = this.player;
       this.pStats.pAveOpp = this.lastdata.ave_opp_score;
@@ -301,8 +303,8 @@ var PlayerList = Vue.component('allplayers', {
       this.pStats.replyWins = this.player_stats.replyWins;
       this.pStats.replies = this.player_stats.replies;
 
-      this.$store.dispatch('DO_STATS', true);
-    },
+      this.$store.dispatch('DO_STATS',true);
+    }
   },
   computed: {
     ...mapGetters({
@@ -314,7 +316,7 @@ var PlayerList = Vue.component('allplayers', {
       lastdata: 'LASTRDDATA',
       playerdata: 'PLAYERDATA',
       player: 'PLAYER',
-      player_stats: 'PLAYER_STATS',
+      player_stats: 'PLAYER_STATS'
     }),
     // lastRdData: {
     //   get: function() {
@@ -325,11 +327,11 @@ var PlayerList = Vue.component('allplayers', {
     //     this.lastRdData = value
     //   }
     // },
-  },
+  }
 });
 
-var Results = Vue.component('results', {
-  template: `
+ var Results = Vue.component('results', {
+   template: `
     <b-table hover responsive striped foot-clone :fields="results_fields" :items="result(currentRound)" head-variant="dark" class="animated fadeInUp">
         <template slot="table-caption">
             {{caption}}
@@ -423,7 +425,7 @@ var Results = Vue.component('results', {
   },
 });
 
-var Standings = Vue.component('standings', {
+var Standings = Vue.component('standings',{
   template: `
     <b-table responsive hover striped foot-clone :items="result(currentRound)" :fields="standings_fields" head-variant="dark" class="animated fadeInUp">
         <template slot="table-caption">
@@ -533,9 +535,9 @@ var Standings = Vue.component('standings', {
   },
 });
 
-const Pairings = Vue.component('pairings', {
+const Pairings =Vue.component('pairings',  {
   template: `
-<table class="table table-sm table-hover table-responsive table-striped  animated fadeInUp">
+<table class="table table-hover table-responsive table-striped  animated fadeInUp">
     <caption>{{caption}}</caption>
     <thead class="thead-dark">
         <tr>
@@ -581,3 +583,7 @@ const Pairings = Vue.component('pairings', {
     },
   },
 });
+
+
+
+

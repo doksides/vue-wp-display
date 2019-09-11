@@ -92,6 +92,7 @@ function func_load_vuescripts()
   wp_register_script('players', plugin_dir_url(__FILE__) . 'vue/pages/playerlist.js', array('vuejs'), true);
   wp_register_script('stats', plugin_dir_url(__FILE__) . 'vue/pages/stats.js', array('vuejs'), true);
   wp_register_script('board', plugin_dir_url(__FILE__) . 'vue/pages/scoreboard.js', array('vuejs'), true);
+  wp_register_script('performers', plugin_dir_url(__FILE__) . 'vue/pages/top.js', array('vuejs'), true);
   wp_register_script('alerts', plugin_dir_url(__FILE__) . 'vue/pages/alerts.js', array('vuejs'), true);
 }
 
@@ -115,7 +116,7 @@ function func_wp_vue()
   wp_enqueue_script('es6-promise');
   wp_enqueue_script('vuex-store');
   wp_enqueue_script('momentjs');
-  wp_enqueue_script('velocityjs');
+  // wp_enqueue_script('velocityjs');
   wp_enqueue_script('bootstrap-vue');
   //wp_enqueue_script('autoresponsive-vue');
   // wp_enqueue_script('requirejs');
@@ -123,6 +124,7 @@ function func_wp_vue()
 
  // Add Components
  wp_enqueue_script('alerts');
+ wp_enqueue_script('performers');
  wp_enqueue_script('board');
  wp_enqueue_script('stats');
  wp_enqueue_script('players');

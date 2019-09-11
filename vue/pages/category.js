@@ -21,8 +21,8 @@ var CateDetail = Vue.component('cate', {
         <div class="row justify-content-center align-items-center">
             <div class="col-12 d-flex">
               <b-img class="thumbnail logo ml-auto" :src="logo" :alt="event_title" />
-              <h2 class="text-center bebas">{{ event_title }}
-              <span v-show="total_rounds" class="text-center d-block">{{ total_rounds }} Games   {{ total_players}} <i class="fas fa-users"></i> </span>
+              <h2 class="text-left bebas">{{ event_title }}
+              <span :title="total_rounds+ ' rounds, ' + total_players +' players'" v-show="total_rounds" class="text-center d-block">{{ total_rounds }} Games   {{ total_players}} <i class="fas fa-users"></i> </span>
               </h2>
             </div>
         </div>
@@ -40,7 +40,7 @@ var CateDetail = Vue.component('cate', {
                 -->
                 <b-button  @click="viewIndex=5" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==5" :pressed="viewIndex==5"><i class="fas fa-chalkboard-teacher"></i>
                 Scoreboard</b-button>
-                <b-button  @click="viewIndex=6" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==6" :pressed="viewIndex==6"><i class="fas fa-chess-king"></i>
+                <b-button  @click="viewIndex=6" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==6" :pressed="viewIndex==6"><i class="fas fa-medal"></i>
                 Top Performers</b-button>
                 </div>
             </div>
@@ -61,6 +61,9 @@ var CateDetail = Vue.component('cate', {
         </div>
         <template v-if="viewIndex==0">
           <allplayers></allplayers>
+        </template>
+        <template v-if="viewIndex==6">
+          <performers></performers>
         </template>
         <template v-else-if="viewIndex==5">
         <scoreboard></scoreboard>
@@ -136,6 +139,7 @@ var CateDetail = Vue.component('cate', {
     // 'luckystiff-table': LuckyStiffTable,
     // 'tuffluck-table': TuffLuckTable
     scoreboard: Scoreboard,
+    performers: topPerformers,
   },
   data: function() {
     return {
@@ -187,7 +191,6 @@ var CateDetail = Vue.component('cate', {
   methods: {
     fetchData: function() {
       this.$store.dispatch('FETCH_DATA', this.slug);
-      console.log(this.slug);
     },
     getView: function(val) {
       console.log('Ran getView function val-> ' + val);
@@ -292,8 +295,8 @@ var CateDetail = Vue.component('cate', {
       // return true
     },
     roundChange: function(page) {
-      console.log(page);
-      console.log(this.currentRound);
+      // console.log(page);
+      // console.log(this.currentRound);
       this.currentRound = page;
     },
     cancelAutoUpdate: function() {
