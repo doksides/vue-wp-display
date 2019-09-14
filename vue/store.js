@@ -189,7 +189,7 @@ const store = new Vuex.Store({
           let result = '';
           if (l.result === 'win') {
             result = 'won';
-          } else if (l.result === 'draw' && l.score == 0 && l.oppo_score == 0) {
+          } else if (l.result === 'awaiting') {
             result = 'AR';
           } else {
             result = 'lost';

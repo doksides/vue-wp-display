@@ -56,14 +56,12 @@ body {
     width: 100vw;
     overflow-x: hidden;
 }
-
 #app{
     margin-top: 0 !important;
     font-size: 1.2em;
 }
-
 .breadcrumb{
-    margin-top: .2rem;
+    margin-top: .1rem;
 }
 .bebas{
     font-family: Bebas, Geneva, FreeSans, sans-serif !important;
@@ -83,7 +81,36 @@ button{
     text-transform: none !important;
     padding: .6em !important;
 }
+.dropdown-menu,
+.navbar .active>a,
+.navbar .active>a:hover,
+.navbar .active>a:focus,
+.navbar .dropdown-menu>a,
+.navbar a:hover,
+.navbar li a.active {
+    background-color: green;
+    color: white !important;
+}
 
+.navbar,
+.navbar a {
+    background-color: green;
+    color: #fff !important;
+    text-decoration: none;
+    font-family: Bebas;
+    font-size: 110%;
+}
+
+.navbar .navimg {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+}
+
+nav,
+.navbar {
+    font-family: Bebas, Helvetica, FreeSans, Verdana, sans-serif;
+}
 
 
 /* Add Zoom Animation */
@@ -111,20 +138,22 @@ button{
     }
 }
 
-footer {
+#footer {
     background: green;
     color: #fff;
     padding: 1.5em;
-    font-size: 120%;
-    margin-top: 2em;
-    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    font-size: 110%;
+    margin: 0;
+    font-family: Geneva, 'Helvetica Neue', Helvetica, FreeSans, Optima, Verdana,  sans-serif;
 }
 
-footer p,
-footer h4 {
+#footer p,
+#footer h5 {
     text-align: center;
     color: #fff;
+    background-color: green;
 }
+
 [data-link="#share-facebook"]{
   color: #3B5998 !important;
 }

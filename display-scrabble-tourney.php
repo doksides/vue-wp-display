@@ -87,6 +87,8 @@ function func_load_vuescripts()
  wp_register_script('vuex-store', plugin_dir_url(__FILE__) . 'vue/store.js', 'vuex', true);
  wp_register_script('dst_main', plugin_dir_url(__FILE__) . 'vue/main.js', array('vuejs', 'axios', 'vue-router'), true);
  wp_register_script('tlist', plugin_dir_url(__FILE__) . 'vue/pages/list.js', array('vuejs'), true);
+ wp_register_script('site-navbar', plugin_dir_url(__FILE__) . 'vue/pages/header.js', array('vuejs'), true);
+ wp_register_script('site-footer', plugin_dir_url(__FILE__) . 'vue/pages/footer.js', array('vuejs'), true);
  wp_register_script('tdetail', plugin_dir_url(__FILE__) . 'vue/pages/detail.js', array('vuejs'), true);
   wp_register_script('catedetail', plugin_dir_url(__FILE__) . 'vue/pages/category.js', array('vuejs'), true);
   wp_register_script('players', plugin_dir_url(__FILE__) . 'vue/pages/playerlist.js', array('vuejs'), true);
@@ -123,6 +125,8 @@ function func_wp_vue()
 
 
  // Add Components
+ wp_enqueue_script('site-navbar');
+ wp_enqueue_script('site-footer');
  wp_enqueue_script('alerts');
  wp_enqueue_script('performers');
  wp_enqueue_script('board');
@@ -143,7 +147,7 @@ function func_wp_vue()
 
   $page = get_post();
   $str = "<noscript><strong>We're sorry but to view the tournaments section properly you must have JavaScript enabled. Please enable it to continue.</strong></noscript>";
-  $str .= "<div id='app'><router-view></router-view></div>";
+  $str .= "<div id='app'><router-view /></div>";
   //Return
   return $str;
 }// end function

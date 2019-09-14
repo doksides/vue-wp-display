@@ -40,7 +40,7 @@ let topPerformers = Vue.component('top-stats', {
             <div class="d-flex flex-row justify-content-center align-content-center bg-dark text-white">
               <span class="mx-1 display-5 d-inline-block align-self-center" v-if="item.points">{{item.points}}</span>
               <span class="mx-1 display-5 d-inline-block align-self-center" v-if="item.margin">{{item.margin|addplus}}</span>
-              <span class="mx-1 text-center display-5 d-inline-block align-self-center" v-if="item.score">Against {{item.oppo}} in round {{item.round}}</span>
+              <span class="mx-1 text-center display-5 d-inline-block align-self-center" v-if="item.score">Round {{item.round}} vs {{item.oppo}}</span>
             </div>
             <div class="d-flex justify-content-center align-items-center bg-success text-white">
               <div v-if="item.score" class="display-4 yanone d-inline-flex">{{item.score}}</div>

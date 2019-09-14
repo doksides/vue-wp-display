@@ -74,7 +74,7 @@ var PlayerStats = Vue.component('playerstats', {
                 class="list-group-item list-group-item-warning">{{report.report}}</li>
               <li v-html="report.report" v-else-if="report.result =='loss'"
                 class="list-group-item list-group-item-danger">{{report.report}}</li>
-              <li v-html="report.report" v-else-if="report.result =='AR'" class="list-group-item list-group-item-info">
+              <li v-html="report.report" v-else-if="report.result =='awaiting'" class="list-group-item list-group-item-info">
                 {{report.report}}</li>
               <li v-html="report.report" v-else class="list-group-item list-group-item-light">{{report.report}}</li>
             </ul>
@@ -129,31 +129,83 @@ var PlayerStats = Vue.component('playerstats', {
       seriesRank: player_rank_series,
       seriesRadial: player_radial_chart_series,
       chartOptRadial: player_radial_chart_config,
-      chartOptions: player_mixed_chart_config,
       chartOptionsRank: player_rank_chart_config,
+      chartOptions: {
+        chart: {
+          height: 400,
+          zoom: {
+            enabled: false
+          },
+          shadow: {
+            enabled: true,
+            color: '#000',
+            top: 18,
+            left: 7,
+            blur: 10,
+            opacity: 0.5
+          },
+        },
+        colors: ['#8FBC8F', '#545454'],
+        dataLabels: {
+          enabled: true
+        },
+        stroke: {
+          curve: 'straight' // smooth
+        },
+        title: {
+          text: '',
+          align: 'left'
+        },
+        grid: {
+          borderColor: '#e7e7e7',
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: [],
+          title: {
+            text: 'Rounds'
+          }
+        },
+        yaxis: {
+          title: {
+            text: ''
+          },
+          min: null,
+          max: null
+        },
+        legend: {
+          position: 'top',
+          horizontalAlign: 'right',
+          floating: true,
+          offsetY: -25,
+          offsetX: -5
+        }
+      }
     }
   },
   mounted: function () {
     this.doScroll();
     console.log(this.seriesRadial)
-  },
-  created: function () {
     this.show = this.showStats;
-    this.total_players = this.players.length;
-    this.player = this.pstats.player[0];
-    this.playerName = this.player.post_title;
-    let rounds = _.range(1, this.total_rounds + 1);
-    let rds = _.map(rounds, function(num){ return 'Rd '+ num; });
-    this.chartOptions.xaxis.categories = rds;
     this.allScores = _.flatten(this.pstats.allScores);
     this.allOppScores = _.flatten(this.pstats.allOppScores);
     this.allRanks = _.flatten(this.pstats.allRanks);
     this.updateChart(this.chartModel);
+    this.total_players = this.players.length;
+    this.player = this.pstats.player[0];
+    this.playerName = this.player.post_title;
+  },
+  created: function () {
+
   },
   beforeDestroy() {
     this.closeCard();
   },
   methods: {
+
     doScroll: function () {
       // When the user scrolls the page, execute myFunction
       window.onscroll = function() {myFunction()};
@@ -175,6 +227,11 @@ var PlayerStats = Vue.component('playerstats', {
       }
 
     },
+    setChartCategories: function(){
+      let rounds = _.range(1, this.total_rounds + 1);
+      let rds = _.map(rounds, function(num){ return 'Rd '+ num; });
+      this.chartOptions.xaxis.categories = rds;
+    },
     updateChart: function (type) {
       //console.log('-------------Updating..-----------------------');
       this.chartModel = type;
@@ -188,9 +245,10 @@ var PlayerStats = Vue.component('playerstats', {
         this.seriesRank = [{
           name: `${firstName} rank this rd`,
           data: this.allRanks
-         }]
+        }]
       }
-      if ('mixed'== type) {
+      if ('mixed' == type) {
+        this.setChartCategories()
         this.chartOptions.title.text = `Scores: ${this.playerName}`;
         this.chartOptions.yaxis.min = 100;
         this.chartOptions.yaxis.max = 900;
@@ -336,7 +394,7 @@ var PlayerList =  Vue.component('allplayers',{
         <template slot="table-caption">
             {{caption}}
         </template>
-  </b-table>
+    </b-table>
     `,
   props: ['caption', 'currentRound', 'resultdata'],
   data: function() {
@@ -459,11 +517,21 @@ var Standings = Vue.component('standings',{
       { key: 'player', class: 'text-center' },
       {
         key: 'wonLost',
-        label: 'Won-Lost',
+        label: 'Win-Draw-Loss',
         class: 'text-center',
         formatter: (value, key, item) => {
-          let loss = item.round - item.points;
-          return `${item.points} - ${loss}`;
+          return `${item.wins} - ${item.draws} - ${item.losses}`;
+        },
+      },
+      {
+        key: 'points',
+        label: 'Points',
+        class: 'text-center',
+        formatter: (value, key, item) => {
+          if (item.ar > 0) {
+            return `${item.points}*`;
+          }
+          return `${item.points}`;
         },
       },
       {
@@ -486,13 +554,13 @@ var Standings = Vue.component('standings',{
           if (
             item.score == 0 &&
             item.oppo_score == 0 &&
-            item.result == 'draw'
+            item.result == 'awaiting'
           ) {
             return `Awaiting result of game ${item.round} vs ${item.oppo}`;
+          }else{
+            return `a ${item.score}-${item.oppo_score}
+            ${item.result.toUpperCase()} vs ${item.oppo} `;
           }
-          return `a ${item.score}-${
-            item.oppo_score
-          }  ${item.result.toUpperCase()} vs ${item.oppo} `;
         },
       },
     ];
@@ -517,15 +585,13 @@ var Standings = Vue.component('standings',{
         if (result === 'loss') {
           r['_cellVariants']['lastGame'] = 'danger';
         }
+        if (result === 'awaiting') {
+          r['_cellVariants']['lastGame'] = 'info';
+        }
         if (result === 'draw') {
-          if (r['score'] == 0 && r['oppo_score'] == 0) {
-            r['_cellVariants']['lastGame'] = 'info';
-          } else {
-            r['_cellVariants']['lastGame'] = 'warning';
-          }
+          r['_cellVariants']['lastGame'] = 'warning';
         }
       });
-
       return _.chain(data)
         .sortBy('margin')
         .sortBy('points')

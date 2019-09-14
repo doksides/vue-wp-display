@@ -39,7 +39,7 @@ var Scoreboard = Vue.component('scoreboard',{
             </b-row>
             <b-row>
               <b-col class="text-white" v-bind:class="{'text-warning': player.result === 'draw',
-             'text-info': player.result === 'AR',
+             'text-info': player.result === 'awaiting',
              'text-danger': player.result === 'loss',
              'text-success': player.result === 'win' }">
                 <h4 class="text-center position  mt-1">
@@ -52,19 +52,20 @@ var Scoreboard = Vue.component('scoreboard',{
           </div>
           <h5 class="m-0  animated fadeInLeft">{{player.player}}</h5>
           <p class="card-text mt-0">
-            <span class="sdata points p-1">{{player.points}}-{{total_rounds - player.points}}</span>
+            <span class="sdata points p-1">{{player.points}}-{{player.losses}}</span>
             <span class="sdata mar">{{player.margin | addplus}}</span>
             <span class="sdata p1">was {{player.lastposition}}</span>
           </p>
           <div class="row">
             <b-col>
-              <span v-if="player.result =='AR' " class="bg-info d-inline p-1 ml-1 text-white result">{{
-                                   player.result }}</span>
+              <span v-if="player.result =='awaiting' " class="bg-info d-inline p-1 ml-1 text-white result">{{
+                                   player.result | firstchar }}</span>
               <span v-else class="d-inline p-1 ml-1 text-white result" v-bind:class="{'bg-warning': player.result === 'draw',
                          'bg-danger': player.result === 'loss',
+                         'bg-info': player.result === 'awaiting',
                          'bg-success': player.result === 'win' }">
                 {{player.result | firstchar}}</span>
-              <span v-if="player.result =='AR' " class="text-info d-inline p-1  sdata">Awaiting
+              <span v-if="player.result =='awaiting' " class="text-info d-inline p-1  sdata">Awaiting
                 Result</span>
               <span v-else class="d-inline p-1 sdata" v-bind:class="{'text-warning': player.result === 'draw',
                        'text-danger': player.result === 'loss',
@@ -77,10 +78,9 @@ var Scoreboard = Vue.component('scoreboard',{
             <b-col>
               <span :title="res" v-for="res in player.prevresults" :key="res.key"
                 class="d-inline-block p-1 text-white sdata-res text-center" v-bind:class="{'bg-warning': res === 'draw',
-                     'bg-info': res === 'AR',
+                     'bg-info': res === 'awaiting',
                      'bg-danger': res === 'loss',
-                     'bg-success': res === 'win' }">{{res
-                                   | firstchar}}</span>
+                     'bg-success': res === 'win' }">{{res|firstchar}}</span>
             </b-col>
           </div>
         </b-media>
@@ -146,9 +146,7 @@ var Scoreboard = Vue.component('scoreboard',{
       );
     },
     processDetails: function(currentPage) {
-      //let res = this.result_data;
-      //let currentPage = parseInt(this.currentPage)
-      // let cat_params = this.$route.params.category
+      console.log(this.result_data)
       let resultdata = this.result_data;
       let initialRdData = _.initial(_.clone(resultdata));
       let previousRdData = _.last(initialRdData);
@@ -159,13 +157,13 @@ var Scoreboard = Vue.component('scoreboard',{
         player.gender = this.players[x].gender;
         player.country_full = this.players[x].country_full;
         player.country = this.players[x].country;
-        if (
-          player.result == 'draw' &&
-          player.score == 0 &&
-          player.oppo_score == 0
-        ) {
-          player.result = 'AR';
-        }
+        // if (
+        //   player.result == 'draw' &&
+        //   player.score == 0 &&
+        //   player.oppo_score == 0
+        // ) {
+        //   player.result = 'AR';
+        // }
         if (previousRdData) {
           let playerData = _.find(previousRdData, {
             player: player.player,

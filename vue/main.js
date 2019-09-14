@@ -14,60 +14,7 @@ var player_radial_chart_config = {
   colors: [],
   labels: [],
 };
-var player_mixed_chart_config = {
-  chart: {
-    height: 400,
-    zoom: {
-      enabled: false
-    },
-    shadow: {
-      enabled: true,
-      color: '#000',
-      top: 18,
-      left: 7,
-      blur: 10,
-      opacity: 0.5
-    },
-  },
-  colors: ['#8FBC8F', '#545454'],
-  dataLabels: {
-    enabled: true
-  },
-  stroke: {
-    curve: 'straight' // smooth
-  },
-  title: {
-    text: '',
-    align: 'left'
-  },
-  grid: {
-    borderColor: '#e7e7e7',
-    row: {
-      colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-      opacity: 0.5
-    },
-  },
-  xaxis: {
-    categories: [],
-    title: {
-      text: 'Rounds'
-    }
-  },
-  yaxis: {
-    title: {
-      text: ''
-    },
-    min: null,
-    max: null
-  },
-  legend: {
-    position: 'top',
-    horizontalAlign: 'right',
-    floating: true,
-    offsetY: -25,
-    offsetX: -5
-  }
-};
+
 player_rank_chart_config = {
   chart: {
     height: 400,
@@ -158,7 +105,7 @@ Vue.filter('firstchar', function (value) {
       path: '/tourneys',
       name: 'TourneysList',
       component: scrList,
-      meta: { title: 'NSF Tournaments Results and Statistics' },
+      meta: { title: 'NSF Tournaments - Results and Statistics' },
     },
     {
       path: '/tourneys/:slug',
