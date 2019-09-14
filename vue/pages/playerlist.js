@@ -124,7 +124,7 @@ var PlayerStats = Vue.component('playerstats', {
       allOppScores: [],
       allRanks: [],
       total_players: null,
-      chartModel: 'mixed',
+      chartModel: 'rank',
       seriesMixed: player_mixed_series,
       seriesRank: player_rank_series,
       seriesRadial: player_radial_chart_series,

@@ -1,6 +1,7 @@
 var CateDetail = Vue.component('cate', {
   template: `
     <div class="container-fluid">
+    <site-navbar/>
     <div v-if="resultdata" class="row no-gutters justify-content-center align-items-center">
         <div class="col-12">
             <b-breadcrumb :items="breadcrumbs" />
@@ -117,9 +118,12 @@ var CateDetail = Vue.component('cate', {
           </div>
         </div>
     </template>
+    <site-footer/>>
 </div>
 `,
   components: {
+    'site-navbar': Header,
+    'site-footer': Footer,
     loading: LoadingAlert,
     error: ErrorAlert,
     allplayers: PlayerList,
