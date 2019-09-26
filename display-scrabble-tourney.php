@@ -53,20 +53,11 @@ if ( ! function_exists('vue_log'))
 
 }
 
-// Bootstrap 4 Responsive meta tag
-function bootstrap_meta_tags()
-{
-echo '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">';
-}
-
-//  add_action('wp_head', 'bootstrap_meta_tags');
-
 //Register Scripts to use
 function func_load_vuescripts()
 {
   wp_enqueue_style('bootstrap', plugin_dir_url(__FILE__) . 'assets/css/bootswatch_themes/materia/bootstrap.min.css', []);
   wp_enqueue_style('bootstrap-vue', plugin_dir_url(__FILE__) . 'assets/css/bootstrap-vue.min.css', 'bootstrap');
-  // wp_enqueue_style('three-dots', plugin_dir_url(__FILE__) . 'assets/css/three-dots.min.css', 'bootstrap');
   wp_enqueue_style('flag-icon', plugin_dir_url(__FILE__) . 'assets/css/flag-icon.min.css', 'bootstrap');
   wp_enqueue_style('font-awesome5', plugin_dir_url(__FILE__) . 'assets/css/font-awesome/css/all.min.css');
   wp_enqueue_style('animatecss', plugin_dir_url(__FILE__) . 'assets/css/animate.min.css');
@@ -87,9 +78,7 @@ function func_load_vuescripts()
  wp_register_script('vuex-store', plugin_dir_url(__FILE__) . 'vue/store.js', 'vuex', true);
  wp_register_script('dst_main', plugin_dir_url(__FILE__) . 'vue/main.js', array('vuejs', 'axios', 'vue-router'), true);
  wp_register_script('tlist', plugin_dir_url(__FILE__) . 'vue/pages/list.js', array('vuejs'), true);
- wp_register_script('site-navbar', plugin_dir_url(__FILE__) . 'vue/pages/header.js', array('vuejs'), true);
- wp_register_script('site-footer', plugin_dir_url(__FILE__) . 'vue/pages/footer.js', array('vuejs'), true);
- wp_register_script('tdetail', plugin_dir_url(__FILE__) . 'vue/pages/detail.js', array('vuejs'), true);
+  wp_register_script('tdetail', plugin_dir_url(__FILE__) . 'vue/pages/detail.js', array('vuejs'), true);
   wp_register_script('catedetail', plugin_dir_url(__FILE__) . 'vue/pages/category.js', array('vuejs'), true);
   wp_register_script('players', plugin_dir_url(__FILE__) . 'vue/pages/playerlist.js', array('vuejs'), true);
   wp_register_script('stats', plugin_dir_url(__FILE__) . 'vue/pages/stats.js', array('vuejs'), true);
@@ -100,11 +89,13 @@ function func_load_vuescripts()
 
 add_action('wp_enqueue_scripts', 'func_load_vuescripts');
 
+
+
 //Add shortscode
 function func_wp_vue()
 {
  //Add CSS
-
+  wp_dequeue_script('theme-global-3');
   //Add Vue.js
   wp_enqueue_script('vuejs');
   // Add Axios
@@ -118,15 +109,11 @@ function func_wp_vue()
   wp_enqueue_script('es6-promise');
   wp_enqueue_script('vuex-store');
   wp_enqueue_script('momentjs');
-  // wp_enqueue_script('velocityjs');
   wp_enqueue_script('bootstrap-vue');
-  //wp_enqueue_script('autoresponsive-vue');
-  // wp_enqueue_script('requirejs');
 
 
  // Add Components
- wp_enqueue_script('site-navbar');
- wp_enqueue_script('site-footer');
+
  wp_enqueue_script('alerts');
  wp_enqueue_script('performers');
  wp_enqueue_script('board');
@@ -140,14 +127,17 @@ function func_wp_vue()
  // Add Vue code
   wp_enqueue_script('dst_main');
   $scripts = array(
-    'lodash' => plugin_dir_url(__FILE__) . 'assets/js/lodash.min.js', );
-
+    'lodash' => plugin_dir_url(__FILE__) . 'assets/js/lodash.min.js',
+    'nsflogo' => plugin_dir_url(__FILE__) . 'assets/images/nsflogo.png',
+    'noimage' => plugin_dir_url(__FILE__) . 'assets/images/nophoto.jpg',
+    'webmaster' => plugin_dir_url(__FILE__) . 'assets/images/me.jpg', );
+ $home_url = home_url();
   // Lodash library location dynamically loaded in Vue components
   wp_localize_script('dst_main', 'scriptsLocation', $scripts);
 
-  $page = get_post();
   $str = "<noscript><strong>We're sorry but to view the tournaments section properly you must have JavaScript enabled. Please enable it to continue.</strong></noscript>";
-  $str .= "<div id='app'><router-view /></div>";
+
+  $str .= "<div id='app'><router-view></router-view></div>";
   //Return
   return $str;
 }// end function
@@ -165,3 +155,5 @@ function add_type_att_to_main_script($tag, $handle, $src)
    }
    return $tag;
 }
+
+

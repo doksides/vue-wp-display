@@ -1,13 +1,12 @@
 var scrList = Vue.component('scrList', {
   template: `
   <div class="container-fluid">
-    <site-navbar />
     <template v-if="loading||error">
-      <div class="row justify-content-center align-items-center">
+      <div class="row justify-content-center align-content-center align-items-center">
           <div v-if="loading" class="col-12 justify-content-center align-self-center">
               <loading></loading>
           </div>
-          <div v-if="error" class="col-12 justify-content-center align-self-center">
+          <div v-if="error" class="col-12 justify-content-center align-content-center align-self-center">
               <error>
               <p slot="error">{{error}}</p>
               <p slot="error_msg">{{error_msg}}</p>
@@ -80,11 +79,9 @@ var scrList = Vue.component('scrList', {
         </div>
       </div>
    </template>
-  <site-footer />
-</div>`,
+</div>
+`,
   components: {
-    'site-navbar': Header,
-    'site-footer': Footer,
     loading: LoadingAlert,
     error: ErrorAlert,
   },
@@ -95,8 +92,7 @@ var scrList = Vue.component('scrList', {
     };
     },
   created: function() {
-    document.title = 'Home - NSF Scrabble Tournaments';
-    console.log('List component mounted!');
+    document.title = 'NSF Scrabble Tournaments';
       this.fetchList(this.currentPage);
   },
   methods: {

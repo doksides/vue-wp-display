@@ -2,6 +2,8 @@ var lodash = document.createElement('script');
 lodash.async = true;
 lodash.setAttribute('src', scriptsLocation.lodash);
 document.head.appendChild(lodash);
+
+
 var player_mixed_series = [{ name: '',  data: [] }];
 var player_rank_series = [{ name: '',  data: [] }];
 var player_radial_chart_series = []  ;
@@ -102,19 +104,19 @@ Vue.filter('firstchar', function (value) {
 
   const routes = [
     {
-      path: '/tourneys',
+      path: '/tournaments',
       name: 'TourneysList',
       component: scrList,
       meta: { title: 'NSF Tournaments - Results and Statistics' },
     },
     {
-      path: '/tourneys/:slug',
+      path: '/tournaments/:slug',
       name: 'TourneyDetail',
       component: tDetail,
       meta: { title: 'Tournament Details' },
     },
     {
-      path: '/tourney_detail/:event_slug',
+      path: '/tournament/:event_slug',
       name: 'CateDetail',
       component: CateDetail,
       props: true,

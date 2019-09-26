@@ -2,9 +2,8 @@
 var tDetail = Vue.component('tdetail', {
   template: `
   <div class="container-fluid">
-    <site-navbar />
     <template v-if="loading||error">
-      <div class="row justify-content-center align-items-center">
+      <div class="row justify-content-center align-content-center align-items-center">
         <div v-if="loading" class="col-12 justify-content-center align-self-center">
           <loading></loading>
         </div>
@@ -58,12 +57,9 @@ var tDetail = Vue.component('tdetail', {
         </div>
       </div>
     </template>
-    <site-footer />
   </div>
        `,
   components: {
-    'site-navbar': Header,
-    'site-footer': Footer,
     loading: LoadingAlert,
     error: ErrorAlert,
   },
