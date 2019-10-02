@@ -1,76 +1,12 @@
+// import { Header } from './pages/header.js';
+// import {Footer} from './pages/footer.js';
+
 var lodash = document.createElement('script');
 lodash.async = true;
 lodash.setAttribute('src', scriptsLocation.lodash);
 document.head.appendChild(lodash);
 
 
-var player_mixed_series = [{ name: '',  data: [] }];
-var player_rank_series = [{ name: '',  data: [] }];
-var player_radial_chart_series = []  ;
-var player_radial_chart_config = {
-  plotOptions: {
-    radialBar: {
-      hollow: { size: '50%', }
-    },
-  },
-  colors: [],
-  labels: [],
-};
-
-player_rank_chart_config = {
-  chart: {
-    height: 400,
-    zoom: {
-      enabled: false
-    },
-    shadow: {
-      enabled: true,
-      color: '#000',
-      top: 18,
-      left: 7,
-      blur: 10,
-      opacity: 1
-    },
-  },
-  colors: ['#77B6EA', '#545454'],
-  dataLabels: {
-    enabled: true
-  },
-  stroke: {
-    curve: 'smooth' // straight
-  },
-  title: {
-    text: '',
-    align: 'left'
-  },
-  grid: {
-    borderColor: '#e7e7e7',
-    row: {
-      colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-      opacity: 0.5
-    },
-  },
-  xaxis: {
-    categories: [],
-    title: {
-      text: 'Rounds'
-    }
-  },
-  yaxis: {
-    title: {
-      text: ''
-    },
-    min: null,
-    max: null
-  },
-  legend: {
-    position: 'top',
-    horizontalAlign: 'right',
-    floating: true,
-    offsetY: -25,
-    offsetX: -5
-  }
-};
 // import scrList from './pages/list.js';
 // import tDetail from './pages/detail.js';
 // import CateDetail from './pages/category.js';
@@ -139,11 +75,11 @@ router.beforeEach((to, from, next) => {
   document.title = to.meta.title;
   next();
 });
+
 new Vue({
   el: document.querySelector('#app'),
   router,
-  store,
-
+  store
 })
 
 

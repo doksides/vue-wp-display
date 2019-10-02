@@ -73,35 +73,63 @@ var tDetail = Vue.component('tdetail', {
   beforeUpdate: function () {
     document.title = this.tourney.title;
   },
-  watch: {
+  created: function() {
+    this.fetchData();
+  },
+  /* watch: {
     // call again the method if the route changes
     $route: {
       immediate: true,
       handler: function() {
-        // this.fetchData();
-        this.$store.dispatch('FETCH_DETAIL', this.slug);
-
+        this.fetchData();
+       // this.$store.dispatch('FETCH_DETAIL', this.slug);
       },
     },
-  },
+  }, */
+  // beforeRouteUpdate (to, from, next) {
+  //   this.fetchData();
+  // },
   methods: {
     fetchData: function() {
        if (this.tourney.slug != this.slug) {
         // reset title because of breadcrumbs
         this.tourney.title = '';
+      }
+      let e = this.toulist.find(event => event.slug === this.slug);
+      if (e) {
+        let now = moment();
+        const a = moment(this.last_access_time);
+        const time_elapsed = now.diff(a, 'seconds');
+        if (time_elapsed < 300) {
+          console.log('-------Match Found in Tourney List----------');
+          console.log(e);
+          console.log(time_elapsed);
+          this.tourney = e;
+
+        } else {
         this.$store.dispatch('FETCH_DETAIL', this.slug);
-        // this.$store.cache.dispatch("FETCH_DETAIL", this.slug, {
-        //     timeout: 600000 //10 minutes
-        // });
+        }
+      } else {
+        this.$store.dispatch('FETCH_DETAIL', this.slug);
       }
     },
   },
   computed: {
     ...mapGetters({
-      tourney: 'DETAIL',
+      // tourney: 'DETAIL',
       error: 'ERROR',
       loading: 'LOADING',
+      last_access_time: 'TOUACCESSTIME',
+      toulist: 'TOUAPI'
     }),
+    tourney: {
+      get: function () {
+        return this.$store.getters.DETAIL;
+      },
+      set: function (newVal) {
+        this.$store.commit('SET_EVENTDETAIL', newVal);
+      }
+    },
     breadcrumbs: function() {
       return [
         {
@@ -117,8 +145,7 @@ var tDetail = Vue.component('tdetail', {
       ];
     },
     error_msg: function() {
-      return `We are currently experiencing network issues fetching this page ${
-        this.pageurl} `;
+      return `We are currently experiencing network issues. Please refresh to try again `;
     },
   },
 });

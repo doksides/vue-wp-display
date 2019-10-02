@@ -7,13 +7,21 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              www.site-zoom.com
- * @since             1.0.0
- * @package           Scratoudisplay
+ * @link       www.site-zoom.com
+ * @since      1.2.5
+ * @package    Scratoudisplay
  *
  * @wordpress-plugin
  * Plugin Name:       Scrabble Tournament Display
- * Plugin URI:        http://www.site-zoom.com/project/plugins * Description:Display Scrabble Tournaments on Pages with Shortcodes * Version:1 . 0 . 0 * Author:David Okunmuyide * Author URI:www . site - zoom . com * License:GPL-2 . 0 +  * License URI:http://www.gnu.org/licenses/gpl-2.0.txt * Text Domain:scratoudisplay * Domain Path:/languages */
+ * Plugin URI:        http://www.site-zoom.com/project/plugins
+ * Description:Display Scrabble Tournaments on Pages with Shortcodes
+ * Version:1 . 0 . 0
+ * Author:David Okunmuyide
+ * Author URI:www.site-zoom.com
+ * License:GPL-2.0+
+ * License URI:http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:scratoudisplay
+ * Domain Path:/languages */
 
 // If this file is called directly, abort.
 if ( ! defined('WPINC'))
@@ -74,8 +82,7 @@ function func_load_vuescripts()
  wp_register_script('bootstrap-vue', plugin_dir_url(__FILE__) . 'assets/js/bootstrap-vue.min.js', 'vuejs', true);
  wp_register_script('es6-promise', plugin_dir_url(__FILE__) . 'assets/js/es6-promise.auto.js', 'vuex', true);
  wp_register_script('momentjs', plugin_dir_url(__FILE__) . 'assets/js/moment.min.js', 'vuejs', true);
- wp_register_script('velocityjs', plugin_dir_url(__FILE__) . 'assets/js/velocity.min.js', 'vuejs', true);
- wp_register_script('vuex-store', plugin_dir_url(__FILE__) . 'vue/store.js', 'vuex', true);
+  wp_register_script('vuex-store', plugin_dir_url(__FILE__) . 'vue/store.js', 'vuex', true);
  wp_register_script('dst_main', plugin_dir_url(__FILE__) . 'vue/main.js', array('vuejs', 'axios', 'vue-router'), true);
  wp_register_script('tlist', plugin_dir_url(__FILE__) . 'vue/pages/list.js', array('vuejs'), true);
   wp_register_script('tdetail', plugin_dir_url(__FILE__) . 'vue/pages/detail.js', array('vuejs'), true);
@@ -85,17 +92,9 @@ function func_load_vuescripts()
   wp_register_script('board', plugin_dir_url(__FILE__) . 'vue/pages/scoreboard.js', array('vuejs'), true);
   wp_register_script('performers', plugin_dir_url(__FILE__) . 'vue/pages/top.js', array('vuejs'), true);
   wp_register_script('alerts', plugin_dir_url(__FILE__) . 'vue/pages/alerts.js', array('vuejs'), true);
-}
 
-add_action('wp_enqueue_scripts', 'func_load_vuescripts');
+  // Enqueue the scripts
 
-
-
-//Add shortscode
-function func_wp_vue()
-{
- //Add CSS
-  wp_dequeue_script('theme-global-3');
   //Add Vue.js
   wp_enqueue_script('vuejs');
   // Add Axios
@@ -123,6 +122,10 @@ function func_wp_vue()
  wp_enqueue_script('tdetail');
  wp_enqueue_script('tlist');
 
+  wp_dequeue_script('theme-global-3');
+  wp_dequeue_style('font-awesome-css');
+  wp_dequeue_style('theme-global-css');
+  wp_dequeue_style('ult_core_template_2-css');
 
  // Add Vue code
   wp_enqueue_script('dst_main');
@@ -134,10 +137,16 @@ function func_wp_vue()
  $home_url = home_url();
   // Lodash library location dynamically loaded in Vue components
   wp_localize_script('dst_main', 'scriptsLocation', $scripts);
+}
 
+add_action('wp_enqueue_scripts', 'func_load_vuescripts');
+
+//Add shortscode
+function func_wp_vue()
+{
   $str = "<noscript><strong>We're sorry but to view the tournaments section properly you must have JavaScript enabled. Please enable it to continue.</strong></noscript>";
 
-  $str .= "<div id='app'><router-view></router-view></div>";
+  $str .= "<router-view></router-view>";
   //Return
   return $str;
 }// end function
@@ -145,7 +154,7 @@ function func_wp_vue()
 //Add shortcode to WordPress
 add_shortcode('tournaments_display', 'func_wp_vue');
 
-// add_filter('script_loader_tag', 'add_type_att_to_main_script', 10, 3);
+add_filter('script_loader_tag', 'add_type_att_to_main_script', 10, 3);
 
 function add_type_att_to_main_script($tag, $handle, $src)
 {

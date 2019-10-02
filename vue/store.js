@@ -3,7 +3,9 @@ const store = new Vuex.Store({
   strict: true,
   state: {
     touapi: [],
+    touaccesstime: '',
     detail: [],
+    lastdetailaccess: '',
     event_stats: [],
     players: [],
     result_data: [],
@@ -26,7 +28,6 @@ const store = new Vuex.Store({
     playerdata: [],
     player: null,
     player_stats: {},
-
   },
   getters: {
     PLAYER_STATS: state => state.player_stats,
@@ -35,7 +36,9 @@ const store = new Vuex.Store({
     PLAYER: state => state.player,
     SHOWSTATS: state => state.showstats,
     TOUAPI: state => state.touapi,
+    TOUACCESSTIME: state => state.touaccesstime,
     DETAIL: state => state.detail,
+    LASTDETAILACCESS: state => state.lastdetailaccess,
     EVENTSTATS: state => state.event_stats,
     PLAYERS: state => state.players,
     TOTALPLAYERS: state => state.total_players,
@@ -47,7 +50,7 @@ const store = new Vuex.Store({
     WPPAGES: state => state.WPpages,
     CATEGORY: state => state.category,
     TOTAL_ROUNDS: state => state.total_rounds,
-    FINAL_ROUND_STATS: state =>  state.final_round_stats,
+    FINAL_ROUND_STATS: state => state.final_round_stats,
     PARENTSLUG: state => state.parentslug,
     EVENT_TITLE: state => state.event_title,
     TOURNEY_TITLE: state => state.tourney_title,
@@ -60,7 +63,7 @@ const store = new Vuex.Store({
     },
     SET_FINAL_RD_STATS: (state, resultstats) => {
       let len = resultstats.length;
-      if(len > 1){
+      if (len > 1) {
         state.final_round_stats = _.last(resultstats);
       }
     },
@@ -69,6 +72,12 @@ const store = new Vuex.Store({
     },
     SET_EVENTDETAIL: (state, payload) => {
       state.detail = payload;
+    },
+    SET_LAST_ACCESS_TIME: (state, payload) => {
+      state.touaccesstime = payload;
+    },
+    SET_DETAIL_LAST_ACCESS_TIME: (state, payload) => {
+      state.lastdetailaccess = payload;
     },
     SET_WP_CONSTANTS: (state, payload) => {
       state.WPpages = payload['x-wp-totalpages'];
@@ -243,26 +252,19 @@ const store = new Vuex.Store({
       state.player_stats.pRbyR = _.flattenDeep(pRbyR);
 
       let allWins = _.map(
-        _.filter(
-          _.flattenDeep(pdata),
-          function(p) {
-            return 'win' == p.result;
-          }
-        )
+        _.filter(_.flattenDeep(pdata), function(p) {
+          return 'win' == p.result;
+        })
       );
 
-      state.player_stats.startWins=  _.filter(allWins, ['start', 'y']).length;
+      state.player_stats.startWins = _.filter(allWins, ['start', 'y']).length;
       state.player_stats.replyWins = _.filter(allWins, ['start', 'n']).length;
-
       let starts = _.map(
-        _.filter(
-          _.flattenDeep(pdata),
-          function(p) {
-            if ( p.start == 'y') {
-              return p;
-            }
+        _.filter(_.flattenDeep(pdata), function(p) {
+          if (p.start == 'y') {
+            return p;
           }
-        )
+        })
       );
 
       state.player_stats.starts = starts.length;
@@ -277,8 +279,6 @@ const store = new Vuex.Store({
       console.log('-----------Reply Win Count ----------------------');
       console.log(state.player_stats.replyWins);
     },
-
-
   },
   actions: {
     DO_STATS: (context, payload) => {
@@ -301,6 +301,8 @@ const store = new Vuex.Store({
             );
             return data;
           });
+          //console.log(moment(headers.date));
+          context.commit('SET_LAST_ACCESS_TIME', headers.date);
           context.commit('SET_WP_CONSTANTS', headers);
           context.commit('SET_TOUDATA', data);
           context.commit('SET_CURRPAGE', payload);
@@ -313,24 +315,26 @@ const store = new Vuex.Store({
     },
     FETCH_DETAIL: (context, payload) => {
       context.commit('SET_LOADING', true);
-      let url = `${baseURL}tournament`;
-      axios
-        .get(url, { params: { slug: payload } })
-        .then(response => {
-          let headers = response.headers;
-          let data = response.data[0];
-          let startDate = data.start_date;
-          data.start_date = moment(new Date(startDate)).format(
-            'dddd, MMMM Do YYYY'
-          );
-          context.commit('SET_WP_CONSTANTS', headers);
-          context.commit('SET_EVENTDETAIL', data);
-          context.commit('SET_LOADING', false);
-        })
-        .catch(error => {
-          context.commit('SET_LOADING', false);
-          context.commit('SET_ERROR', error.toString());
-        });
+
+        let url = `${baseURL}tournament`;
+        axios
+          .get(url, { params: { slug: payload } })
+          .then(response => {
+            let headers = response.headers;
+            let data = response.data[0];
+            let startDate = data.start_date;
+            data.start_date = moment(new Date(startDate)).format(
+              'dddd, MMMM Do YYYY'
+            );
+            context.commit('SET_WP_CONSTANTS', headers);
+            context.commit('SET_DETAIL_LAST_ACCESS_TIME', headers.date);
+            context.commit('SET_EVENTDETAIL', data);
+            context.commit('SET_LOADING', false);
+          })
+          .catch(error => {
+            context.commit('SET_LOADING', false);
+            context.commit('SET_ERROR', error.toString());
+          });
     },
 
     FETCH_DATA: (context, payload) => {

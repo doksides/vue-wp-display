@@ -1,23 +1,26 @@
-var Header = Vue.component('site-navbar', {
+var Header = Vue.component('app-navbar', {
   template: `
-  <nav class="navbar navbar-expand-md flex-column flex-md-row">
-  <a class="navbar-brand" href="/">
-    <img alt="NSF logo" class="rounded-circle d-inline-block align-top " :src="nsflogo" width="40" height="40" style="border: 1px solid #00f">
+  <header class="navbar navbar-expand flex-column flex-md-row">
+  <a class="navbar-brand" href="/tournaments" aria-label="Tournaments-Nigeria Scrabble Federation">
+   <i class="fa fa-trophy"></i> Tournaments
   </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav_collapse">
+  <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav_collapse">
   <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="nav_collapse">
-    <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex" style="border: 1px solid #ff0">
+  -->
+  <div class="navbar-nav-scroll">
+    <!-- <ul class="navbar-nav flex-row">
       <li class="nav-item">
         <a class="nav-link" href="/tourneys"><i class="fas fa-home"></i></a>
       </li>
-    </ul>
+    </ul> -->
     <!-- Right aligned nav items -->
-    <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+    <ul class="nav navbar-nav flex-row ml-auto">
       <li class="nav-item">
         <a class="nav-link" href="https://www.nigeriascrabble.com"><i class="fas fa-globe"></i> NSF News</a>
       </li>
+    </ul>
+    <ul class="nav navbar-nav flex-row mr-auto">
       <li class="nav-item">
         <a class="nav-link" href="https://www.facebook.com/NigeriaScrabbleFederation/"><i class="fa fa-facebook-square"></i></a>
       </li>
@@ -29,7 +32,7 @@ var Header = Vue.component('site-navbar', {
       </li>
     </ul>
   </div>
-  </nav>
+  </header>
 
 `,
 data() {
@@ -38,3 +41,5 @@ data() {
   }
 },
 });
+
+export var Header;

@@ -161,7 +161,6 @@ var CateDetail = Vue.component('cate', {
       timer: '',
     };
   },
-
   created: function() {
     console.log('Category mounted');
     var p = this.slug.split('-');
