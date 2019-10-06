@@ -1,4 +1,7 @@
-'use strict';
+//'use strict';
+
+// import { Header } from './pages/header.js';
+// import {Footer} from './pages/footer.js';
 
 var lodash = document.createElement('script');
 lodash.async = true;
@@ -9,7 +12,6 @@ document.head.appendChild(lodash);
 // import tDetail from './pages/detail.js';
 // import CateDetail from './pages/category.js';
 // import Scoreboard from './pages/scoreboard.js';
-
 
 Vue.filter('firstchar', function (value) {
   if (!value) return '';
@@ -38,17 +40,17 @@ Vue.filter('pretty', function (value) {
 });
 
 var routes = [{
-  path: '/tourneys',
+  path: '/tournaments',
   name: 'TourneysList',
   component: scrList,
-  meta: { title: 'NSF Tournaments Results and Statistics' }
+  meta: { title: 'NSF Tournaments - Results and Statistics' }
 }, {
-  path: '/tourneys/:slug',
+  path: '/tournaments/:slug',
   name: 'TourneyDetail',
   component: tDetail,
   meta: { title: 'Tournament Details' }
 }, {
-  path: '/tourney_detail/:event_slug',
+  path: '/tournament/:event_slug',
   name: 'CateDetail',
   component: CateDetail,
   props: true,
@@ -63,9 +65,9 @@ router.beforeEach(function (to, from, next) {
   document.title = to.meta.title;
   next();
 });
+
 new Vue({
   el: document.querySelector('#app'),
   router: router,
   store: store
-
 });

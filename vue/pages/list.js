@@ -97,9 +97,9 @@ var scrList = Vue.component('scrList', {
   },
   methods: {
     fetchList: function(pageNum) {
-      this.$store.dispatch('FETCH_API', pageNum, {
+      //this.$store.dispatch('FETCH_API', pageNum, {
         // timeout: 3600000 //1 hour cache
-      });
+     // });
       this.currentRound = pageNum;
     },
 

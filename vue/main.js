@@ -1,6 +1,3 @@
-// import { Header } from './pages/header.js';
-// import {Footer} from './pages/footer.js';
-
 var lodash = document.createElement('script');
 lodash.async = true;
 lodash.setAttribute('src', scriptsLocation.lodash);

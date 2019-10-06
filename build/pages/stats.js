@@ -1,7 +1,7 @@
 'use strict';
 
 var LoWins = Vue.component('lowins', {
-  template: '<!-- Low Winning Scores -->\n    <b-table responsive-sm hover striped foot-clone :items="getLowScore(\'win\')" :fields="lowwins_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n    </b-table>\n    ',
+  template: '<!-- Low Winning Scores -->\n    <b-table responsive hover striped foot-clone :items="getLowScore(\'win\')" :fields="lowwins_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n    </b-table>\n    ',
   props: ['caption', 'resultdata'],
   data: function data() {
     return {
@@ -28,7 +28,7 @@ var LoWins = Vue.component('lowins', {
 });
 
 var HiWins = Vue.component('hiwins', {
-  template: '<!-- High Winning Scores -->\n    <b-table responsive-sm hover striped foot-clone :items="getHiScore(\'win\')" :fields="highwins_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n    </b-table>',
+  template: '<!-- High Winning Scores -->\n    <b-table  responsive hover striped foot-clone :items="getHiScore(\'win\')" :fields="highwins_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n    </b-table>',
   props: ['caption', 'resultdata'],
   data: function data() {
     return {
@@ -55,7 +55,7 @@ var HiWins = Vue.component('hiwins', {
 });
 
 var HiLoss = Vue.component('hiloss', {
-  template: '\n    <!-- High Losing Scores -->\n   <b-table responsive-sm hover striped foot-clone :items="getHiScore(\'loss\')" :fields="hiloss_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n    </b-table>\n',
+  template: '\n    <!-- High Losing Scores -->\n   <b-table  responsive hover striped foot-clone :items="getHiScore(\'loss\')" :fields="hiloss_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n    </b-table>\n',
   props: ['caption', 'resultdata'],
   data: function data() {
     return {
@@ -82,7 +82,7 @@ var HiLoss = Vue.component('hiloss', {
 });
 
 var ComboScores = Vue.component('comboscores', {
-  template: '\n  <b-table responsive-sm hover striped foot-clone :items="hicombo()" :fields="hicombo_fields" head-variant="dark">\n    <template slot="table-caption">\n        {{caption}}\n    </template>\n  </b-table>\n',
+  template: '\n  <b-table  responsive hover striped foot-clone :items="hicombo()" :fields="hicombo_fields" head-variant="dark">\n    <template slot="table-caption">\n        {{caption}}\n    </template>\n  </b-table>\n',
   props: ['caption', 'resultdata'],
   data: function data() {
     return {
@@ -124,7 +124,7 @@ var ComboScores = Vue.component('comboscores', {
 });
 
 var TotalScores = Vue.component('totalscores', {
-  template: '\n    <b-table  responsive-sm hover striped foot-clone :items="stats" :fields="totalscore_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n        <template slot="index" slot-scope="data">\n            {{data.index + 1}}\n        </template>\n    </b-table>\n',
+  template: '\n    <b-table   responsive hover striped foot-clone :items="stats" :fields="totalscore_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n        <template slot="index" slot-scope="data">\n            {{data.index + 1}}\n        </template>\n    </b-table>\n',
   props: ['caption', 'stats'],
   data: function data() {
     return {
@@ -161,7 +161,7 @@ var TotalScores = Vue.component('totalscores', {
 });
 
 var TotalOppScores = Vue.component('oppscores', {
-  template: '\n    <b-table  responsive-sm hover striped foot-clone :items="stats" :fields="totaloppscore_fields" head-variant="dark">\n            <template slot="table-caption">\n                {{caption}}\n            </template>\n            <template slot="index" slot-scope="data">\n                {{data.index + 1}}\n            </template>\n    </b-table>\n',
+  template: '\n    <b-table   responsive hover striped foot-clone :items="stats" :fields="totaloppscore_fields" head-variant="dark">\n            <template slot="table-caption">\n                {{caption}}\n            </template>\n            <template slot="index" slot-scope="data">\n                {{data.index + 1}}\n            </template>\n    </b-table>\n',
   props: ['caption', 'stats'],
   data: function data() {
     return {
@@ -198,7 +198,7 @@ var TotalOppScores = Vue.component('oppscores', {
 });
 
 var AveScores = Vue.component('avescores', {
-  template: '\n    <b-table responsive-sm hover striped foot-clone :items="stats" :fields="avescore_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n        <template slot="index" slot-scope="data">\n            {{data.index + 1}}\n        </template>\n    </b-table>\n',
+  template: '\n    <b-table  responsive hover striped foot-clone :items="stats" :fields="avescore_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n        <template slot="index" slot-scope="data">\n            {{data.index + 1}}\n        </template>\n    </b-table>\n',
   props: ['caption', 'stats'],
   data: function data() {
     return {
@@ -234,7 +234,7 @@ var AveScores = Vue.component('avescores', {
   }
 });
 var AveOppScores = Vue.component('aveoppscores', {
-  template: '\n    <b-table hover responsive-sm striped foot-clone :items="stats" :fields="aveoppscore_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n        <template slot="index" slot-scope="data">\n            {{data.index + 1}}\n        </template>\n    </b-table>\n',
+  template: '\n    <b-table  hover responsive striped foot-clone :items="stats" :fields="aveoppscore_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n        <template slot="index" slot-scope="data">\n            {{data.index + 1}}\n        </template>\n    </b-table>\n',
   props: ['caption', 'stats'],
   data: function data() {
     return {
@@ -271,7 +271,7 @@ var AveOppScores = Vue.component('aveoppscores', {
 });
 
 var LoSpread = Vue.component('lospread', {
-  template: '\n    <b-table responsive-sm hover striped foot-clone :items="loSpread()" :fields="lospread_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n    </b-table>\n',
+  template: '\n    <b-table  responsive hover striped foot-clone :items="loSpread()" :fields="lospread_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n    </b-table>\n',
   props: ['caption', 'resultdata'],
   data: function data() {
     return {
@@ -298,7 +298,7 @@ var LoSpread = Vue.component('lospread', {
 });
 
 var HiSpread = Vue.component('hispread', {
-  template: '\n    <b-table responsive-sm hover striped foot-clone :items="hiSpread()" :fields="hispread_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n    </b-table>\n    ',
+  template: '\n    <b-table  responsive hover striped foot-clone :items="hiSpread()" :fields="hispread_fields" head-variant="dark">\n        <template slot="table-caption">\n            {{caption}}\n        </template>\n    </b-table>\n    ',
   props: ['caption', 'resultdata'],
   data: function data() {
     return {

@@ -285,12 +285,12 @@ const store = new Vuex.Store({
       context.commit('SET_SHOWSTATS', payload);
     },
 
-    FETCH_API: (context, payload) => {
+    async FETCH_API (context, payload)  {
       context.commit('SET_LOADING', true);
       let url = `${baseURL}tournament`;
-      axios
+      await axios
         .get(url, { params: { page: payload } })
-        .then(response => {
+         try {
           let headers = response.headers;
           //let data = response.data;
           let data = response.data.map(data => {
@@ -307,69 +307,67 @@ const store = new Vuex.Store({
           context.commit('SET_TOUDATA', data);
           context.commit('SET_CURRPAGE', payload);
           context.commit('SET_LOADING', false);
-        })
-        .catch(error => {
+        }
+        catch(error) {
           context.commit('SET_LOADING', false);
           context.commit('SET_ERROR', error.toString());
-        });
+        }
     },
-    FETCH_DETAIL: (context, payload) => {
+    async FETCH_DETAIL (context, payload) {
       context.commit('SET_LOADING', true);
+      let url = `${baseURL}tournament`;
+      try {
+        let response = await axios
+          .get(url, { params: { slug: payload } });
+         let headers = response.headers;
+         let data = response.data[0];
+         let startDate = data.start_date;
+         data.start_date = moment(new Date(startDate)).format(
+           'dddd, MMMM Do YYYY');
+         context.commit('SET_WP_CONSTANTS', headers);
+         context.commit('SET_DETAIL_LAST_ACCESS_TIME', headers.date);
+         context.commit('SET_EVENTDETAIL', data);
+         context.commit('SET_LOADING', false);
+       } catch (error) {
+         context.commit('SET_LOADING', false);
+         context.commit('SET_ERROR', error.toString());
+       }
 
-        let url = `${baseURL}tournament`;
-        axios
-          .get(url, { params: { slug: payload } })
-          .then(response => {
-            let headers = response.headers;
-            let data = response.data[0];
-            let startDate = data.start_date;
-            data.start_date = moment(new Date(startDate)).format(
-              'dddd, MMMM Do YYYY'
-            );
-            context.commit('SET_WP_CONSTANTS', headers);
-            context.commit('SET_DETAIL_LAST_ACCESS_TIME', headers.date);
-            context.commit('SET_EVENTDETAIL', data);
-            context.commit('SET_LOADING', false);
-          })
-          .catch(error => {
-            context.commit('SET_LOADING', false);
-            context.commit('SET_ERROR', error.toString());
-          });
     },
 
-    FETCH_DATA: (context, payload) => {
+    async FETCH_DATA (context, payload) {
       context.commit('SET_LOADING', true);
       let url = `${baseURL}t_data`;
-      axios
-        .get(url, { params: { slug: payload } })
-        .then(response => {
-          let data = response.data[0];
-          let players = data.players;
-          let results = JSON.parse(data.results);
-          let category = data.event_category[0].name;
-          let logo = data.tourney[0].event_logo.guid;
-          let tourney_title = data.tourney[0].post_title;
-          // console.log(data.tourney[0]);
-          let parent_slug = data.tourney[0].post_name;
-          let event_title = tourney_title + ' (' + category + ')';
-          let total_rounds = results.length;
-          context.commit('SET_EVENTSTATS', data.tourney);
-          context.commit('SET_ONGOING', data.ongoing);
-          context.commit('SET_PLAYERS', players);
-          context.commit('SET_RESULT', results);
-          context.commit('SET_FINAL_RD_STATS', results);
-          context.commit('SET_CATEGORY', category);
-          context.commit('SET_LOGO_URL', logo);
-          context.commit('SET_TOURNEY_TITLE', tourney_title);
-          context.commit('SET_EVENT_TITLE', event_title);
-          context.commit('SET_TOTAL_ROUNDS', total_rounds);
-          context.commit('SET_PARENTSLUG', parent_slug);
-          context.commit('SET_LOADING', false);
-        })
-        .catch(error => {
-          context.commit('SET_ERROR', error.toString());
-          context.commit('SET_LOADING', false);
-        });
+      try {
+        let response = axios.get(url, { params: { slug: payload } })
+        let data = response.data[0];
+        let players = data.players;
+        let results = JSON.parse(data.results);
+        let category = data.event_category[0].name;
+        let logo = data.tourney[0].event_logo.guid;
+        let tourney_title = data.tourney[0].post_title;
+        // console.log(data.tourney[0]);
+        let parent_slug = data.tourney[0].post_name;
+        let event_title = tourney_title + ' (' + category + ')';
+        let total_rounds = results.length;
+        context.commit('SET_EVENTSTATS', data.tourney);
+        context.commit('SET_ONGOING', data.ongoing);
+        context.commit('SET_PLAYERS', players);
+        context.commit('SET_RESULT', results);
+        context.commit('SET_FINAL_RD_STATS', results);
+        context.commit('SET_CATEGORY', category);
+        context.commit('SET_LOGO_URL', logo);
+        context.commit('SET_TOURNEY_TITLE', tourney_title);
+        context.commit('SET_EVENT_TITLE', event_title);
+        context.commit('SET_TOTAL_ROUNDS', total_rounds);
+        context.commit('SET_PARENTSLUG', parent_slug);
+        context.commit('SET_LOADING', false);
+      }
+      catch (error)
+      {
+        context.commit('SET_ERROR', error.toString());
+        context.commit('SET_LOADING', false);
+      };
     },
     SET_PLAYERS_RESULTS: (context, payload) => {
       let players = payload.players;

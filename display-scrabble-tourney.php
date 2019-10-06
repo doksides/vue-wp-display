@@ -82,16 +82,16 @@ function func_load_vuescripts()
  wp_register_script('bootstrap-vue', plugin_dir_url(__FILE__) . 'assets/js/bootstrap-vue.min.js', 'vuejs', true);
  wp_register_script('es6-promise', plugin_dir_url(__FILE__) . 'assets/js/es6-promise.auto.js', 'vuex', true);
  wp_register_script('momentjs', plugin_dir_url(__FILE__) . 'assets/js/moment.min.js', 'vuejs', true);
-  wp_register_script('vuex-store', plugin_dir_url(__FILE__) . 'vue/store.js', 'vuex', true);
- wp_register_script('dst_main', plugin_dir_url(__FILE__) . 'vue/main.js', array('vuejs', 'axios', 'vue-router'), true);
- wp_register_script('tlist', plugin_dir_url(__FILE__) . 'vue/pages/list.js', array('vuejs'), true);
-  wp_register_script('tdetail', plugin_dir_url(__FILE__) . 'vue/pages/detail.js', array('vuejs'), true);
-  wp_register_script('catedetail', plugin_dir_url(__FILE__) . 'vue/pages/category.js', array('vuejs'), true);
-  wp_register_script('players', plugin_dir_url(__FILE__) . 'vue/pages/playerlist.js', array('vuejs'), true);
-  wp_register_script('stats', plugin_dir_url(__FILE__) . 'vue/pages/stats.js', array('vuejs'), true);
-  wp_register_script('board', plugin_dir_url(__FILE__) . 'vue/pages/scoreboard.js', array('vuejs'), true);
-  wp_register_script('performers', plugin_dir_url(__FILE__) . 'vue/pages/top.js', array('vuejs'), true);
-  wp_register_script('alerts', plugin_dir_url(__FILE__) . 'vue/pages/alerts.js', array('vuejs'), true);
+  wp_register_script('vuex-store', plugin_dir_url(__FILE__) . 'build/store.js', 'vuex', true);
+ wp_register_script('dst_main', plugin_dir_url(__FILE__) . 'build/main.js', array('vuejs', 'axios', 'vue-router'), true);
+ wp_register_script('tlist', plugin_dir_url(__FILE__) . 'build/pages/list.js', array('vuejs'), true);
+  wp_register_script('tdetail', plugin_dir_url(__FILE__) . 'build/pages/detail.js', array('vuejs'), true);
+  wp_register_script('catedetail', plugin_dir_url(__FILE__) . 'build/pages/category.js', array('vuejs'), true);
+  wp_register_script('players', plugin_dir_url(__FILE__) . 'build/pages/playerlist.js', array('vuejs'), true);
+  wp_register_script('stats', plugin_dir_url(__FILE__) . 'build/pages/stats.js', array('vuejs'), true);
+  wp_register_script('board', plugin_dir_url(__FILE__) . 'build/pages/scoreboard.js', array('vuejs'), true);
+  wp_register_script('performers', plugin_dir_url(__FILE__) . 'build/pages/top.js', array('vuejs'), true);
+  wp_register_script('alerts', plugin_dir_url(__FILE__) . 'build/pages/alerts.js', array('vuejs'), true);
 
   // Enqueue the scripts
 
