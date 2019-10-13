@@ -66,7 +66,6 @@ var player_rank_chart_config = {
   }
 };
 
-
 var PlayerStats = Vue.component('playerstats', {
   template: `
   <div class="col-lg-10 offset-lg-1 justify-content-center">
@@ -350,7 +349,7 @@ var PlayerStats = Vue.component('playerstats', {
     }
   },
   computed: {
-    ...mapGetters({
+    ...Vuex.mapGetters({
       total_rounds: 'TOTAL_ROUNDS',
       players: 'PLAYERS',
       showStats: 'SHOWSTATS',
@@ -358,6 +357,7 @@ var PlayerStats = Vue.component('playerstats', {
   },
 
 });
+
 var PlayerList =  Vue.component('allplayers',{
   template: `
   <div class="row justify-content-center align-items-center" id="players-list">
@@ -433,7 +433,7 @@ var PlayerList =  Vue.component('allplayers',{
     }
   },
   computed: {
-    ...mapGetters({
+    ...Vuex.mapGetters({
       result_data: 'RESULTDATA',
       players: 'PLAYERS',
       total_players: 'TOTALPLAYERS',
@@ -718,6 +718,5 @@ const Pairings =Vue.component('pairings',  {
   },
 });
 
-
-
+//export {Pairings, Standings, PlayerList, Results, PlayerStats,}
 

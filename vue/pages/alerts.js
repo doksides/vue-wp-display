@@ -7,7 +7,7 @@ var LoadingAlert = Vue.component('loading',{
     </div>`
  });
 
-  var ErrorAlert =Vue.component('error', {
+var ErrorAlert =Vue.component('error', {
    template: `
       <div class="alert alert-danger mt-5 mx-auto d-block max-vw-75" role="alert">
           <h4 class="alert-heading text-center">
@@ -23,5 +23,5 @@ var LoadingAlert = Vue.component('loading',{
    },
  });
 
-
+// export { LoadingAlert, ErrorAlert}
 

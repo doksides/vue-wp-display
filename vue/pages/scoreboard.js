@@ -190,7 +190,7 @@ var Scoreboard = Vue.component('scoreboard',{
     },
   },
   computed: {
-    ...mapGetters({
+    ...Vuex.mapGetters({
       result_data: 'RESULTDATA',
       players: 'PLAYERS',
       total_players: 'TOTALPLAYERS',
@@ -210,3 +210,4 @@ var Scoreboard = Vue.component('scoreboard',{
   },
 });
 
+// export default Scoreboard;

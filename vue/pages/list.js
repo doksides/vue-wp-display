@@ -1,3 +1,7 @@
+// let mapGetters = Vuex.mapGetters;
+// let LoadingAlert, ErrorAlert;
+// import {LoadingAlert, ErrorAlert} from './alerts';
+//import  mapGetters  from 'vuex'
 var scrList = Vue.component('scrList', {
   template: `
   <div class="container-fluid">
@@ -91,9 +95,10 @@ var scrList = Vue.component('scrList', {
       currentPage: 1,
     };
     },
-  created: function() {
-    document.title = 'NSF Scrabble Tournaments';
-      this.fetchList(this.currentPage);
+  created: function () {
+    console.log('List.js loaded')
+    document.title = 'Scrabble Tournaments - NSF';
+    this.fetchList(this.currentPage);
   },
   methods: {
     fetchList: function(pageNum) {
@@ -101,6 +106,8 @@ var scrList = Vue.component('scrList', {
         // timeout: 3600000 //1 hour cache
      // });
       this.currentRound = pageNum;
+      this.$store.dispatch('FETCH_API', pageNum);
+      console.log('done!');
     },
 
   },
@@ -117,3 +124,4 @@ var scrList = Vue.component('scrList', {
     },
   },
 });
+// export default scrList;

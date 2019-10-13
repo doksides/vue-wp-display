@@ -1,3 +1,5 @@
+// import {LoadingAlert, ErrorAlert} from './alerts';
+// let LoadingAlert, ErrorAlert;
 
 var tDetail = Vue.component('tdetail', {
   template: `
@@ -115,7 +117,7 @@ var tDetail = Vue.component('tdetail', {
     },
   },
   computed: {
-    ...mapGetters({
+    ...Vuex.mapGetters({
       // tourney: 'DETAIL',
       error: 'ERROR',
       loading: 'LOADING',
@@ -149,3 +151,4 @@ var tDetail = Vue.component('tdetail', {
     },
   },
 });
+// export default tDetail;

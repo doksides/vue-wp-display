@@ -22,7 +22,6 @@
  * License URI:http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:scratoudisplay
  * Domain Path:/languages */
-
 // If this file is called directly, abort.
 if ( ! defined('WPINC'))
 {
@@ -78,20 +77,22 @@ function func_load_vuescripts()
   wp_register_script('vuex', plugin_dir_url(__FILE__) . 'assets/js/vuex.min.js', 'vuejs', true);
   wp_register_script('vuejs', plugin_dir_url(__FILE__) . 'assets/js/vue.js', [], $vuejs);
   wp_register_script('apexCharts', plugins_url('assets/js/apexcharts.min.js', __FILE__), [], $vuejs);
+  wp_register_script('dst-lodash', plugins_url('assets/js/lodash.min.js', __FILE__), [], $vuejs);
   wp_register_script('vueApexCharts', plugins_url('assets/js/vue-apexcharts.js', __FILE__), [], $vuejs);
  wp_register_script('bootstrap-vue', plugin_dir_url(__FILE__) . 'assets/js/bootstrap-vue.min.js', 'vuejs', true);
  wp_register_script('es6-promise', plugin_dir_url(__FILE__) . 'assets/js/es6-promise.auto.js', 'vuex', true);
  wp_register_script('momentjs', plugin_dir_url(__FILE__) . 'assets/js/moment.min.js', 'vuejs', true);
-  wp_register_script('vuex-store', plugin_dir_url(__FILE__) . 'build/store.js', 'vuex', true);
- wp_register_script('dst_main', plugin_dir_url(__FILE__) . 'build/main.js', array('vuejs', 'axios', 'vue-router'), true);
- wp_register_script('tlist', plugin_dir_url(__FILE__) . 'build/pages/list.js', array('vuejs'), true);
-  wp_register_script('tdetail', plugin_dir_url(__FILE__) . 'build/pages/detail.js', array('vuejs'), true);
-  wp_register_script('catedetail', plugin_dir_url(__FILE__) . 'build/pages/category.js', array('vuejs'), true);
-  wp_register_script('players', plugin_dir_url(__FILE__) . 'build/pages/playerlist.js', array('vuejs'), true);
-  wp_register_script('stats', plugin_dir_url(__FILE__) . 'build/pages/stats.js', array('vuejs'), true);
-  wp_register_script('board', plugin_dir_url(__FILE__) . 'build/pages/scoreboard.js', array('vuejs'), true);
-  wp_register_script('performers', plugin_dir_url(__FILE__) . 'build/pages/top.js', array('vuejs'), true);
-  wp_register_script('alerts', plugin_dir_url(__FILE__) . 'build/pages/alerts.js', array('vuejs'), true);
+  wp_register_script('vuex-store', plugin_dir_url(__FILE__) . 'vue/store.js', 'vuex', true);
+ wp_register_script('dst_main', plugin_dir_url(__FILE__) . 'vue/main.js', array('vuejs', 'axios', 'vue-router'), true);
+ wp_register_script('tlist', plugin_dir_url(__FILE__) . 'vue/pages/list.js', array('vuejs'), true);
+  wp_register_script('tdetail', plugin_dir_url(__FILE__) . 'vue/pages/detail.js', array('vuejs'), true);
+  wp_register_script('catedetail', plugin_dir_url(__FILE__) . 'vue/pages/category.js', array('vuejs'), true);
+  wp_register_script('players', plugin_dir_url(__FILE__) . 'vue/pages/playerlist.js', array('vuejs'), true);
+  wp_register_script('stats', plugin_dir_url(__FILE__) . 'vue/pages/stats.js', array('vuejs'), true);
+  wp_register_script('board', plugin_dir_url(__FILE__) . 'vue/pages/scoreboard.js', array('vuejs'), true);
+  wp_register_script('performers', plugin_dir_url(__FILE__) . 'vue/pages/top.js', array('vuejs'), true);
+  wp_register_script('alerts', plugin_dir_url(__FILE__) . 'vue/pages/alerts.js', array('vuejs'), true);
+  // wp_register_script('app', plugin_dir_url(__FILE__) . 'build/app.js', array('vuejs'));
 
   // Enqueue the scripts
 
@@ -109,10 +110,9 @@ function func_load_vuescripts()
   wp_enqueue_script('vuex-store');
   wp_enqueue_script('momentjs');
   wp_enqueue_script('bootstrap-vue');
-
+  wp_enqueue_script('dst-lodash');
 
  // Add Components
-
  wp_enqueue_script('alerts');
  wp_enqueue_script('performers');
  wp_enqueue_script('board');
@@ -122,13 +122,13 @@ function func_load_vuescripts()
  wp_enqueue_script('tdetail');
  wp_enqueue_script('tlist');
 
-  wp_dequeue_script('theme-global-3');
-  wp_dequeue_style('font-awesome-css');
-  wp_dequeue_style('theme-global-css');
-  wp_dequeue_style('ult_core_template_2-css');
+wp_dequeue_script('theme-global-3');
+wp_dequeue_style('font-awesome-css');
+wp_dequeue_style('theme-global-css');
+wp_dequeue_style('ult_core_template_2-css');
 
- // Add Vue code
-  wp_enqueue_script('dst_main');
+// Add Vue code
+wp_enqueue_script('dst_main');
   $scripts = array(
     'lodash' => plugin_dir_url(__FILE__) . 'assets/js/lodash.min.js',
     'nsflogo' => plugin_dir_url(__FILE__) . 'assets/images/nsflogo.png',
@@ -136,7 +136,7 @@ function func_load_vuescripts()
     'webmaster' => plugin_dir_url(__FILE__) . 'assets/images/me.jpg', );
  $home_url = home_url();
   // Lodash library location dynamically loaded in Vue components
-  wp_localize_script('dst_main', 'scriptsLocation', $scripts);
+  //wp_localize_script('dst_main', 'scriptsLocation', $scripts);
 }
 
 add_action('wp_enqueue_scripts', 'func_load_vuescripts');
@@ -154,7 +154,7 @@ function func_wp_vue()
 //Add shortcode to WordPress
 add_shortcode('tournaments_display', 'func_wp_vue');
 
-add_filter('script_loader_tag', 'add_type_att_to_main_script', 10, 3);
+ add_filter('script_loader_tag', 'add_type_att_to_main_script', 10, 3);
 
 function add_type_att_to_main_script($tag, $handle, $src)
 {

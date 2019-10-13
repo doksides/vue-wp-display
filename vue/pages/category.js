@@ -1,3 +1,7 @@
+// import { Pairings, Standings, PlayerList, Results, PlayerStats } from './playerlist.js';
+// import { HiWins, LoWins, HiLoss, ComboScores, TotalScores, TotalOppScores, AveScores, AveOppScores, HiSpread, LoSpread } from './stats.js';
+// import Scoreboard from './scoreboard.js';
+// import topPerformers from './top.js';
 var CateDetail = Vue.component('cate', {
   template: `
     <div class="container-fluid">
@@ -392,7 +396,7 @@ var CateDetail = Vue.component('cate', {
     },
   },
   computed: {
-    ...mapGetters({
+    ...Vuex.mapGetters({
       players: 'PLAYERS',
       total_players: 'TOTALPLAYERS',
       resultdata: 'RESULTDATA',
@@ -436,3 +440,4 @@ var CateDetail = Vue.component('cate', {
     },
   },
 });
+// export default CateDetail;

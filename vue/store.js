@@ -288,11 +288,11 @@ const store = new Vuex.Store({
     async FETCH_API (context, payload)  {
       context.commit('SET_LOADING', true);
       let url = `${baseURL}tournament`;
-      await axios
+      let response = await axios
         .get(url, { params: { page: payload } })
          try {
-          let headers = response.headers;
-          //let data = response.data;
+           let headers = response.headers;
+           console.log('Getting lists of tournaments');
           let data = response.data.map(data => {
             // Format and assign Tournament start date into a letiable
             let startDate = data.start_date;
@@ -302,6 +302,7 @@ const store = new Vuex.Store({
             return data;
           });
           //console.log(moment(headers.date));
+          console.log("%c" + moment(headers.date), "font-size:30px;color:green;");
           context.commit('SET_LAST_ACCESS_TIME', headers.date);
           context.commit('SET_WP_CONSTANTS', headers);
           context.commit('SET_TOUDATA', data);
@@ -317,8 +318,7 @@ const store = new Vuex.Store({
       context.commit('SET_LOADING', true);
       let url = `${baseURL}tournament`;
       try {
-        let response = await axios
-          .get(url, { params: { slug: payload } });
+        let response = await axios.get(url, { params: { slug: payload } });
          let headers = response.headers;
          let data = response.data[0];
          let startDate = data.start_date;
@@ -339,7 +339,7 @@ const store = new Vuex.Store({
       context.commit('SET_LOADING', true);
       let url = `${baseURL}t_data`;
       try {
-        let response = axios.get(url, { params: { slug: payload } })
+        let response = await axios.get(url, { params: { slug: payload } })
         let data = response.data[0];
         let players = data.players;
         let results = JSON.parse(data.results);

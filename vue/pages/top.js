@@ -138,3 +138,4 @@ let topPerformers = Vue.component('top-stats', {
     }),
   },
 });
+// export default topPerformers;

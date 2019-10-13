@@ -1,4 +1,6 @@
 test.html
+build
+.gitignore
 node_modules
 assets/*
 assets/js/*

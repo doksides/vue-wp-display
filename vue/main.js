@@ -1,9 +1,10 @@
 var lodash = document.createElement('script');
-lodash.async = true;
-lodash.setAttribute('src', scriptsLocation.lodash);
-document.head.appendChild(lodash);
-
-
+// let scriptsLocation = {};
+// lodash.async = true;
+// lodash.setAttribute('src', scriptsLocation.lodash);
+// document.head.appendChild(lodash);
+// let store, scrList, tDetail, CateDetail;
+// import store from './store';
 // import scrList from './pages/list.js';
 // import tDetail from './pages/detail.js';
 // import CateDetail from './pages/category.js';
