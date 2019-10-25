@@ -62,14 +62,13 @@ let topPerformers = Vue.component('top-stats', {
       currentView: ''
     }
   },
-
   created: function() {
     this.showPic('top3');
   },
   methods: {
     showPic: function (t) {
       this.currentView = t
-      let stats = [];
+      let arr,r,s = [];
       if (t == 'hiaves') {
         arr = this.getStats('ave_score');
         r = _.take(arr, 3).map(function (p) {
@@ -138,4 +137,4 @@ let topPerformers = Vue.component('top-stats', {
     }),
   },
 });
-// export default topPerformers;
+export default topPerformers;

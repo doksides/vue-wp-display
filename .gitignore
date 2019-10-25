@@ -2,6 +2,8 @@ test.html
 build
 .gitignore
 node_modules
+.npm-debug.log
+tmp
 assets/*
 assets/js/*
 assets/flags/*

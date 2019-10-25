@@ -1,11 +1,13 @@
-// import { Pairings, Standings, PlayerList, Results, PlayerStats } from './playerlist.js';
-// import { HiWins, LoWins, HiLoss, ComboScores, TotalScores, TotalOppScores, AveScores, AveOppScores, HiSpread, LoSpread } from './stats.js';
-// import Scoreboard from './scoreboard.js';
-// import topPerformers from './top.js';
-var CateDetail = Vue.component('cate', {
+import { Pairings, Standings, PlayerList, Results} from './playerlist.js';
+import {LoadingAlert, ErrorAlert} from './alerts.js';
+import { HiWins, LoWins, HiLoss, ComboScores, TotalScores, TotalOppScores, AveScores, AveOppScores, HiSpread, LoSpread } from './stats.js';
+import Scoreboard from './scoreboard.js';
+import topPerformers from './top.js';
+export {CateDetail as default}
+let CateDetail = Vue.component('cate', {
   template: `
     <div class="container-fluid">
-    <div v-if="resultdata" class="row no-gutters justify-content-center align-items-center">
+    <div v-if="resultdata" class="row no-gutters justify-content-center align-items-top">
         <div class="col-12">
             <b-breadcrumb :items="breadcrumbs" />
         </div>
@@ -14,7 +16,7 @@ var CateDetail = Vue.component('cate', {
         <div v-if="loading" class="col align-self-center">
             <loading></loading>
         </div>
-        <div v-if="error" class="col align-self-center">
+        <div v-else class="col align-self-center">
           <error>
           <p slot="error">{{error}}</p>
           <p slot="error_msg">{{error_msg}}</p>
@@ -38,10 +40,6 @@ var CateDetail = Vue.component('cate', {
                 <b-button @click="viewIndex=2" variant="link" class="text-decoration-none" :disabled="viewIndex==2" :pressed="viewIndex==2"><i class="fas fa-sticky-note" aria-hidden="true"></i> Results</b-button>
                 <b-button @click="viewIndex=3" variant="link" class="text-decoration-none" :disabled="viewIndex==3" :pressed="viewIndex==3"><i class="fas fa-sort-numeric-down    "></i> Standings</b-button>
                 <b-button @click="viewIndex=4" variant="link" class="text-decoration-none" :disabled="viewIndex==4" :pressed="viewIndex==4"><i class="fas fa-chart-pie"></i> Statistics</b-button>
-                <!---
-                <b-button  @click="viewIndex=5" :to="{ name: 'Scoreboard', params: { event_slug: slug}}"  variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==5" :pressed="viewIndex==5"><i class="fas fa-chalkboard-teacher"></i>
-                Scoreboard</b-button>
-                -->
                 <b-button  @click="viewIndex=5" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==5" :pressed="viewIndex==5"><i class="fas fa-chalkboard-teacher"></i>
                 Scoreboard</b-button>
                 <b-button  @click="viewIndex=6" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==6" :pressed="viewIndex==6"><i class="fas fa-medal"></i>

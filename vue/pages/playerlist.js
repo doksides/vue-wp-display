@@ -116,10 +116,10 @@ var PlayerStats = Vue.component('playerstats', {
                 <span>{{pstats.pRank}} </span>
               </li>
               <li class="list-group-item">Highest Score:
-                <span>{{pstats.pHiScore}}</span> in round <em>{{pstats.pHiScoreRounds}}</em>
+                <span>{{pstats.pHiScore}}</span> (rd <em>{{pstats.pHiScoreRounds}}</em>)
               </li>
               <li class="list-group-item">Lowest Score:
-                <span>{{pstats.pLoScore}}</span> in round <em>{{pstats.pLoScoreRounds}}</em>
+                <span>{{pstats.pLoScore}}</span> (rd <em>{{pstats.pLoScoreRounds}}</em>)
               </li>
               <li class="list-group-item">Ave Score:
                 <span>{{pstats.pAve}}</span>
@@ -358,13 +358,13 @@ var PlayerStats = Vue.component('playerstats', {
 
 });
 
-var PlayerList =  Vue.component('allplayers',{
+var PlayerList = Vue.component('allplayers', {
   template: `
   <div class="row justify-content-center align-items-center" id="players-list">
-      <template v-if="showStats">
-         <playerstats :pstats="pStats"></playerstats>
-      </template>
-      <template v-else>
+    <template v-if="showStats">
+        <playerstats :pstats="pStats"></playerstats>
+    </template>
+    <template v-else>
     <div class="playerCols col-lg-2 col-sm-6 col-12 p-4 " v-for="player in players" :key="player.id" >
             <h4 class="mx-auto"><b-badge>{{player.tou_no}}</b-badge>
             {{player.post_title }}
@@ -377,35 +377,75 @@ var PlayerList =  Vue.component('allplayers',{
              </span>
             </h4>
             <div class="mx-auto text-center animated fadeIn">
-            <b-img-lazy v-bind="imgProps" :alt="player.post_title" :src="player.photo" />
-                <span class="d-block mx-auto">
-                <span @click="showPlayerStats(player.id)" title="Open player's stats"><i class="fas fa-chart-bar" aria-hidden="true"></i></span>
-                </span>
+              <b-img-lazy v-bind="imgProps" :alt="player.post_title" :src="player.photo" :id="'popover-'+player.id"></b-img-lazy>
+              <span class="d-block mx-auto">
+              <span @click="showPlayerStats(player.id)" title="Show player's stats"><i class="fas fa-chart-bar" aria-hidden="true"></i></span>
+              </span>
+              <b-popover @show="getLastGames(player.tou_no)" placement="bottom"  :target="'popover-'+player.id" triggers="hover" boundary-padding="5">
+              <div class="d-flex flex-row justify-content-center">
+                <div class="d-flex flex-column flex-wrap align-content-between align-items-start mr-2 justify-content-around">
+                  <span class="flex-grow-1 align-self-center" style="font-size:1.5em;">{{mstat.position}}</span>
+                  <span class="flex-shrink-1 d-inline-block text-muted"><small>{{mstat.wins}}-{{mstat.draws}}-{{mstat.losses}}</small></span>
+                </div>
+                <div class="d-flex flex-column flex-wrap align-content-center">
+                <span class="text-primary d-inline-block" style="font-size:0.8em; text-decoration:underline">Last Game: Round {{mstat.round}}</span>
+                    <span class="d-inline-block p-1 text-white sdata-res text-center"
+                      v-bind:class="{'bg-warning': mstat.result === 'draw',
+                          'bg-info': mstat.result === 'awaiting',
+                          'bg-danger': mstat.result === 'loss',
+                          'bg-success': mstat.result === 'win' }">
+                          {{mstat.score}}-{{mstat.oppo_score}} ({{mstat.result|firstchar}})
+                    </span>
+                    <div>
+                    <img :src="mstat.opp_photo" :alt="mstat.oppo" class="rounded-circle m-auto d-inline-block" width="25" height="25">
+                    <span class="text-info d-inline-block" style="font-size:0.9em"><small>#{{mstat.oppo_no}} {{mstat.oppo|abbrv}}</small></span>
+                    </div>
+                </div>
+              </div>
+              </b-popover>
           </div>
        </div>
       </template>
     </div>
     `,
-    components: {
-      playerstats: PlayerStats,
-    },
-  data: function() {
+  components: {
+    playerstats: PlayerStats,
+  },
+  data: function () {
     return {
       pStats: {},
       imgProps: {
         center: true,
         block: true,
         rounded: 'circle',
-        fluid : true,
+        fluid: true,
         blank: true,
         blankColor: '#bbb',
         width: '80px',
         height: '80px',
-        class: 'shadow-sm'
-      }
+        style: 'cursor: pointer',
+        class: 'shadow-sm',
+      },
+      dataFlat: {},
+      mstat: {}
     }
   },
+  mounted() {
+    let resultdata = this.result_data;
+    this.dataFlat = _.flattenDeep(_.clone(resultdata));
+  },
+
   methods: {
+    getLastGames: function (tou_no) {
+      console.log(tou_no)
+      let c = _.clone(this.dataFlat);
+      let res = _.chain(c)
+        .filter(function(v) {
+           return v.pno === tou_no;
+        }).takeRight().value();
+      this.mstat = _.first(res);
+      // console.log(this.mstat)
+    },
     showPlayerStats: function (id) {
       this.$store.commit('COMPUTE_PLAYER_STATS', id);
       this.pStats.player = this.player;
@@ -444,15 +484,7 @@ var PlayerList =  Vue.component('allplayers',{
       player: 'PLAYER',
       player_stats: 'PLAYER_STATS'
     }),
-    // lastRdData: {
-    //   get: function() {
-    //     var len = this.result_data.length;
-    //     return this.result_data[len - 1]
-    //   },
-    //   set: function(value) {
-    //     this.lastRdData = value
-    //   }
-    // },
+
   }
 });
 
@@ -718,5 +750,5 @@ const Pairings =Vue.component('pairings',  {
   },
 });
 
-//export {Pairings, Standings, PlayerList, Results, PlayerStats,}
+export {Pairings, Standings, PlayerList, Results}
 

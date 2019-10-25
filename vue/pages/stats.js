@@ -1,4 +1,4 @@
- var LoWins = Vue.component('lowins', {
+ let LoWins = Vue.component('lowins', {
   template: `<!-- Low Winning Scores -->
     <b-table responsive hover striped foot-clone :items="getLowScore('win')" :fields="lowwins_fields" head-variant="dark">
         <template slot="table-caption">
@@ -44,7 +44,7 @@
   },
 });
 
- var HiWins =Vue.component('hiwins', {
+ let HiWins =Vue.component('hiwins', {
   template: `<!-- High Winning Scores -->
     <b-table  responsive hover striped foot-clone :items="getHiScore('win')" :fields="highwins_fields" head-variant="dark">
         <template slot="table-caption">
@@ -90,7 +90,7 @@
   },
 });
 
- var HiLoss = Vue.component('hiloss', {
+ let HiLoss = Vue.component('hiloss', {
   template: `
     <!-- High Losing Scores -->
    <b-table  responsive hover striped foot-clone :items="getHiScore('loss')" :fields="hiloss_fields" head-variant="dark">
@@ -138,7 +138,7 @@
   },
 });
 
- var ComboScores = Vue.component('comboscores', {
+let ComboScores = Vue.component('comboscores', {
   template: `
   <b-table  responsive hover striped foot-clone :items="hicombo()" :fields="hicombo_fields" head-variant="dark">
     <template slot="table-caption">
@@ -201,7 +201,7 @@
   },
 });
 
- var TotalScores = Vue.component('totalscores', {
+ let TotalScores = Vue.component('totalscores', {
   template: `
     <b-table   responsive hover striped foot-clone :items="stats" :fields="totalscore_fields" head-variant="dark">
         <template slot="table-caption">
@@ -254,7 +254,7 @@
   },
 });
 
- var TotalOppScores =Vue.component('oppscores', {
+ let TotalOppScores =Vue.component('oppscores', {
   template: `
     <b-table   responsive hover striped foot-clone :items="stats" :fields="totaloppscore_fields" head-variant="dark">
             <template slot="table-caption">
@@ -307,7 +307,7 @@
   },
 });
 
- var AveScores = Vue.component('avescores', {
+ let AveScores = Vue.component('avescores', {
   template: `
     <b-table  responsive hover striped foot-clone :items="stats" :fields="avescore_fields" head-variant="dark">
         <template slot="table-caption">
@@ -359,7 +359,8 @@
     ];
   },
 });
- var AveOppScores = Vue.component('aveoppscores', {
+
+let AveOppScores = Vue.component('aveoppscores', {
   template: `
     <b-table  hover responsive striped foot-clone :items="stats" :fields="aveoppscore_fields" head-variant="dark">
         <template slot="table-caption">
@@ -412,7 +413,7 @@
   },
 });
 
- var LoSpread = Vue.component('lospread', {
+let LoSpread = Vue.component('lospread', {
   template: `
     <b-table  responsive hover striped foot-clone :items="loSpread()" :fields="lospread_fields" head-variant="dark">
         <template slot="table-caption">
@@ -459,7 +460,7 @@
   },
 });
 
- const HiSpread =   Vue.component('hispread',{
+ let HiSpread =   Vue.component('hispread',{
   template: `
     <b-table  responsive hover striped foot-clone :items="hiSpread()" :fields="hispread_fields" head-variant="dark">
         <template slot="table-caption">
@@ -506,4 +507,4 @@
     },
   },
 });
-// export {HiWins, LoWins,HiLoss,ComboScores,TotalScores,TotalOppScores,AveScores,AveOppScores,HiSpread, LoSpread}
+export {HiWins, LoWins,HiLoss,ComboScores,TotalScores,TotalOppScores,AveScores,AveOppScores,HiSpread, LoSpread}

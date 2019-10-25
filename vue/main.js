@@ -1,14 +1,16 @@
-var lodash = document.createElement('script');
-// let scriptsLocation = {};
-// lodash.async = true;
-// lodash.setAttribute('src', scriptsLocation.lodash);
-// document.head.appendChild(lodash);
-// let store, scrList, tDetail, CateDetail;
-// import store from './store';
-// import scrList from './pages/list.js';
-// import tDetail from './pages/detail.js';
-// import CateDetail from './pages/category.js';
-// import Scoreboard from './pages/scoreboard.js';
+import store from './store.js';
+import scrList from './pages/list.js';
+import tDetail from './pages/detail.js';
+import CateDetail from './pages/category.js';
+
+Vue.filter('abbrv', function (value) {
+  if (!value) return '';
+  value = value.toString();
+  var first = value.charAt(0).toUpperCase();
+  var n = value.trim().split(" ");
+  var last = n[n.length - 1];
+  return first + ". " + last;
+});
 
 Vue.filter('firstchar', function (value) {
     if (!value) return '';

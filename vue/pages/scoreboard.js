@@ -1,5 +1,6 @@
 
-var Scoreboard = Vue.component('scoreboard',{
+import baseURL from '../config.js';
+let Scoreboard = Vue.component('scoreboard', {
   template: `
   <div class="row d-flex align-items-center justify-content-center">
   <template v-if="loading||error">
@@ -210,4 +211,4 @@ var Scoreboard = Vue.component('scoreboard',{
   },
 });
 
-// export default Scoreboard;
+export default Scoreboard;

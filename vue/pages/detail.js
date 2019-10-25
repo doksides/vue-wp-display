@@ -1,7 +1,7 @@
-// import {LoadingAlert, ErrorAlert} from './alerts';
+import { LoadingAlert, ErrorAlert } from './alerts.js';
+import  baseURL  from '../config.js';
 // let LoadingAlert, ErrorAlert;
-
-var tDetail = Vue.component('tdetail', {
+let tDetail = Vue.component('tdetail', {
   template: `
   <div class="container-fluid">
     <template v-if="loading||error">
@@ -9,7 +9,7 @@ var tDetail = Vue.component('tdetail', {
         <div v-if="loading" class="col-12 justify-content-center align-self-center">
           <loading></loading>
         </div>
-        <div v-if="error" class="col-12 justify-content-center align-self-center">
+        <div v-else class="col-12 justify-content-center align-self-center">
           <error>
             <p slot="error">{{error}}</p>
             <p slot="error_msg">{{error_msg}}</p>
@@ -18,7 +18,7 @@ var tDetail = Vue.component('tdetail', {
       </div>
     </template>
     <template v-else>
-      <div class="row">
+      <div class="row no-gutters">
         <div class="col-12 justify-content-center align-items-center">
           <b-breadcrumb :items="breadcrumbs" />
         </div>
@@ -78,19 +78,6 @@ var tDetail = Vue.component('tdetail', {
   created: function() {
     this.fetchData();
   },
-  /* watch: {
-    // call again the method if the route changes
-    $route: {
-      immediate: true,
-      handler: function() {
-        this.fetchData();
-       // this.$store.dispatch('FETCH_DETAIL', this.slug);
-      },
-    },
-  }, */
-  // beforeRouteUpdate (to, from, next) {
-  //   this.fetchData();
-  // },
   methods: {
     fetchData: function() {
        if (this.tourney.slug != this.slug) {
@@ -151,4 +138,4 @@ var tDetail = Vue.component('tdetail', {
     },
   },
 });
-// export default tDetail;
+ export default tDetail;

@@ -63,7 +63,7 @@ overflow-x: hidden;
 }
 
 .breadcrumb{
-    margin: 0!important;
+    margin: 0 0 .8em 0 !important;
 }
 .bebas{
     font-family: Bebas, Geneva, FreeSans, sans-serif !important;
@@ -330,12 +330,12 @@ i.loading {
 
 #scoreboard .position {
     font-family: Yanone;
-    font-weight: 700;
-    font-size: 1.5rem;
+    font-weight: 600;
+    font-size: 2rem;
 }
 
 #scoreboard .position>i {
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
 
 #scoreboard span.points {

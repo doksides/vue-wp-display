@@ -1,8 +1,7 @@
-// let mapGetters = Vuex.mapGetters;
+let mapGetters = Vuex.mapGetters;
 // let LoadingAlert, ErrorAlert;
-// import {LoadingAlert, ErrorAlert} from './alerts';
-//import  mapGetters  from 'vuex'
-var scrList = Vue.component('scrList', {
+import {LoadingAlert, ErrorAlert} from './alerts.js';
+let scrList = Vue.component('scrList', {
   template: `
   <div class="container-fluid">
     <template v-if="loading||error">
@@ -10,7 +9,7 @@ var scrList = Vue.component('scrList', {
           <div v-if="loading" class="col-12 justify-content-center align-self-center">
               <loading></loading>
           </div>
-          <div v-if="error" class="col-12 justify-content-center align-content-center align-self-center">
+          <div v-else class="col-12 justify-content-center align-content-center align-self-center">
               <error>
               <p slot="error">{{error}}</p>
               <p slot="error_msg">{{error_msg}}</p>
@@ -30,7 +29,7 @@ var scrList = Vue.component('scrList', {
             <div class="col-12 col-lg-10 offset-lg-1">
               <b-pagination align="center" :total-rows="+WPtotal" @change="fetchList" v-model="currentPage" :per-page="10"
                         :hide-ellipsis="false" aria-label="Navigation" />
-              <p class="text-muted"> You are on page {{currentPage}} of {{WPpages}} pages with <span class="emphasize">{{WPtotal}}</span> tournaments!</p>
+              <p class="text-muted"> You are on page {{currentPage}} of {{WPpages}} pages; <span class="emphasize">{{WPtotal}}</span> tournaments!</p>
             </div>
         </div>
         <div class="row">
@@ -124,4 +123,4 @@ var scrList = Vue.component('scrList', {
     },
   },
 });
-// export default scrList;
+ export default scrList;

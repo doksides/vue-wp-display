@@ -23,5 +23,5 @@ var ErrorAlert =Vue.component('error', {
    },
  });
 
-// export { LoadingAlert, ErrorAlert}
+export { LoadingAlert, ErrorAlert}
 

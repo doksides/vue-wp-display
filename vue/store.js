@@ -1,6 +1,8 @@
-const baseURL = '/wp-json/wp/v2/';
+export { store as default };
+
+import baseURL from './config.js'
 const store = new Vuex.Store({
-  strict: true,
+  strict: false,
   state: {
     touapi: [],
     touaccesstime: '',
@@ -93,7 +95,18 @@ const store = new Vuex.Store({
       state.players = a;
     },
     SET_RESULT: (state, payload) => {
-      state.result_data = payload;
+      let p = state.players;
+      let r = _.map(payload, function (z) {
+        return _.map(z, function (o) {
+           let i = o.pno - 1;
+           o.photo = p[i].photo;
+           let idx = o.oppo_no - 1;
+           o.opp_photo = p[idx].photo;
+           return o;
+        })
+      });
+      // console.log(r);
+      state.result_data = r;
     },
     SET_ONGOING: (state, payload) => {
       state.ongoing = payload;
@@ -128,6 +141,7 @@ const store = new Vuex.Store({
     SET_LOGO_URL: (state, payload) => {
       state.logo_url = payload;
     },
+    //
     COMPUTE_PLAYER_STATS: (state, payload) => {
       let len = state.result_data.length;
       let lastround = state.result_data[len - 1];
@@ -368,16 +382,7 @@ const store = new Vuex.Store({
         context.commit('SET_ERROR', error.toString());
         context.commit('SET_LOADING', false);
       };
-    },
-    SET_PLAYERS_RESULTS: (context, payload) => {
-      let players = payload.players;
-      let results = payload.results;
-      setTimeout(() => {
-        context.commit('SET_PLAYERS', players);
-        context.commit('SET_RESULT', results);
-      }, 1000);
-    },
-    //  plugins: [vuexLocal.plugin],
+    }
   },
 });
 
