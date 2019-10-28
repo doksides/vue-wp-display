@@ -100,8 +100,14 @@ const store = new Vuex.Store({
         return _.map(z, function (o) {
            let i = o.pno - 1;
            o.photo = p[i].photo;
-           let idx = o.oppo_no - 1;
-           o.opp_photo = p[idx].photo;
+           o.id = p[i].id;
+           o.country = p[i].country;
+           o.country = p[i].country;
+           o.country_full = p[i].country_full;
+           o.gender = p[i].gender;
+           o.is_team = p[i].is_team;
+           let x = o.oppo_no - 1;
+           o.opp_photo = p[x].photo;
            return o;
         })
       });

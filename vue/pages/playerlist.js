@@ -365,23 +365,25 @@ var PlayerList = Vue.component('allplayers', {
         <playerstats :pstats="pStats"></playerstats>
     </template>
     <template v-else>
-    <div class="playerCols col-lg-2 col-sm-6 col-12 p-4 " v-for="player in players" :key="player.id" >
-            <h4 class="mx-auto"><b-badge>{{player.tou_no}}</b-badge>
-            {{player.post_title }}
+    <div class="playerCols col-lg-2 col-sm-6 col-12 p-4 " v-for="player in data" :key="player.id" >
+            <h4 class="mx-auto"><span>#{{player.pno}}</span>
+            {{player.player}}<span class="ml-5" @click="sortPos()" style="cursor: pointer; font-size:0.8em"><i v-if="asc" class="fa fa-sort-numeric-up" aria-hidden="true" title="Click to sort ASC by current rank"></i><i v-else class="fa fa-sort-numeric-down" aria-hidden="true" title="Click to sort DESC by current rank"></i></span>
             <span class="d-block mx-auto"  style="font-size:small">
             <i class="mx-auto flag-icon" :class="'flag-icon-'+player.country | lowercase" :title="player.country_full"></i>
             <i class="ml-2 fa" :class="{'fa-male': player.gender == 'm',
         'fa-female': player.gender == 'f',
         'fa-users': player.is_team == 'yes' }"
                     aria-hidden="true"></i>
+              <span style="color:grey; font-size:1.5em" class="ml-5 font-weight-light" v-if="sorted">{{player.position}}</span>
              </span>
+
             </h4>
             <div class="mx-auto text-center animated fadeIn">
-              <b-img-lazy v-bind="imgProps" :alt="player.post_title" :src="player.photo" :id="'popover-'+player.id"></b-img-lazy>
+              <b-img-lazy v-bind="imgProps" :alt="player.player" :src="player.photo" :id="'popover-'+player.id"></b-img-lazy>
               <span class="d-block mx-auto">
               <span @click="showPlayerStats(player.id)" title="Show player's stats"><i class="fas fa-chart-bar" aria-hidden="true"></i></span>
               </span>
-              <b-popover @show="getLastGames(player.tou_no)" placement="bottom"  :target="'popover-'+player.id" triggers="hover" boundary-padding="5">
+              <b-popover @show="getLastGames(player.pno)" placement="bottom"  :target="'popover-'+player.id" triggers="hover" boundary-padding="5">
               <div class="d-flex flex-row justify-content-center">
                 <div class="d-flex flex-column flex-wrap align-content-between align-items-start mr-2 justify-content-around">
                   <span class="flex-grow-1 align-self-center" style="font-size:1.5em;">{{mstat.position}}</span>
@@ -404,7 +406,7 @@ var PlayerList = Vue.component('allplayers', {
               </div>
               </b-popover>
           </div>
-       </div>
+         </div>
       </template>
     </div>
     `,
@@ -427,14 +429,17 @@ var PlayerList = Vue.component('allplayers', {
         class: 'shadow-sm',
       },
       dataFlat: {},
-      mstat: {}
+      mstat: {},
+      data: {},
+      sorted: false,
+      asc: true
     }
   },
-  mounted() {
+  beforeMount: function() {
     let resultdata = this.result_data;
     this.dataFlat = _.flattenDeep(_.clone(resultdata));
+    this.data = _.chain(resultdata).last().sortBy('pno').value();
   },
-
   methods: {
     getLastGames: function (tou_no) {
       console.log(tou_no)
@@ -445,6 +450,18 @@ var PlayerList = Vue.component('allplayers', {
         }).takeRight().value();
       this.mstat = _.first(res);
       // console.log(this.mstat)
+    },
+    sortPos: function () {
+      this.sorted = true;
+      this.asc = !this.asc;
+      console.log('Sorting..');
+      let sortDir = 'asc';
+      if (false == this.asc) {
+        sortDir = 'desc';
+      }
+      let sorted = _.orderBy(this.data, 'rank', sortDir)
+      console.log(sorted);
+      this.data = sorted;
     },
     showPlayerStats: function (id) {
       this.$store.commit('COMPUTE_PLAYER_STATS', id);

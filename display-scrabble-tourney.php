@@ -64,7 +64,7 @@ function func_load_vuescripts()
 
   // cached version used if possible
   wp_register_script('bootstrap-vue-polyfill', '//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver', 'bootstrap-vuejs', false);
-  $vuejs = date("ymd-Gis", filemtime(plugin_dir_path(__FILE__) . 'assets/js/vue.js'));
+$vuejs = date("ymd-Gis", filemtime(plugin_dir_path(__FILE__) . 'assets/js/vue.js'));
   wp_register_script('axios', plugins_url('assets/js/axios/axios.js', __FILE__));
   wp_register_script('vue-router', plugin_dir_url(__FILE__) . 'assets/js/vue-router.min.js', 'vuejs', true);
   wp_register_script('vuex', plugin_dir_url(__FILE__) . 'assets/js/vuex.min.js', 'vuejs', true);
@@ -76,17 +76,18 @@ function func_load_vuescripts()
 wp_register_script('es6-promise', plugin_dir_url(__FILE__) . 'assets/js/es6-promise.auto.js', 'vuex', true);
   wp_register_script('popperjs', plugin_dir_url(__FILE__) . 'assets/js/popper.min.js', 'vuejs', true);
  wp_register_script('momentjs', plugin_dir_url(__FILE__) . 'assets/js/moment.min.js', 'vuejs', true);
-  wp_register_script('vuex-store', plugin_dir_url(__FILE__) . 'vue/store.js', 'vuex', true);
- wp_register_script('dst_main', plugin_dir_url(__FILE__) . 'build/main.js', array('vuejs', 'axios', 'vue-router'), true);
- wp_register_script('tlist', plugin_dir_url(__FILE__) . 'vue/pages/list.js', array('vuejs'), true);
-  wp_register_script('tdetail', plugin_dir_url(__FILE__) . 'vue/pages/detail.js', array('vuejs'), true);
-  wp_register_script('catedetail', plugin_dir_url(__FILE__) . 'vue/pages/category.js', array('vuejs'), true);
-  wp_register_script('players', plugin_dir_url(__FILE__) . 'vue/pages/playerlist.js', array('vuejs'), true);
-  wp_register_script('stats', plugin_dir_url(__FILE__) . 'vue/pages/stats.js', array('vuejs'), true);
-  wp_register_script('board', plugin_dir_url(__FILE__) . 'vue/pages/scoreboard.js', array('vuejs'), true);
-  wp_register_script('performers', plugin_dir_url(__FILE__) . 'vue/pages/top.js', array('vuejs'), true);
-  wp_register_script('alerts', plugin_dir_url(__FILE__) . 'vue/pages/alerts.js', array('vuejs'), true);
-  // wp_register_script('app', plugin_dir_url(__FILE__) . 'build/app.js', array('vuejs'));
+ wp_register_script('velocityjs', plugin_dir_url(__FILE__) . 'assets/js/velocity.min.js', 'vuejs', true);
+   wp_register_script('dst_main', plugin_dir_url(__FILE__) . 'build/main.js', array('vuejs', 'axios', 'vue-router'), true);
+// wp_register_script('vuex-store', plugin_dir_url(__FILE__) . 'vue/store.js', 'vuex', true);
+//  wp_register_script('tlist', plugin_dir_url(__FILE__) . 'vue/pages/list.js', array('vuejs'), true);
+  // wp_register_script('tdetail', plugin_dir_url(__FILE__) . 'vue/pages/detail.js', array('vuejs'), true);
+  // wp_register_script('catedetail', plugin_dir_url(__FILE__) . 'vue/pages/category.js', array('vuejs'), true);
+  // wp_register_script('players', plugin_dir_url(__FILE__) . 'vue/pages/playerlist.js', array('vuejs'), true);
+  // wp_register_script('stats', plugin_dir_url(__FILE__) . 'vue/pages/stats.js', array('vuejs'), true);
+  // wp_register_script('board', plugin_dir_url(__FILE__) . 'vue/pages/scoreboard.js', array('vuejs'), true);
+  // wp_register_script('performers', plugin_dir_url(__FILE__) . 'vue/pages/top.js', array('vuejs'), true);
+  // wp_register_script('alerts', plugin_dir_url(__FILE__) . 'vue/pages/alerts.js', array('vuejs'), true);
+  //  wp_register_script('app', plugin_dir_url(__FILE__) . 'build/app.js', array('vuejs'));
 
   // Enqueue the scripts
 
@@ -95,6 +96,8 @@ wp_register_script('es6-promise', plugin_dir_url(__FILE__) . 'assets/js/es6-prom
   wp_enqueue_script('vuejs');
   // Add Axios
   wp_enqueue_script('axios');
+  // Animation
+  wp_enqueue_script('velocityjs');
   // Chart
   wp_enqueue_script('apexCharts');
   wp_enqueue_script('vueApexCharts');
@@ -130,7 +133,6 @@ add_action('wp_enqueue_scripts', 'func_load_vuescripts');
 function func_wp_vue()
 {
   $str = "<noscript><strong>We're sorry but to view the tournaments section properly you must have JavaScript enabled. Please enable it to continue.</strong></noscript>";
-
   $str .= "<router-view></router-view>";
   //Return
   return $str;
