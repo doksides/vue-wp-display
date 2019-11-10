@@ -7,7 +7,6 @@ module.exports = function(grunt)
           files: {
               // destination for transpiled js : source js
               'build/main.js': 'vue/main.js',
-
           },
           options: {
               transform: [['babelify', { presets: ["@babel/preset-env"] }]],
@@ -18,9 +17,13 @@ module.exports = function(grunt)
       }
     },
     watch: {
-      js: {
-        files: ['vue/*.js', 'vue/pages/*.js'],
-        tasks: ['browserify']
+      scripts: {
+        files: ['vue/*.js','vue/**/*.js'],
+        tasks: ['browserify'],
+        options: {
+          debounceDelay: 250,
+        },
+
       }
     },
     uglify: {
@@ -41,6 +44,6 @@ module.exports = function(grunt)
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
   // Default task(s).
-  grunt.registerTask('default', ['browserify']);
+  grunt.registerTask('default', ['watch']);
 
 }

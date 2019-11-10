@@ -8,7 +8,7 @@ let topPerformers = Vue.component('top-stats', {
           <b-button variant="btn-outline-success" title="Top 3" class="m-2 btn-block" @click="showPic('top3')" :pressed="currentView=='top3'">
             <i class="fas fa-trophy m-1" aria-hidden="true"></i>Top 3</b-button>
           <b-button variant="btn-outline-success" title="Highest Game Scores" class="m-2 btn-block" @click="showPic('higames')" :pressed="currentView=='higames'">
-            <i class="fas fa-bullseye m-1" aria-hidden="true"></i>High Games</b-button>
+            <i class="fas fa-bullseye m-1" aria-hidden="true"></i>High Game</b-button>
           <b-button variant="btn-outline-success" title="Highest Average Scores" class="m-2 btn-block" :pressed="currentView=='hiaves'"
             @click="showPic('hiaves')">
             <i class="fas fa-thumbs-up m-1" aria-hidden="true"></i>High Ave. Scores</b-button>

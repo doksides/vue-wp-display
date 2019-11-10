@@ -98,17 +98,18 @@ const store = new Vuex.Store({
       let p = state.players;
       let r = _.map(payload, function (z) {
         return _.map(z, function (o) {
-           let i = o.pno - 1;
-           o.photo = p[i].photo;
-           o.id = p[i].id;
-           o.country = p[i].country;
-           o.country = p[i].country;
-           o.country_full = p[i].country_full;
-           o.gender = p[i].gender;
-           o.is_team = p[i].is_team;
-           let x = o.oppo_no - 1;
-           o.opp_photo = p[x].photo;
-           return o;
+          let i = o.pno - 1;
+          o.photo = p[i].photo;
+          o.id = p[i].id;
+          o.country = p[i].country;
+          o.country = p[i].country;
+          o.country_full = p[i].country_full;
+          o.gender = p[i].gender;
+          o.is_team = p[i].is_team;
+          let x = o.oppo_no - 1;
+          o.opp_photo = p[x].photo;
+          o.opp_id = p[x].id;
+          return o;
         })
       });
       // console.log(r);
@@ -220,6 +221,8 @@ const store = new Vuex.Store({
             result = 'won';
           } else if (l.result === 'awaiting') {
             result = 'AR';
+          } else if (l.result === 'draw') {
+            result = 'drew';
           } else {
             result = 'lost';
           }
@@ -354,7 +357,6 @@ const store = new Vuex.Store({
        }
 
     },
-
     async FETCH_DATA (context, payload) {
       context.commit('SET_LOADING', true);
       let url = `${baseURL}t_data`;
@@ -363,10 +365,11 @@ const store = new Vuex.Store({
         let data = response.data[0];
         let players = data.players;
         let results = JSON.parse(data.results);
-        let category = data.event_category[0].name;
+        console.log('FETCH DATA $store')
+        console.log(results);
+        let category = data.event_category[0].name.toLowerCase();
         let logo = data.tourney[0].event_logo.guid;
         let tourney_title = data.tourney[0].post_title;
-        // console.log(data.tourney[0]);
         let parent_slug = data.tourney[0].post_name;
         let event_title = tourney_title + ' (' + category + ')';
         let total_rounds = results.length;
@@ -388,6 +391,37 @@ const store = new Vuex.Store({
         context.commit('SET_ERROR', error.toString());
         context.commit('SET_LOADING', false);
       };
+    },
+    FETCH_RESDATA (context, payload) {
+      context.commit('SET_LOADING', true);
+          let url = `${baseURL}t_data`;
+          axios.get(url, { params: { slug: payload } }).then(response=>{
+          let data = response.data[0];
+          let players = data.players;
+          let results = JSON.parse(data.results);
+          let category = data.event_category[0].name.toLowerCase();
+          let logo = data.tourney[0].event_logo.guid;
+          let tourney_title = data.tourney[0].post_title;
+          let parent_slug = data.tourney[0].post_name;
+          let event_title = tourney_title + ' (' + category + ')';
+          let total_rounds = results.length;
+          context.commit('SET_EVENTSTATS', data.tourney);
+          context.commit('SET_ONGOING', data.ongoing);
+          context.commit('SET_PLAYERS', players);
+          context.commit('SET_RESULT', results);
+          context.commit('SET_FINAL_RD_STATS', results);
+          context.commit('SET_CATEGORY', category);
+          context.commit('SET_LOGO_URL', logo);
+          context.commit('SET_TOURNEY_TITLE', tourney_title);
+          context.commit('SET_EVENT_TITLE', event_title);
+          context.commit('SET_TOTAL_ROUNDS', total_rounds);
+          context.commit('SET_PARENTSLUG', parent_slug);
+          context.commit('SET_LOADING', false);
+          }).catch(error =>{
+          context.commit('SET_ERROR', error.toString());
+          console.log(error);
+          context.commit('SET_LOADING', false);
+        });
     }
   },
 });

@@ -220,7 +220,7 @@ let ComboScores = Vue.component('comboscores', {
   },
   beforeMount: function() {
     this.totalscore_fields = [
-      'index',
+    //  'index',
       { key: 'position', sortable: true },
       {
         key: 'total_score',
@@ -273,7 +273,7 @@ let ComboScores = Vue.component('comboscores', {
   },
   beforeMount: function() {
     this.totaloppscore_fields = [
-      'index',
+     // 'index',
       { key: 'position', sortable: true },
       {
         key: 'total_oppscore',
@@ -326,7 +326,7 @@ let ComboScores = Vue.component('comboscores', {
   },
   beforeMount: function() {
     this.avescore_fields = [
-      'index',
+      //'index',
       { key: 'position', sortable: true },
       {
         key: 'ave_score',
@@ -379,7 +379,7 @@ let AveOppScores = Vue.component('aveoppscores', {
   },
   beforeMount: function() {
     this.aveoppscore_fields = [
-      'index',
+      // 'index',
       { key: 'position', sortable: true },
       {
         key: 'ave_opp_score',

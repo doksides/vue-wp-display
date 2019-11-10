@@ -3,7 +3,7 @@ import {LoadingAlert, ErrorAlert} from './alerts.js';
 import { HiWins, LoWins, HiLoss, ComboScores, TotalScores, TotalOppScores, AveScores, AveOppScores, HiSpread, LoSpread } from './stats.js';
 import Scoreboard from './scoreboard.js';
 import topPerformers from './top.js';
-export {CateDetail as default}
+export { CateDetail as default };
 let CateDetail = Vue.component('cate', {
   template: `
     <div class="container-fluid">
@@ -28,7 +28,7 @@ let CateDetail = Vue.component('cate', {
             <div class="col-12 d-flex">
               <b-img class="thumbnail logo ml-auto" :src="logo" :alt="event_title" />
               <h2 class="text-left bebas">{{ event_title }}
-              <span :title="total_rounds+ ' rounds, ' + total_players +' players'" v-show="total_rounds" class="text-center d-block">{{ total_rounds }} Games   {{ total_players}} <i class="fas fa-users"></i> </span>
+              <span :title="total_rounds+ ' rounds, ' + total_players +' players'" v-show="total_rounds" class="text-center d-block">{{ total_rounds }} Games {{ total_players}} <i class="fas fa-users"></i> </span>
               </h2>
             </div>
         </div>
@@ -36,6 +36,9 @@ let CateDetail = Vue.component('cate', {
             <div class="col-12 d-flex justify-content-center align-items-center">
                 <div class="text-center">
                 <b-button @click="viewIndex=0" variant="link" class="text-decoration-none" :disabled="viewIndex==0" :pressed="viewIndex==0"><i class="fa fa-users" aria-hidden="true"></i> Players</b-button>
+                <router-link :to="{ name: 'Scoresheet', params: {  event_slug:slug, pno:1}}">
+                <b-button variant="link" class="text-decoration-none" :disabled="viewIndex==0" :pressed="viewIndex==0"><i class="fas fa-clipboard" aria-hidden="true"></i> Scorecards</b-button>
+                </router-link>
                 <b-button @click="viewIndex=1" variant="link" class="text-decoration-none" :disabled="viewIndex==1" :pressed="viewIndex==1"> <i class="fa fa-user-plus"></i> Pairings</b-button>
                 <b-button @click="viewIndex=2" variant="link" class="text-decoration-none" :disabled="viewIndex==2" :pressed="viewIndex==2"><i class="fas fa-sticky-note" aria-hidden="true"></i> Results</b-button>
                 <b-button @click="viewIndex=3" variant="link" class="text-decoration-none" :disabled="viewIndex==3" :pressed="viewIndex==3"><i class="fas fa-sort-numeric-down    "></i> Standings</b-button>
@@ -61,8 +64,9 @@ let CateDetail = Vue.component('cate', {
               </template>
             </div>
         </div>
+
         <template v-if="viewIndex==0">
-          <allplayers></allplayers>
+          <allplayers :slug="slug"></allplayers>
         </template>
         <template v-if="viewIndex==6">
           <performers></performers>
@@ -107,7 +111,6 @@ let CateDetail = Vue.component('cate', {
                     <b-tab title="Low Spreads" lazy>
                         <lospread :resultdata="resultdata" :caption="caption"></lospread>
                     </b-tab>
-
                 </b-tabs>
             </div>
         </div>
@@ -145,10 +148,8 @@ let CateDetail = Vue.component('cate', {
   },
   data: function() {
     return {
-      // parent_slug: this.$route.params.slug,
       slug: this.$route.params.event_slug,
       path: this.$route.path,
-      // gameid: this.$route.query.id,
       tourney_slug: '',
       isActive: false,
       gamedata: [],
@@ -170,12 +171,9 @@ let CateDetail = Vue.component('cate', {
     this.tourney_slug = p.join('-');
     this.fetchData();
   },
-
   watch: {
     viewIndex: {
       handler: function(val, oldVal) {
-        console.log('*****viewIndex****');
-        console.log(val);
         if (val != 4) {
           this.getView(val);
         }
@@ -426,7 +424,8 @@ let CateDetail = Vue.component('cate', {
           },
         },
         {
-          text: this.category,
+          // text: _.capitalize(this.category),
+          text: `${_.capitalize(this.category)} - Results and Stats`,
           active: true,
         },
       ];

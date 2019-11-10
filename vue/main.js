@@ -2,9 +2,10 @@ import store from './store.js';
 import scrList from './pages/list.js';
 import tDetail from './pages/detail.js';
 import CateDetail from './pages/category.js';
+import sCard from './pages/scoresheet.js';
 
 Vue.filter('abbrv', function (value) {
-  if (!value) return '';
+  if (!value) return  '';
   value = value.toString();
   var first = value.charAt(0).toUpperCase();
   var n = value.trim().split(" ");
@@ -57,14 +58,13 @@ Vue.filter('firstchar', function (value) {
       component: CateDetail,
       props: true,
       meta: { title: 'Results and Statistics' },
-    },
-    // {
-    //   path: '/tourneys/:event_slug/board',
-    //   name: 'Scoreboard',
-    //   component: Scoreboard,
-    //   props: true,
-    //   meta: { title: 'Scoreboard' },
-    // },
+      },
+    {
+      path: '/tournament/:event_slug/:pno',
+      name: 'Scoresheet',
+      component: sCard,
+      meta: { title: 'Player Scorecards' }
+    }
   ];
 
 const router = new VueRouter({

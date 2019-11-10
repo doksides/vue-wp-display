@@ -265,9 +265,6 @@ var PlayerStats = Vue.component('playerstats', {
     this.player = this.pstats.player[0];
     this.playerName = this.player.post_title;
   },
-  created: function () {
-
-  },
   beforeDestroy() {
     this.closeCard();
   },
@@ -365,24 +362,32 @@ var PlayerList = Vue.component('allplayers', {
         <playerstats :pstats="pStats"></playerstats>
     </template>
     <template v-else>
+    <transition-group tag="div" name="players-list">
     <div class="playerCols col-lg-2 col-sm-6 col-12 p-4 " v-for="player in data" :key="player.id" >
-            <h4 class="mx-auto"><span>#{{player.pno}}</span>
-            {{player.player}}<span class="ml-5" @click="sortPos()" style="cursor: pointer; font-size:0.8em"><i v-if="asc" class="fa fa-sort-numeric-up" aria-hidden="true" title="Click to sort ASC by current rank"></i><i v-else class="fa fa-sort-numeric-down" aria-hidden="true" title="Click to sort DESC by current rank"></i></span>
+            <h4 class="mx-auto bebas"><small>#{{player.pno}}</small>
+            {{player.player}}<span class="ml-2" @click="sortPos()" style="cursor: pointer; font-size:0.8em"><i v-if="asc" class="fa fa-sort-numeric-down" aria-hidden="true" title="Click to sort DESC by current rank"></i><i v-else class="fa fa-sort-numeric-up" aria-hidden="true" title="Click to sort ASC by current rank"></i></span><span v-if="sorted" class="ml-3" @click="restoreSort()" style="cursor: pointer; font-size:0.8em"><i class="fa fa-undo" aria-hidden="true" title="Click to reset list"></i></span>
             <span class="d-block mx-auto"  style="font-size:small">
             <i class="mx-auto flag-icon" :class="'flag-icon-'+player.country | lowercase" :title="player.country_full"></i>
             <i class="ml-2 fa" :class="{'fa-male': player.gender == 'm',
         'fa-female': player.gender == 'f',
         'fa-users': player.is_team == 'yes' }"
                     aria-hidden="true"></i>
-              <span style="color:grey; font-size:1.5em" class="ml-5 font-weight-light" v-if="sorted">{{player.position}}</span>
+              <span style="color:tomato; font-size:1.4em" class="ml-5" v-if="sorted">{{player.position}}</span>
              </span>
-
             </h4>
             <div class="mx-auto text-center animated fadeIn">
               <b-img-lazy v-bind="imgProps" :alt="player.player" :src="player.photo" :id="'popover-'+player.id"></b-img-lazy>
-              <span class="d-block mx-auto">
-              <span @click="showPlayerStats(player.id)" title="Show player's stats"><i class="fas fa-chart-bar" aria-hidden="true"></i></span>
+              <span class="d-block mt-2 mx-auto">
+              <span @click="showPlayerStats(player.id)" title="Show  stats">
+              <i class="fas fa-chart-bar" aria-hidden="true"></i>
               </span>
+              <span class="ml-4" title="Show Scoresheet">
+                  <router-link exact :to="{ name: 'Scoresheet', params: {  event_slug:slug, pno:player.pno}}">
+                  <i class="fas fa-clipboard" aria-hidden="true"></i>
+                  </router-link>
+              </span>
+              </span>
+              <!---popover -->
               <b-popover @show="getLastGames(player.pno)" placement="bottom"  :target="'popover-'+player.id" triggers="hover" boundary-padding="5">
               <div class="d-flex flex-row justify-content-center">
                 <div class="d-flex flex-column flex-wrap align-content-between align-items-start mr-2 justify-content-around">
@@ -407,12 +412,14 @@ var PlayerList = Vue.component('allplayers', {
               </b-popover>
           </div>
          </div>
+         </transition-group>
       </template>
     </div>
     `,
   components: {
     playerstats: PlayerStats,
   },
+  props: ['slug'],
   data: function () {
     return {
       pStats: {},
@@ -439,6 +446,9 @@ var PlayerList = Vue.component('allplayers', {
     let resultdata = this.result_data;
     this.dataFlat = _.flattenDeep(_.clone(resultdata));
     this.data = _.chain(resultdata).last().sortBy('pno').value();
+    console.log('-----------DATA-------------------------');
+    console.log(this.data);
+    console.log('------------------------------------');
   },
   methods: {
     getLastGames: function (tou_no) {
@@ -459,9 +469,14 @@ var PlayerList = Vue.component('allplayers', {
       if (false == this.asc) {
         sortDir = 'desc';
       }
-      let sorted = _.orderBy(this.data, 'rank', sortDir)
+      let sorted = _.orderBy(this.data, 'rank', sortDir);
       console.log(sorted);
       this.data = sorted;
+    },
+    restoreSort: function () {
+      this.sorted = false;
+      this.asc = true;
+      this.data = _.orderBy(this.data, 'pno', 'asc');
     },
     showPlayerStats: function (id) {
       this.$store.commit('COMPUTE_PLAYER_STATS', id);
@@ -507,7 +522,7 @@ var PlayerList = Vue.component('allplayers', {
 
  var Results = Vue.component('results', {
    template: `
-    <b-table hover responsive striped foot-clone :fields="results_fields" :items="result(currentRound)" head-variant="dark" class="animated fadeInUp">
+    <b-table hover stacked="sm" striped foot-clone :fields="results_fields" :items="result(currentRound)" head-variant="dark" class="animated fadeInUp">
         <template slot="table-caption">
             {{caption}}
         </template>
@@ -602,7 +617,7 @@ var PlayerList = Vue.component('allplayers', {
 
 var Standings = Vue.component('standings',{
   template: `
-    <b-table responsive hover striped foot-clone :items="result(currentRound)" :fields="standings_fields" head-variant="dark" class="animated fadeInUp">
+    <b-table responsive stacked="sm" hover striped foot-clone :items="result(currentRound)" :fields="standings_fields" head-variant="dark" class="animated fadeInUp">
         <template slot="table-caption">
             {{caption}}
         </template>
@@ -626,6 +641,17 @@ var Standings = Vue.component('standings',{
   data: function() {
     return {
       standings_fields: [],
+      imgProps: {
+        rounded: 'circle',
+        center: true,
+        block: true,
+        fluid: true,
+        blank: true,
+        blankColor: '#bbb',
+        width: '25px',
+        height: '25px',
+        class: 'shadow-sm',
+      },
     };
   },
   mounted: function() {
@@ -732,14 +758,27 @@ const Pairings =Vue.component('pairings',  {
     <tbody>
         <tr v-for="(player,i) in pairing(currentRound)" :key="i">
         <th scope="row">{{i + 1}}</th>
-        <td><sup v-if="player.start =='y'">*</sup>{{player.player}}</td>
-        <td><sup v-if="player.start =='n'">*</sup>{{player.oppo}}</td>
+        <td :id="'popover-'+player.id"><b-img-lazy v-bind="imgProps" :alt="player.player" :src="player.photo"></b-img-lazy><sup v-if="player.start =='y'">*</sup>{{player.player}}</td>
+        <td :id="'popover-'+player.opp_id"><b-img-lazy v-bind="imgProps" :alt="player.oppo" :src="player.opp_photo"></b-img-lazy><sup  v-if="player.start =='n'">*</sup>{{player.oppo}}</td>
         </tr>
     </tbody>
   </table>
 `,
   props: ['caption', 'currentRound', 'resultdata'],
-
+  data() {
+    return {
+      imgProps: {
+        rounded: 'circle',
+        fluid: true,
+        blank: true,
+        blankColor: '#bbb',
+        style:'margin-right:.5em',
+        width: '25px',
+        height: '25px',
+        class: 'shadow-sm',
+      },
+    }
+  },
   methods: {
     // get pairing
     pairing(r) {
@@ -749,9 +788,7 @@ const Pairings =Vue.component('pairings',  {
       if (r === 1) {
         round_res = _.sortBy(round_res, 'pno');
       }
-
       let paired_players = [];
-
       let rp = _.map(round_res, function(r) {
         let player = r['pno'];
         let opponent = r['oppo_no'];

@@ -366,6 +366,11 @@ i.loading {
     text-transform: none;
 }
 
+/* Animations and Transitions */
+.players-list-move {
+    transition: transform 1s;
+  }
+
 /* Sticky Header */
 #pheader {
     transition: 0.2s; /* Add a transition effect (when scrolling - and font size is decreased) */
@@ -398,10 +403,9 @@ i.loading {
     font-size:110%;
     margin-left:.4em;
 }
-.fa-chart-bar{
+.fa-chart-bar,.fa-clipboard{
     color:  #556B2F;
     font-size: 120%;
-    margin-left: 0.2em;
     cursor: pointer;
 }
 .alert{
