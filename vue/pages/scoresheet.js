@@ -32,63 +32,36 @@ let Scoresheet = Vue.component('scoreCard', {
       </div>
     </div>
     <div class="row justify-content-center">
-      <div class="col-md-3 col-12">
+      <div class="col-md-2 col-12">
       <!-- player list here -->
-        <ul class="shadow p-3 mb-5 bg-white rounded">
+        <ul class=" p-2 mb-5 bg-white rounded">
           <li :key="player.pno" v-for="player in pdata" class="bebas">
           <span>{{player.pno}}</span> <b-img-lazy :alt="player.player" :src="player.photo" v-bind="picProps"></b-img-lazy>
             <b-button @click="getCard(player.pno)" variant="link">{{player.player}}</b-button>
           </li>
         </ul>
       </div>
-      <div class="col-md-9 col-12">
-          <template v-if="resultdata">
-          <h4 class="bebas">#{{mPlayer.pno}}
-          <b-img :alt="mPlayer.player" :src="mPlayer.photo" style="width: 50px; height:50px"></b-img>
-          {{mPlayer.player}}: ScoreCard</h4>
-          <table class="bebas table table-hover table-responsive-md" style="width:95%; text-align:center; vertical-align: middle">
-          <thead class="thead-dark bebas">
-            <tr>
-              <th scope="col">Rd</th>
-              <th scope="col">Opp. Name</th>
-              <th scope="col">Opp. Score</th>
-              <th scope="col">Score</th>
-              <th scope="col">Diff</th>
-              <th scope="col">Result</th>
-              <th scope="col">Won</th>
-              <th scope="col">Lost</th>
-              <th scope="col">Points</th>
-              <th scope="col">Cum. Spread</th>
-              <th scope="col">Rank</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="s in scorecard">
-              <td>{{s.round}}<sup v-if="s.start =='y'">*</sup></td>
-              <td style="text-align:left"><small>#{{s.oppo_no}}</small><b-img-lazy :alt="s.oppo" :src="s.opp_photo" v-bind="picProps"></b-img-lazy>
-              <b-button @click="getCard(s.oppo_no)" variant="link">
-              {{s.oppo|abbrv}}
-              </b-button>
-              </td>
-              <td>{{s.oppo_score}}</td>
-              <td>{{s.score}}</td>
-              <td>{{s.diff}}</td>
-              <td v-bind:class="{'table-warning': s.result === 'draw',
-              'table-info': s.result === 'awaiting',
-              'table-danger': s.result === 'loss',
-              'table-success': s.result === 'win' }">{{s.result|firstchar}}</td>
-              <td>{{s.wins}}</td>
-              <td>{{s.losses}}</td>
-              <td>{{s.points}}</td>
-              <td>{{s.margin}}</td>
-              <td>{{s.position}}</td>
-            </tr>
-          </tbody>
-          </table>
-          </template>
-          <!-- scorecards here -->
+      <div class="col-md-10 col-12">
+      <template v-if="resultdata">
+        <h4 class="green">Scorecard: <b-img :alt="mPlayer.player" class="mx-2" :src="mPlayer.photo" style="width:60px; height:60px"></b-img> {{mPlayer.player}}</h4>
+        <b-table responsive="md" small hover foot-clone head-variant="light" bordered table-variant="light" :fields="fields" :items="scorecard" id="scorecard" class="bebas shadow p-4 mx-auto" style="width:90%; text-align:center; vertical-align: middle">
+        <!-- A custom formatted column -->
+        <template v-slot:cell(round)="data">
+          {{data.item.round}} <sup v-if="data.item.start =='y'">*</sup>
+        </template>
+        <template v-slot:cell(oppo)="data">
+          <small>#{{data.item.oppo_no}}</small><b-img-lazy :title="data.item.oppo" :alt="data.item.oppo" :src="data.item.opp_photo" v-bind="picProps"></b-img-lazy>
+          <b-button @click="getCard(data.item.oppo_no)" variant="link">
+              {{data.item.oppo|abbrv}}
+          </b-button>
+        </template>
+        <template v-slot:table-caption>
+          Scorecard: #{{mPlayer.pno}} {{mPlayer.player}}
+        </template>
+        </b-table>
+      </template>
       </div>
-    </div>
+     </div>
     </template>
   </div>
   `,
@@ -103,14 +76,14 @@ let Scoresheet = Vue.component('scoreCard', {
         rounded: 'circle',
         fluid: true,
         blank: true,
-        blankColor: '#bbb',
-        width: '25px',
-        height: '25px',
+        width: '30px',
+        height: '30px',
         class: 'shadow-sm, mx-1',
       },
+      fields: [{key:'round',label:'Rd',sortable:true}, {key: 'oppo', label:'Opp. Name'},{key:'oppo_score',label:'Opp. Score',sortable:true},{key:'score',sortable:true},{key:'diff',sortable:true},{key:'result',sortable:true}, {key:'wins',label:'Won',sortable:true},{key:'losses',label:'Lost',sortable:true},{key:'points',sortable:true},{key:'margin',sortable:true,label:'Mar'},{key:'position',label:'Rank',sortable:true}],
       pdata: {},
       scorecard: {},
-      mPlayer: {}
+      mPlayer: {},
     };
   },
   components: {
@@ -141,16 +114,32 @@ let Scoresheet = Vue.component('scoreCard', {
   methods: {
     getCard: function (n) {
       let c = _.clone(this.resultdata);
-      this.scorecard = _.chain(c).map(function (v) {
+      let s = _.chain(c).map(function (v) {
         return _.filter(v, function (o) {
           return o.pno == n;
+        }).map( function(i){
+          i._cellVariants = [];
+          i._cellVariants.result = 'info';
+          if(i.result ==='win'){
+            i._cellVariants.result = 'success';
+          }
+          if(i.result ==='loss'){
+            i._cellVariants.result = 'danger';
+          }
+          if(i.result ==='draw'){
+            i._cellVariants.result = 'warning';
+          }
+          return i;
         });
       }).flattenDeep().value();
-      this.mPlayer = _.first(this.scorecard);
+      this.mPlayer = _.first(s);
       this.$router.replace({ name: 'Scoresheet', params: { pno: n } });
       this.player_no = n;
-    },
+      console.log(s);
+      this.scorecard = s;
   },
+
+},
   computed: {
     ...Vuex.mapGetters({
       players: 'PLAYERS',
@@ -168,6 +157,10 @@ let Scoresheet = Vue.component('scoreCard', {
     }),
     breadcrumbs: function() {
       return [
+        {
+          text: 'NSF News',
+          href: '/'
+        },
         {
           text: 'Tournaments',
           to: {

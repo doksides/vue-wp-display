@@ -357,16 +357,18 @@ var PlayerStats = Vue.component('playerstats', {
 
 var PlayerList = Vue.component('allplayers', {
   template: `
-  <div class="row justify-content-center align-items-center" id="players-list">
+  <div class="row justify-content-center align-items-center">
     <template v-if="showStats">
         <playerstats :pstats="pStats"></playerstats>
     </template>
     <template v-else>
+    <div id="p-list" class="col-12">
     <transition-group tag="div" name="players-list">
-    <div class="playerCols col-lg-2 col-sm-6 col-12 p-4 " v-for="player in data" :key="player.id" >
-            <h4 class="mx-auto bebas"><small>#{{player.pno}}</small>
+    <div class="playerCols mx-2 p-2 mb-4" v-for="player in data" :key="player.id">
+        <div class="d-flex flex-column">
+            <h5 class="oswald"><small>#{{player.pno}}</small>
             {{player.player}}<span class="ml-2" @click="sortPos()" style="cursor: pointer; font-size:0.8em"><i v-if="asc" class="fa fa-sort-numeric-down" aria-hidden="true" title="Click to sort DESC by current rank"></i><i v-else class="fa fa-sort-numeric-up" aria-hidden="true" title="Click to sort ASC by current rank"></i></span><span v-if="sorted" class="ml-3" @click="restoreSort()" style="cursor: pointer; font-size:0.8em"><i class="fa fa-undo" aria-hidden="true" title="Click to reset list"></i></span>
-            <span class="d-block mx-auto"  style="font-size:small">
+            <span class="d-block mx-auto my-1"  style="font-size:small">
             <i class="mx-auto flag-icon" :class="'flag-icon-'+player.country | lowercase" :title="player.country_full"></i>
             <i class="ml-2 fa" :class="{'fa-male': player.gender == 'm',
         'fa-female': player.gender == 'f',
@@ -374,19 +376,19 @@ var PlayerList = Vue.component('allplayers', {
                     aria-hidden="true"></i>
               <span style="color:tomato; font-size:1.4em" class="ml-5" v-if="sorted">{{player.position}}</span>
              </span>
-            </h4>
-            <div class="mx-auto text-center animated fadeIn">
+            </h5>
+            <div class="d-block text-center animated fadeIn pgallery">
               <b-img-lazy v-bind="imgProps" :alt="player.player" :src="player.photo" :id="'popover-'+player.id"></b-img-lazy>
-              <span class="d-block mt-2 mx-auto">
+              <div class="d-block mt-2 mx-auto">
               <span @click="showPlayerStats(player.id)" title="Show  stats">
               <i class="fas fa-chart-bar" aria-hidden="true"></i>
               </span>
-              <span class="ml-4" title="Show Scoresheet">
+              <span class="ml-4" title="Show Scorecard">
                   <router-link exact :to="{ name: 'Scoresheet', params: {  event_slug:slug, pno:player.pno}}">
                   <i class="fas fa-clipboard" aria-hidden="true"></i>
                   </router-link>
               </span>
-              </span>
+              </div>
               <!---popover -->
               <b-popover @show="getLastGames(player.pno)" placement="bottom"  :target="'popover-'+player.id" triggers="hover" boundary-padding="5">
               <div class="d-flex flex-row justify-content-center">
@@ -411,8 +413,10 @@ var PlayerList = Vue.component('allplayers', {
               </div>
               </b-popover>
           </div>
+          </div>
          </div>
          </transition-group>
+        </div>
       </template>
     </div>
     `,
@@ -430,8 +434,8 @@ var PlayerList = Vue.component('allplayers', {
         fluid: true,
         blank: true,
         blankColor: '#bbb',
-        width: '80px',
-        height: '80px',
+        width: '70px',
+        height: '70px',
         style: 'cursor: pointer',
         class: 'shadow-sm',
       },
@@ -597,13 +601,18 @@ var PlayerList = Vue.component('allplayers', {
         // check result (win, loss, draw)
         let result = r.result;
         r['_cellVariants'] = [];
+        r['_cellVariants']['lastGame'] = 'info';
+        if (result === 'draw') {
         r['_cellVariants']['lastGame'] = 'warning';
+        }
         if (result === 'win') {
           r['_cellVariants']['lastGame'] = 'success';
         }
         if (result === 'loss') {
           r['_cellVariants']['lastGame'] = 'danger';
         }
+
+
       });
 
       return _.chain(data)

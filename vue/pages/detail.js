@@ -122,6 +122,10 @@ let tDetail = Vue.component('tdetail', {
     breadcrumbs: function() {
       return [
         {
+          text: 'NSF News',
+          href: '/'
+        },
+        {
           text: 'Tournaments',
           to: {
             name: 'TourneysList',

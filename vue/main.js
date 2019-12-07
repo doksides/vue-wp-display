@@ -20,24 +20,24 @@ Vue.filter('firstchar', function (value) {
   });
 
   Vue.filter('lowercase', function (value) {
-    if (!value) return ''
-    value = value.toString()
-    return value.toLowerCase()
+    if (!value) return '';
+    value = value.toString();
+    return value.toLowerCase();
   })
 
-  Vue.filter('addplus', function (value) {
-    if (!value) return ''
-    value = value.toString()
-    var n = Math.floor(Number(value))
-    if (n !== Infinity && String(n) === value && n > 0) {
-      return '+' + value
-    }
-    return value
-  })
+Vue.filter('addplus', function (value) {
+  if (!value) return '';
+  value = value.toString();
+  var n = Math.floor(Number(value));
+  if (n !== Infinity && String(n) === value && n > 0) {
+    return '+' + value;
+  }
+  return value;
+});
 
-  Vue.filter('pretty', function (value) {
-    return JSON.stringify(JSON.parse(value), null, 2)
-  })
+Vue.filter('pretty', function (value) {
+  return JSON.stringify(JSON.parse(value), null, 2);
+});
 
   const routes = [
     {
@@ -80,6 +80,6 @@ new Vue({
   el: document.querySelector('#app'),
   router,
   store
-})
+});
 
 

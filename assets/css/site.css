@@ -7,7 +7,7 @@
 
 @font-face {
     font-family: Lato;
-    src: url("../myfonts/Lato/Lato-Regular.ttf");
+    src: url("../myfonts/oswald/oswald-Regular.ttf");
 }
 
 @font-face {
@@ -58,15 +58,21 @@ overflow-x: hidden;
 }
 #app{
     margin-top: 0 !important;
-    font-size: 1.2em;
-    min-height:100vh;
+    font-size: 1.26em;
+    min-height:80vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .breadcrumb{
     margin: 0 0 .8em 0 !important;
+    padding:0.5em 0.2em;
 }
 .bebas{
     font-family: Bebas, Geneva, FreeSans, sans-serif !important;
+}
+.oswald{
+    font-family: Oswald, Geneva, FreeSans, sans-serif !important;
 }
 .yanone{
     font-family: Yanone, Geneva, FreeSans, sans-serif !important;
@@ -112,33 +118,9 @@ button{
 nav,
 .navbar {
     font-family: Bebas, Helvetica, FreeSans, Verdana, sans-serif;
+    margin-bottom: 0 !important;
 }
 
-
-/* Add Zoom Animation */
-
-.avatar {
-    -webkit-animation: animatezoom 0.8s;
-    animation: animatezoom 0.8s
-}
-
-@-webkit-keyframes animatezoom {
-    from {
-        -webkit-transform: scale(0.5)
-    }
-    to {
-        -webkit-transform: scale(1)
-    }
-}
-
-@keyframes animatezoom {
-    from {
-        transform: scale(0.5)
-    }
-    to {
-        transform: scale(1)
-    }
-}
 
 #footer {
     background-color: green;
@@ -174,6 +156,8 @@ nav,
 
 a, a:link, a:visited, a:hover{text-decoration: none !important}
 
+#top-btn-group .btn{ text-align: left !important; color: #fff;}
+
 .media {
     margin-bottom: .2rem;
 }
@@ -183,7 +167,9 @@ a, a:link, a:visited, a:hover{text-decoration: none !important}
     font-size: 1.1em;
     text-transform: uppercase;
 }
-.cate-list li,.cate-list li a,{ font-size: 1.3em}
+.cate-list li,.cate-list li a {
+    font-size: 1.3em
+}
 
 .tourney-list div small {
     color: seagreen;
@@ -195,6 +181,9 @@ a, a:link, a:visited, a:hover{text-decoration: none !important}
     margin: .5em auto;
     padding-bottom: 1em;
 }
+.green {
+    color: #228B22;
+  }
 .emphasize {
     color: tomato !important;
     font-weight: 700 !important;
@@ -255,9 +244,24 @@ i.loading {
 .modal-title {
     text-align: center;
 }
+
+#p-list div{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: space-around;
+}
+
+.playerCols {
+    display: block;
+    flex: 0 0 18%;
+    align-self: center;
+}
+
 .playerCols h4{
-    font-family: Bebas, Geneva, FreeSans, sans-serif !important;
-    font-size: 1.3em;
+    font-family: Geneva, FreeSans, sans-serif !important;
+    font-size: 1.4em;
 }
 
 .statTabs td{
@@ -368,9 +372,32 @@ i.loading {
 
 /* Animations and Transitions */
 .players-list-move {
-    transition: transform 1s;
+    transition: transform  1.25s;
   }
+/* Add Zoom Animation */
 
+.avatar {
+    -webkit-animation: animatezoom 0.8s;
+    animation: animatezoom 0.8s
+}
+
+@-webkit-keyframes animatezoom {
+    from {
+        -webkit-transform: scale(0.5)
+    }
+    to {
+        -webkit-transform: scale(1)
+    }
+}
+
+@keyframes animatezoom {
+    from {
+        transform: scale(0.5)
+    }
+    to {
+        transform: scale(1)
+    }
+}
 /* Sticky Header */
 #pheader {
     transition: 0.2s; /* Add a transition effect (when scrolling - and font size is decreased) */
@@ -403,7 +430,7 @@ i.loading {
     font-size:110%;
     margin-left:.4em;
 }
-.fa-chart-bar,.fa-clipboard{
+.playerCols .fa-chart-bar,.playerCols .fa-clipboard{
     color:  #556B2F;
     font-size: 120%;
     cursor: pointer;
@@ -428,10 +455,15 @@ i.loading {
     body{
         font-size: 17px;
     }
+    .playerCols {
+        flex: 0 0 30%;
+    }
 }
-@media all and (max-width: 599px) and (min-width: 320px) {
+@media all and (max-width: 599px) and (min-width: 300px) {
     body{
         font-size: 16px;
     }
-
+    .playerCols {
+        flex: 0 0 80%;
+    }
 }

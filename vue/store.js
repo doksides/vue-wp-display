@@ -25,6 +25,7 @@ const store = new Vuex.Store({
     logo_url: '',
     total_rounds: null,
     final_round_stats: [],
+    rating_stats: [],
     showstats: false,
     player_last_rd_data: [],
     playerdata: [],
@@ -45,6 +46,7 @@ const store = new Vuex.Store({
     PLAYERS: state => state.players,
     TOTALPLAYERS: state => state.total_players,
     RESULTDATA: state => state.result_data,
+    RATING_STATS: state=> state.rating_stats,
     ERROR: state => state.error,
     LOADING: state => state.loading,
     CURRPAGE: state => state.currentPage,
@@ -93,6 +95,9 @@ const store = new Vuex.Store({
       });
       state.total_players = payload.length;
       state.players = a;
+    },
+    SET_RATING_STATS: (state, payload) => {
+      state.rating_stats = payload;
     },
     SET_RESULT: (state, payload) => {
       let p = state.players;
@@ -243,31 +248,17 @@ const store = new Vuex.Store({
               '</strong>. Results are being awaited';
           } else {
             l.report =
-              'In round ' +
-              l.round +
-              ' ' +
-              name +
-              '<em v-if="l.start">, (' +
-              starting +
-              ')</em> played <strong>' +
-              l.oppo +
-              '</strong> and ' +
-              result +
-              ' <em>' +
-              l.score +
-              ' - ' +
-              l.oppo_score +
-              '</em> a difference of ' +
-              l.diff +
-              '. <span class="summary"><em>' +
-              name +
-              '</em> is ranked <strong>' +
-              l.position +
-              '</strong> with <strong>' +
-              l.points +
+              'In round ' + l.round + ' ' +
+              name + '<em v-if="l.start">, (' + starting +
+              ')</em> played <strong>' + l.oppo +
+              '</strong> and ' + result +
+              ' <em>' + l.score + ' - ' +
+              l.oppo_score + ',</em> a difference of ' +
+              l.diff + '. <span class="summary"><em>' +
+              name + '</em> is ranked <strong>' + l.position +
+              '</strong> with <strong>' + l.points +
               '</strong> points and a cumulative spread of ' +
-              l.margin +
-              ' </span>';
+              l.margin + ' </span>';
           }
           return l;
         });
@@ -293,14 +284,7 @@ const store = new Vuex.Store({
       state.player_stats.starts = starts.length;
       state.player_stats.replies = state.total_rounds - starts.length;
 
-      console.log('-----------Starts Count-------------------');
-      console.log(starts.length);
-      console.log('-----------Starts Win Count-------------------');
-      console.log(state.player_stats.startWins);
-      console.log('-----------Replies Count ---------------------');
-      console.log(state.total_rounds - starts.length);
-      console.log('-----------Reply Win Count ----------------------');
-      console.log(state.player_stats.replyWins);
+
     },
   },
   actions: {
@@ -365,8 +349,9 @@ const store = new Vuex.Store({
         let data = response.data[0];
         let players = data.players;
         let results = JSON.parse(data.results);
+
         console.log('FETCH DATA $store')
-        console.log(results);
+        console.log(data);
         let category = data.event_category[0].name.toLowerCase();
         let logo = data.tourney[0].event_logo.guid;
         let tourney_title = data.tourney[0].post_title;
@@ -377,6 +362,11 @@ const store = new Vuex.Store({
         context.commit('SET_ONGOING', data.ongoing);
         context.commit('SET_PLAYERS', players);
         context.commit('SET_RESULT', results);
+        let rating_stats = null;
+        if (data.stats_json) {
+          rating_stats = JSON.parse(data.stats_json);
+        }
+        context.commit('SET_RATING_STATS', rating_stats);
         context.commit('SET_FINAL_RD_STATS', results);
         context.commit('SET_CATEGORY', category);
         context.commit('SET_LOGO_URL', logo);

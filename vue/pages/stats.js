@@ -506,5 +506,5 @@ let LoSpread = Vue.component('lospread', {
         .reverse();
     },
   },
-});
+ });
 export {HiWins, LoWins,HiLoss,ComboScores,TotalScores,TotalOppScores,AveScores,AveOppScores,HiSpread, LoSpread}

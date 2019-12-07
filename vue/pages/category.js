@@ -2,6 +2,7 @@ import { Pairings, Standings, PlayerList, Results} from './playerlist.js';
 import {LoadingAlert, ErrorAlert} from './alerts.js';
 import { HiWins, LoWins, HiLoss, ComboScores, TotalScores, TotalOppScores, AveScores, AveOppScores, HiSpread, LoSpread } from './stats.js';
 import Scoreboard from './scoreboard.js';
+import RatingStats from './rating_stats.js';
 import topPerformers from './top.js';
 export { CateDetail as default };
 let CateDetail = Vue.component('cate', {
@@ -25,11 +26,17 @@ let CateDetail = Vue.component('cate', {
     </div>
     <template v-if="!(error||loading)">
         <div class="row justify-content-center align-items-center">
-            <div class="col-12 d-flex">
-              <b-img class="thumbnail logo ml-auto" :src="logo" :alt="event_title" />
-              <h2 class="text-left bebas">{{ event_title }}
-              <span :title="total_rounds+ ' rounds, ' + total_players +' players'" v-show="total_rounds" class="text-center d-block">{{ total_rounds }} Games {{ total_players}} <i class="fas fa-users"></i> </span>
-              </h2>
+            <div class="col-12 col-lg-10 offset-lg-1">
+              <div class="d-flex flex-column flex-lg-row align-content-center align-items-center justify-content-center" >
+                <div class="mr-lg-0">
+                  <b-img fluid class="thumbnail logo" :src="logo" :alt="event_title" />
+                </div>
+                <div class="mx-auto">
+                  <h2 class="text-center bebas">{{ event_title }}
+                  <span :title="total_rounds+ ' rounds, ' + total_players +' players'" v-show="total_rounds" class="text-center d-block">{{ total_rounds }} Games {{ total_players}} <i class="fas fa-users"></i> </span>
+                  </h2>
+                </div>
+              </div>
             </div>
         </div>
         <div class="row justify-content-center align-items-center">
@@ -37,16 +44,18 @@ let CateDetail = Vue.component('cate', {
                 <div class="text-center">
                 <b-button @click="viewIndex=0" variant="link" class="text-decoration-none" :disabled="viewIndex==0" :pressed="viewIndex==0"><i class="fa fa-users" aria-hidden="true"></i> Players</b-button>
                 <router-link :to="{ name: 'Scoresheet', params: {  event_slug:slug, pno:1}}">
-                <b-button variant="link" class="text-decoration-none" :disabled="viewIndex==0" :pressed="viewIndex==0"><i class="fas fa-clipboard" aria-hidden="true"></i> Scorecards</b-button>
+                <b-button variant="link" class="text-decoration-none"><i class="fas fa-clipboard" aria-hidden="true"></i> Scorecards</b-button>
                 </router-link>
                 <b-button @click="viewIndex=1" variant="link" class="text-decoration-none" :disabled="viewIndex==1" :pressed="viewIndex==1"> <i class="fa fa-user-plus"></i> Pairings</b-button>
                 <b-button @click="viewIndex=2" variant="link" class="text-decoration-none" :disabled="viewIndex==2" :pressed="viewIndex==2"><i class="fas fa-sticky-note" aria-hidden="true"></i> Results</b-button>
-                <b-button @click="viewIndex=3" variant="link" class="text-decoration-none" :disabled="viewIndex==3" :pressed="viewIndex==3"><i class="fas fa-sort-numeric-down    "></i> Standings</b-button>
-                <b-button @click="viewIndex=4" variant="link" class="text-decoration-none" :disabled="viewIndex==4" :pressed="viewIndex==4"><i class="fas fa-chart-pie"></i> Statistics</b-button>
-                <b-button  @click="viewIndex=5" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==5" :pressed="viewIndex==5"><i class="fas fa-chalkboard-teacher"></i>
+                <b-button title="Round-By-Round Standings" @click="viewIndex=3" variant="link" class="text-decoration-none" :disabled="viewIndex==3" :pressed="viewIndex==3"><i class="fas fa-sort-numeric-down    "></i> Standings</b-button>
+                <b-button title="Category Statistics" @click="viewIndex=4" variant="link" class="text-decoration-none" :disabled="viewIndex==4" :pressed="viewIndex==4"><i class="fas fa-chart-pie"></i> Statistics</b-button>
+                <b-button title="Round-By-Round Scoreboard" @click="viewIndex=5" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==5" :pressed="viewIndex==5"><i class="fas fa-chalkboard-teacher"></i>
                 Scoreboard</b-button>
-                <b-button  @click="viewIndex=6" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==6" :pressed="viewIndex==6"><i class="fas fa-medal"></i>
+                <b-button title="Top 3 Performances" @click="viewIndex=6" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==6" :pressed="viewIndex==6"><i class="fas fa-medal"></i>
                 Top Performers</b-button>
+                <b-button title="Post-tourney Rating Statistics" v-if="rating_stats" @click="viewIndex=7" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==7" :pressed="viewIndex==7"><i class="fas fa-stream"></i>
+                Rating Stats</b-button>
                 </div>
             </div>
         </div>
@@ -70,6 +79,10 @@ let CateDetail = Vue.component('cate', {
         </template>
         <template v-if="viewIndex==6">
           <performers></performers>
+        </template>
+        <template v-if="viewIndex==7">
+          <ratings :caption="caption" :computed_items="computed_rating_items">
+          </ratings>
         </template>
         <template v-else-if="viewIndex==5">
         <scoreboard></scoreboard>
@@ -130,6 +143,7 @@ let CateDetail = Vue.component('cate', {
     allplayers: PlayerList,
     pairings: Pairings,
     results: Results,
+    ratings: RatingStats,
     standings: Standings,
     hiwins: HiWins,
     hiloss: HiLoss,
@@ -159,6 +173,7 @@ let CateDetail = Vue.component('cate', {
       tab_heading: '',
       caption: '',
       showPagination: false,
+      computed_rating_items: [],
       luckystiff: [],
       tuffluck: [],
       timer: '',
@@ -166,6 +181,7 @@ let CateDetail = Vue.component('cate', {
   },
   created: function() {
     console.log('Category mounted');
+    console.log(this.players);
     var p = this.slug.split('-');
     p.shift();
     this.tourney_slug = p.join('-');
@@ -173,13 +189,22 @@ let CateDetail = Vue.component('cate', {
   },
   watch: {
     viewIndex: {
-      handler: function(val, oldVal) {
+      immediate: true,
+      handler: function(val) {
         if (val != 4) {
           this.getView(val);
         }
-      },
-      immediate: true,
+      }
     },
+    rating_stats: {
+      immediate: true,
+      deep: true,
+      handler: function(val) {
+        if (val) {
+          this.updateRatingData();
+        }
+      }
+    }
   },
   beforeUpdate: function () {
     document.title = this.event_title;
@@ -190,6 +215,21 @@ let CateDetail = Vue.component('cate', {
   methods: {
     fetchData: function() {
       this.$store.dispatch('FETCH_DATA', this.slug);
+    },
+    updateRatingData: function () {
+      let resultdata = this.resultdata;
+      let data = _.chain(resultdata).last().sortBy('pno').value();
+      let items = _.clone(this.rating_stats);
+      this.computed_rating_items = _.map(items, function (x) {
+        let n = x.pno;
+        let p = _.filter(data, function (o) {
+          return o.pno == n;
+        });
+        x.photo = p[0].photo;
+        x.position = p[0].position;
+        return x;
+      });
+
     },
     getView: function(val) {
       console.log('Ran getView function val-> ' + val);
@@ -213,6 +253,11 @@ let CateDetail = Vue.component('cate', {
           this.showPagination = true;
           this.tab_heading = 'Standings after Round - ';
           this.caption = 'Standings';
+          break;
+        case 7:
+          this.showPagination = false;
+          this.tab_heading = 'Post Tournament Rating Statistics';
+          this.caption = 'Rating Statistics';
           break;
         default:
           this.showPagination = false;
@@ -396,6 +441,7 @@ let CateDetail = Vue.component('cate', {
       players: 'PLAYERS',
       total_players: 'TOTALPLAYERS',
       resultdata: 'RESULTDATA',
+      rating_stats: 'RATING_STATS',
       event_data: 'EVENTSTATS',
       error: 'ERROR',
       loading: 'LOADING',
@@ -408,6 +454,10 @@ let CateDetail = Vue.component('cate', {
     }),
     breadcrumbs: function() {
       return [
+        {
+          text: 'NSF News',
+          href: '/'
+        },
         {
           text: 'Tournaments',
           to: {
