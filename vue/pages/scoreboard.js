@@ -22,7 +22,7 @@ let Scoreboard = Vue.component('scoreboard', {
           <div slot="aside">
             <b-row class="justify-content-center">
               <b-col>
-                <b-img rounded="circle" :src="player.photo" width="50" height="50" :alt="player.player" class="animated fadeIn"/>
+                <b-img rounded="circle" :src="player.photo" width="50" height="50" :alt="player.player" class="animated flipInX" />
               </b-col>
             </b-row>
             <b-row class="justify-content-center">
@@ -55,7 +55,7 @@ let Scoreboard = Vue.component('scoreboard', {
           <p class="card-text mt-0">
             <span class="sdata points p-1">{{player.points}}-{{player.losses}}</span>
             <span class="sdata mar">{{player.margin | addplus}}</span>
-            <span class="sdata p1">was {{player.lastposition}}</span>
+            <span v-if="player.lastposition" class="sdata p1">was {{player.lastposition}}</span>
           </p>
           <div class="row">
             <b-col>
@@ -75,7 +75,7 @@ let Scoreboard = Vue.component('scoreboard', {
               <span class="d-block p-0 ml-1 opp">vs {{player.oppo}}</span>
             </b-col>
           </div>
-          <div class="row align-content-center">
+          <div v-if="player.prevresults" class="row align-content-center">
             <b-col>
               <span :title="res" v-for="res in player.prevresults" :key="res.key"
                 class="d-inline-block p-1 text-white sdata-res text-center" v-bind:class="{'bg-warning': res === 'draw',
@@ -91,6 +91,7 @@ let Scoreboard = Vue.component('scoreboard', {
   </template>
 </div>
     `,
+  props: ['currentRound'],
   data: function() {
     return {
       itemsPerRow: 4,
@@ -106,7 +107,7 @@ let Scoreboard = Vue.component('scoreboard', {
       response_data: [],
       // players: [],
       // total_rounds: 0,
-      currentRound: null,
+      // currentRound: null,
       event_title: '',
       is_live_game: true,
     };
@@ -121,7 +122,14 @@ let Scoreboard = Vue.component('scoreboard', {
       }.bind(this),
       this.period * 60000
     );
-
+  },
+  watch: {
+    currentRound: {
+      immediate: true,
+      handler: function () {
+        this.processDetails(this.currentPage);
+      }
+     }
   },
   beforeDestroy: function() {
     // window.removeEventListener('resize', this.getWindowWidth);
@@ -147,47 +155,58 @@ let Scoreboard = Vue.component('scoreboard', {
       );
     },
     processDetails: function(currentPage) {
-      console.log(this.result_data)
+      // console.log(this.result_data)
       let resultdata = this.result_data;
-      let initialRdData = _.initial(_.clone(resultdata));
-      let previousRdData = _.last(initialRdData);
-      let lastRdD = _.last(_.clone(resultdata));
-      let lastRdData = _.map(lastRdD, player => {
+      // let lastRdD = _.last(_.clone(resultdata));
+      let cr = this.currentRound - 1;
+
+      let thisRdData = _.nth(_.clone(resultdata), cr);
+      console.log('----This Round Data-----');
+      console.log(cr);
+      console.log(thisRdData);
+
+      let initialRdData = [];
+      let previousRdData = [];
+      if(this.currentRound > 1)
+      {
+        previousRdData = _.nth(_.clone(resultdata),cr - 1);
+        console.log('----Previous Round Data-----');
+        console.log(previousRdData);
+        initialRdData = _.take(_.clone(resultdata), cr);
+      }
+      let currentRdData = _.map(thisRdData, player => {
         let x = player.pno - 1;
         player.photo = this.players[x].photo;
         player.gender = this.players[x].gender;
         player.country_full = this.players[x].country_full;
         player.country = this.players[x].country;
-        // if (
-        //   player.result == 'draw' &&
-        //   player.score == 0 &&
-        //   player.oppo_score == 0
-        // ) {
-        //   player.result = 'AR';
-        // }
-        if (previousRdData) {
+        if (previousRdData.length > 0) {
           let playerData = _.find(previousRdData, {
             player: player.player,
           });
           player.lastposition = playerData['position'];
           player.lastrank = playerData['rank'];
           // previous rounds results
-          player.prevresults = _.chain(initialRdData)
+          if(initialRdData.length > 0) {
+            player.prevresults = _.chain(initialRdData)
             .flattenDeep()
             .filter(function(v) {
               return v.player === player.player;
             })
             .map('result')
-            .value();
+              .value();
+          }
         }
         return player;
       });
 
       // this.total_rounds = resultdata.length;
-      this.currentRound = lastRdData[0].round;
-      let chunks = _.chunk(lastRdData, this.total_players);
+      // this.currentRound = lastRdData[0].round;
+      let chunks = _.chunk(currentRdData, this.total_players);
       // this.reloading = false
       this.scoreboard_data = chunks[currentPage - 1];
+      console.log('Scoreboard Data')
+      console.log(this.scoreboard_data)
     },
   },
   computed: {

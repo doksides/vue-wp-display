@@ -19,11 +19,11 @@ Vue.filter('firstchar', function (value) {
     return value.charAt(0).toUpperCase();
   });
 
-  Vue.filter('lowercase', function (value) {
-    if (!value) return '';
-    value = value.toString();
-    return value.toLowerCase();
-  })
+Vue.filter('lowercase', function (value) {
+  if (!value) return '';
+  value = value.toString();
+  return value.toLowerCase();
+});
 
 Vue.filter('addplus', function (value) {
   if (!value) return '';

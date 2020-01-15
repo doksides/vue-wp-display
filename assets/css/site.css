@@ -184,6 +184,15 @@ a, a:link, a:visited, a:hover{text-decoration: none !important}
 .green {
     color: #228B22;
   }
+.gold {
+    background-color: gold;
+}
+.silver {
+    background-color: silver;
+}
+.bronze {
+    background-color: #cd7f32;
+}
 .emphasize {
     color: tomato !important;
     font-weight: 700 !important;
@@ -371,6 +380,16 @@ i.loading {
 }
 
 /* Animations and Transitions */
+.delay1{
+    animation-delay: 200ms;
+}
+.delay2{
+    animation-delay: 400ms;
+}
+.delay3{
+    animation-delay: 650ms;
+}
+
 .players-list-move {
     transition: transform  1.25s;
   }

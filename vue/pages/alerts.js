@@ -42,48 +42,76 @@ var ErrorAlert =Vue.component('error', {
      return {};
    },
  });
-
+ let mapGetters = Vuex.mapGetters;
  var LoginForm =Vue.component('login', {
-  template: `
-      <b-form @submit="onSubmit" inline class="w-80 mx-auto">
-      <label class="sr-only" for="inline-form-input-username">Username</label>
-      <b-input
-       id="inline-form-input-username"
-       class="mb-2 mr-sm-2 mb-sm-0"
-       v-model="user" >
-      </b-input>
-     <label class="sr-only" for="inline-form-input-password">Password</label>
-      <b-input id="inline-form-input-password"  v-model="pass"></b-input>
-      </b-input-group>
-      <b-button type="submit" class="ml-sm-2" sm variant="outline-primary"><i class="fa fa-save"></i></b-button>
-      </b-form>
+   template: `
+   <div class="row no-gutters">
+      <div class="col-12 col-lg-10 offset-lg-1 justify-content-center align-items-center">
+        <div v-if="login_success" class="d-flex justify-content-center">
+          <div class="mx-2 py-1"><i class="fas fa-user-alt"></i> <small>Welcome {{user_display}}</small></div>
+          <div class="mx-2 py-1" @click="logOut"><i style="color:tomato" class="fas fa-sign-out-alt "></i></div>
+        </div>
+        <div v-else>
+          <b-form @submit="onSubmit" inline class="w-80 mx-auto">
+          <b-form-invalid-feedback :state="validation">
+            Your username or password must be more than 1 character in length.
+            </b-form-invalid-feedback>
+          <label class="sr-only" for="inline-form-input-username">Username</label>
+          <b-input
+          id="inline-form-input-username" placeholder="Username" :state="validation"
+          class="mb-2 mr-sm-2 mb-sm-0 form-control-sm"
+          v-model="form.user" >
+          </b-input>
+        <label class="sr-only" for="inline-form-input-password">Password</label>
+          <b-input type="password" id="inline-form-input-password" :state="validation" class="form-control-sm" placeholder="Password" v-model="form.pass"></b-input>
+          </b-input-group>
+            <b-button variant="outline-dark" size="sm" type="submit" class="ml-sm-2">
+            <i  :class="{'fa-save' : login_loading == false, 'fa-spinner fa-pulse': login_loading == true}" class="fas"></i>
+            </b-button>
+          </b-form>
+        </div>
+      </div>
+    </div>
     `,
   data: function() {
     return {
       form: {
         pass:'',
         user: ''
-      }
+      },
     };
+   },
+   mounted() {
+    if(this.access.length > 0)
+    {
+      this.$store.dispatch('AUTH_TOKEN', this.access);
+     }
+     console.log(this.user_display)
   },
   methods: {
     onSubmit(evt) {
       evt.preventDefault()
-      alert(JSON.stringify(this.form))
+      console.log(JSON.stringify(this.form));
+      this.$store.dispatch('DO_LOGIN', this.form);
     },
-    onReset(evt) {
-      evt.preventDefault()
-      // Reset our form values
-      this.form.user = '';
-      this.form.pass = '';
-      // Trick to reset/clear native browser form validation state
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true
-      })
+    logOut() {
+      //  logout function
+      console.log('Clicked logOut');
     }
-  }
+   },
+   computed: {
+     ...mapGetters({
+       login_loading: 'LOGIN_LOADING',
+       login_success: 'LOGIN_SUCCESS',
+       user_display: 'USER',
+       access: 'ACCESS_TOKEN'
+     }),
+
+     validation() {
+      return this.form.user.length > 1 && this.form.pass.length > 1
+    },
+   }
 });
 
-export { LoadingAlert, ErrorAlert, LoginForm}
+export { LoadingAlert, ErrorAlert, LoginForm };
 

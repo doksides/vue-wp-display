@@ -47,8 +47,8 @@ let RatingStats = Vue.component('rating_stats', {
         { key: 'rating_change', label: 'Change', sortable: true },
         { key: 'expected_wins', label: 'E.wins' },
         { key: 'actual_wins', label: 'A.wins' },
-        { key: 'old_rating', label: 'Old Rating' },
-        { key: 'new_rating', label: 'New Rating' },
+        { key: 'old_rating', label: 'Old Rating' , sortable: true},
+        { key: 'new_rating', label: 'New Rating' , sortable: true},
       ],
     };
   },

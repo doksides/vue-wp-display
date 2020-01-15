@@ -1,21 +1,16 @@
 <?php
-/**
 
- * @link       www.site-zoom.com
- * @since      1.2.5
- * @package    Scratoudisplay
- *
- * Plugin Name: Scrabble Tournament Display
- * Plugin URI: http://www.site-zoom.com/projects/plugins
- * Description:Display Scrabble Tournaments on Pages with Shortcodes
- * Version:1.0.6
- * Author:David Okunmuyide
- * Author URI:www.site-zoom.com
- * License:GPL-2.0+
- * License URI:http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:scratoudisplay
- * Domain Path:/languages
-
+/*
+ Plugin Name:Scrabble Tournament Display
+ Plugin URI:http://www.site-zoom.com/projects/plugins
+ Description:Display Scrabble Tournaments on Pages with Shortcodes
+ Version:1.1
+ Author:David Okunmuyide
+ Author URI:www.site-zoom.com
+ License:GPL v2 or later
+ License URI:http://www.gnu.org/licenses/gpl-2.0.txt
+ Text Domain:scratoudisplay
+ Domain Path:/languages
  */
 
 
@@ -27,7 +22,7 @@ if ( ! defined('WPINC'))
 
 define('SCRATOUDISPLAY_VERSION', '1.0.6');
 define('SCRATOUDISPLAY_DIR', plugin_dir_path(__FILE__));
-define('SCRATOUDISPLAY_TEMPLATE_DIR', SCRATOUDISPLAY_DIR . '/templates/');
+define('SCRATOUDISPLAY_TEMPLATE_DIR', plugin_dir_path(__FILE__) . 'templates/');
 
 if ( ! function_exists('vue_log'))
 {
@@ -55,6 +50,7 @@ if ( ! function_exists('vue_log'))
   }
 
 }
+// vue_log(SCRATOUDISPLAY_TEMPLATE_DIR);
 
 //Register Scripts to use
 function func_load_vuescripts()
@@ -80,7 +76,7 @@ $vuejs = date("ymd-Gis", filemtime(plugin_dir_path(__FILE__) . 'assets/js/vue.js
 wp_register_script('es6-promise', plugin_dir_url(__FILE__) . 'assets/js/es6-promise.auto.js', 'vuex', true);
   wp_register_script('popperjs', plugin_dir_url(__FILE__) . 'assets/js/popper.min.js', 'vuejs', true);
  wp_register_script('momentjs', plugin_dir_url(__FILE__) . 'assets/js/moment.min.js', 'vuejs', true);
- wp_register_script('velocityjs', plugin_dir_url(__FILE__) . 'assets/js/velocity.min.js', 'vuejs', true);
+ wp_register_script('bootstrap-vue-icons', plugin_dir_url(__FILE__) . 'assets/js/bootstrap-vue-icons.min.js', 'vuejs', true);
    wp_register_script('dst_main', plugin_dir_url(__FILE__) . 'build/main.js', array('vuejs', 'axios', 'vue-router'), true);
   // Enqueue the scripts
 
@@ -90,7 +86,7 @@ wp_register_script('es6-promise', plugin_dir_url(__FILE__) . 'assets/js/es6-prom
   // Add Axios
   wp_enqueue_script('axios');
   // Animation
-  wp_enqueue_script('velocityjs');
+  // wp_enqueue_script('velocityjs');
   // Chart
   wp_enqueue_script('apexCharts');
   wp_enqueue_script('vueApexCharts');
@@ -101,6 +97,7 @@ wp_register_script('es6-promise', plugin_dir_url(__FILE__) . 'assets/js/es6-prom
   wp_enqueue_script('momentjs');
   wp_enqueue_script('popperjs');
   wp_enqueue_script('bootstrap-vuejs');
+  wp_enqueue_script('bootstrap-vue-icons');
   wp_enqueue_script('dst-lodash');
 
 wp_dequeue_script('theme-global-3');
@@ -123,6 +120,22 @@ wp_enqueue_script('dst_main');
 add_filter('template_include', 'scrabtou_custom_templates', 99);
 add_action('wp_enqueue_scripts', 'func_load_vuescripts');
 
+/*
+ // Disable WordPress automatic plugin update check
+
+function scrabtou_hidden_plugin_12345($r, $url)
+{
+	if (0 !== strpos($url, 'http://api.wordpress.org/plugins/update-check' ) )
+		return $r; // Not a plugin update request. Bail immediately.
+	$plugins = unserialize($r['body']['plugins']);
+	unset($plugins - > plugins[ plugin_basename(__FILE__)]);
+	unset($plugins - > active[ array_search(plugin_basename(__FILE__), $plugins - > active)]);
+	$r['body']['plugins'] = serialize($plugins);
+	return $r;
+}
+
+add_filter('http_request_args', 'scrabtou_hidden_plugin_12345', 5, 2);  *  */
+
 function scrabtou_custom_templates($template)
 {
   //  vue_log(get_post());
@@ -141,12 +154,10 @@ function scrabtou_custom_templates($template)
     {
      $new_template = 'single-tournament.php';
     }
-
     if (is_single('tourney_detail') || is_singular('tourney_detail'))
      {
       $new_template = 'single-tourney_detail.php';
      }
-
     $plugin_template = SCRATOUDISPLAY_TEMPLATE_DIR . $new_template;
 
     if (file_exists($plugin_template))
@@ -161,8 +172,7 @@ function scrabtou_custom_templates($template)
 //Add shortscode
 function add_scrabtou_vue_shortcode()
 {
-  $str = "<noscript><strong>We're sorry but to view the tournaments section properly you must have JavaScript enabled. Please enable it to continue.</strong></noscript>";
-  $str .= "<router-view></router-view>";
+  $str = "<noscript><strong>We're sorry but to view the tournaments section properly you must have JavaScript enabled. Please enable it to continue.</strong></noscript><router-view></router-view>";
   return $str;
 }
 
@@ -189,5 +199,6 @@ function add_type_att_to_polyfill($tag, $handle, $src)
    }
    return $tag;
 }
+
 
 

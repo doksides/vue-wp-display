@@ -1,8 +1,8 @@
 export { store as default };
 
-import baseURL from './config.js'
+import { baseURL, authURL, profileURL, statsURL } from './config.js'
 const store = new Vuex.Store({
-  strict: false,
+  strict: true,
   state: {
     touapi: [],
     touaccesstime: '',
@@ -14,6 +14,10 @@ const store = new Vuex.Store({
     total_players: null,
     error: '',
     loading: true,
+    login_loading: false,
+    login_success: false,
+    accessToken: localStorage.getItem('t_token') || '',
+    user_data: localStorage.getItem('t_user') || '',
     ongoing: false,
     currentPage: null,
     WPtotal: null,
@@ -30,13 +34,17 @@ const store = new Vuex.Store({
     player_last_rd_data: [],
     playerdata: [],
     player: null,
-    player_stats: {},
+    all_players: [],
+    all_players_tou_data:[],
+    player_stats: [],
   },
   getters: {
     PLAYER_STATS: state => state.player_stats,
     LASTRDDATA: state => state.player_last_rd_data,
     PLAYERDATA: state => state.playerdata,
     PLAYER: state => state.player,
+    ALL_PLAYERS: state => state.all_players,
+    ALL_PLAYERS_TOU_DATA: state => state.all_players_tou_data,
     SHOWSTATS: state => state.showstats,
     TOUAPI: state => state.touapi,
     TOUACCESSTIME: state => state.touaccesstime,
@@ -46,9 +54,13 @@ const store = new Vuex.Store({
     PLAYERS: state => state.players,
     TOTALPLAYERS: state => state.total_players,
     RESULTDATA: state => state.result_data,
-    RATING_STATS: state=> state.rating_stats,
+    RATING_STATS: state => state.rating_stats,
     ERROR: state => state.error,
     LOADING: state => state.loading,
+    ACCESS_TOKEN: state => state.accessToken,
+    USER: state => JSON.parse(state.user_data),
+    LOGIN_LOADING: state => state.login_loading,
+    LOGIN_SUCCESS: state => state.login_success,
     CURRPAGE: state => state.currentPage,
     WPTOTAL: state => state.WPtotal,
     WPPAGES: state => state.WPpages,
@@ -88,13 +100,19 @@ const store = new Vuex.Store({
       state.WPtotal = payload['x-wp-total'];
     },
     SET_PLAYERS: (state, payload) => {
-      let a = payload.map(function(val, index, key) {
+      let a = payload.map(function (val, index, key) {
         // console.log(key[index]['post_title']);
         key[index]['tou_no'] = index + 1;
         return val;
       });
       state.total_players = payload.length;
       state.players = a;
+    },
+    SET_ALL_PLAYERS: (state, payload) => {
+      state.all_players = payload;
+    },
+    SET_ALL_PLAYERS_TOU_DATA: (state, payload) => {
+      state.all_players_tou_data.push(payload);
     },
     SET_RATING_STATS: (state, payload) => {
       state.rating_stats = payload;
@@ -135,6 +153,15 @@ const store = new Vuex.Store({
     SET_LOADING: (state, payload) => {
       state.loading = payload;
     },
+    SET_USER_DATA: (state, payload) => {
+      state.user_data = payload;
+    },
+    SET_LOGIN_SUCCESS: (state, payload) => {
+      state.login_success = payload;
+    },
+    SET_LOGIN_LOADING: (state, payload) => {
+      state.login_loading = payload;
+    },
     SET_TOTAL_ROUNDS: (state, payload) => {
       state.total_rounds = payload;
     },
@@ -163,27 +190,27 @@ const store = new Vuex.Store({
       state.player_last_rd_data = _.find(lastround, { pno: player_tno });
 
       let pdata = (state.playerdata = _.chain(state.result_data)
-        .map(function(m) {
+        .map(function (m) {
           return _.filter(m, { pno: player_tno });
         })
         .value());
 
       let allScores = (state.player_stats.allScores = _.chain(pdata)
-        .map(function(m) {
+        .map(function (m) {
           let scores = _.flattenDeep(_.map(m, 'score'));
           return scores;
         })
         .value());
 
       let allOppScores = (state.player_stats.allOppScores = _.chain(pdata)
-        .map(function(m) {
+        .map(function (m) {
           let oppscores = _.flattenDeep(_.map(m, 'oppo_score'));
           return oppscores;
         })
         .value());
 
       state.player_stats.allRanks = _.chain(pdata)
-        .map(function(m) {
+        .map(function (m) {
           let r = _.flattenDeep(_.map(m, 'position'));
           return r;
         })
@@ -198,7 +225,7 @@ const store = new Vuex.Store({
       let pHiScoreRounds = _.map(
         _.filter(
           _.flattenDeep(pdata),
-          function(d) {
+          function (d) {
             return d.score == parseInt(pHiScore);
           },
           this
@@ -208,7 +235,7 @@ const store = new Vuex.Store({
       let pLoScoreRounds = _.map(
         _.filter(
           _.flattenDeep(pdata),
-          function(d) {
+          function (d) {
             return d.score == parseInt(pLoScore);
           },
           this
@@ -219,8 +246,8 @@ const store = new Vuex.Store({
       state.player_stats.pHiScoreRounds = pHiScoreRounds.join();
       state.player_stats.pLoScoreRounds = pLoScoreRounds.join();
 
-      let pRbyR = _.map(pdata, function(t) {
-        return _.map(t, function(l) {
+      let pRbyR = _.map(pdata, function (t) {
+        return _.map(t, function (l) {
           let result = '';
           if (l.result === 'win') {
             result = 'won';
@@ -266,7 +293,7 @@ const store = new Vuex.Store({
       state.player_stats.pRbyR = _.flattenDeep(pRbyR);
 
       let allWins = _.map(
-        _.filter(_.flattenDeep(pdata), function(p) {
+        _.filter(_.flattenDeep(pdata), function (p) {
           return 'win' == p.result;
         })
       );
@@ -274,7 +301,7 @@ const store = new Vuex.Store({
       state.player_stats.startWins = _.filter(allWins, ['start', 'y']).length;
       state.player_stats.replyWins = _.filter(allWins, ['start', 'n']).length;
       let starts = _.map(
-        _.filter(_.flattenDeep(pdata), function(p) {
+        _.filter(_.flattenDeep(pdata), function (p) {
           if (p.start == 'y') {
             return p;
           }
@@ -283,23 +310,113 @@ const store = new Vuex.Store({
 
       state.player_stats.starts = starts.length;
       state.player_stats.replies = state.total_rounds - starts.length;
-
-
     },
   },
   actions: {
     DO_STATS: (context, payload) => {
       context.commit('SET_SHOWSTATS', payload);
     },
+    async AUTH_TOKEN(context, payload) {
+      let url = `${authURL}token/validate`;
+      //let url = postURL;
+      payload = JSON.parse(payload);
+      try {
+       let response = await axios.post(url,
+        {
+          title: 'Plius Alittle test API Posting',
+          content: 'Another minor Post from WP API',
+          status: 'publish'
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer  ${payload}`
+          }
+         })
+        let res = response.data;
+        // console.log(res);
+        if (res.code == "jwt_auth_valid_token") {
+          context.commit('SET_LOGIN_SUCCESS', true);
+        }
+      } catch (err) {
+        context.commit('SET_LOGIN_SUCCESS', false);
+        context.commit('SET_ERROR', err.toString());
+      }
+    },
+    async DO_LOGIN(context, payload) {
+      context.commit('SET_LOGIN_LOADING', true);
+      let url = `${authURL}token`;
+      let response = await axios.post(url, {
+        username: payload.user,
+        password: payload.pass
+      })
+      try {
+        let data = response.data;
+        if (data.token) {
+          localStorage.setItem('t_token', JSON.stringify(data.token))
+          localStorage.setItem('t_user', JSON.stringify(data.user_display_name))
+          console.log(data);
+          context.commit('SET_LOGIN_LOADING', false);
+          context.commit('SET_LOGIN_SUCCESS', true);
+        } else {
+          context.commit('SET_LOGIN_LOADING', false);
+          context.commit('SET_LOGIN_SUCCESS', false);
+        }
+      }
+      catch (err) {
+        context.commit('SET_LOGIN_LOADING', false);
+        context.commit('SET_LOGIN_SUCCESS', false);
+        context.commit('SET_ERROR', err.message.toString());
+      }
 
+    },
+    async GET_ALL_PLAYERS(context, payload) {
+      let url = `${profileURL}`;
+      let response = await axios
+        .get( url, {
+          //params: { page: payload },
+          // headers: {'Authorization': `Bearer  ${token}`}
+        })
+      try {
+        let r = response.data
+        let data = _.map(r, function (d) {
+          d.country = d.country.toLowerCase();
+          d.gender = d.gender.toLowerCase();
+         return d;
+        })
+        context.commit('SET_ALL_PLAYERS', data);
+       } catch (e) {
+        context.commit('SET_ERROR', e.toString());
+       }
+    },
+    async GET_PLAYER_TOU_DATA(context, payload) {
+      let url = `${statsURL}${payload}`;
+      let response = await axios
+        .get( url, {
+          //params: { page: payload },
+          // headers: {'Authorization': `Bearer  ${token}`}
+        })
+      try {
+        let data = response.data
+        data.country = data.country.toLowerCase();
+        data.gender = data.gender.toLowerCase();
+        context.commit('SET_ALL_PLAYERS_TOU_DATA', data);
+       } catch (e) {
+        context.commit('SET_ERROR', e.toString());
+       }
+    },
     async FETCH_API (context, payload)  {
       context.commit('SET_LOADING', true);
       let url = `${baseURL}tournament`;
+      // let token = context.getters.ACCESS_TOKEN
       let response = await axios
-        .get(url, { params: { page: payload } })
+        .get(url, {
+          params: { page: payload },
+          // headers: {'Authorization': `Bearer  ${token}`}
+        })
          try {
            let headers = response.headers;
-           console.log('Getting lists of tournaments');
+          //  console.log('Getting lists of tournaments');
           let data = response.data.map(data => {
             // Format and assign Tournament start date into a letiable
             let startDate = data.start_date;
@@ -343,6 +460,7 @@ const store = new Vuex.Store({
     },
     async FETCH_DATA (context, payload) {
       context.commit('SET_LOADING', true);
+      // console.log(context);
       let url = `${baseURL}t_data`;
       try {
         let response = await axios.get(url, { params: { slug: payload } })
@@ -350,8 +468,8 @@ const store = new Vuex.Store({
         let players = data.players;
         let results = JSON.parse(data.results);
 
-        console.log('FETCH DATA $store')
-        console.log(data);
+        // console.log('FETCH DATA $store')
+        // console.log(data);
         let category = data.event_category[0].name.toLowerCase();
         let logo = data.tourney[0].event_logo.guid;
         let tourney_title = data.tourney[0].post_title;

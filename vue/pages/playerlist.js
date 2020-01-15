@@ -452,7 +452,6 @@ var PlayerList = Vue.component('allplayers', {
     this.data = _.chain(resultdata).last().sortBy('pno').value();
     console.log('-----------DATA-------------------------');
     console.log(this.data);
-    console.log('------------------------------------');
   },
   methods: {
     getLastGames: function (tou_no) {
@@ -773,6 +772,7 @@ const Pairings =Vue.component('pairings',  {
     </tbody>
   </table>
 `,
+
   props: ['caption', 'currentRound', 'resultdata'],
   data() {
     return {

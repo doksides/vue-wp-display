@@ -37,9 +37,9 @@ let topPerformers = Vue.component('top-stats', {
     </div>
     <div class="col-lg-10 col-sm-8 col-12">
       <div class="row">
-        <div class="col-sm-4 col-12 animated fadeInRightBig" v-for="(item, index) in stats">
+        <div :class="{'delay1':  item.position == '1st', 'delay2': item.position == '2nd', 'delay3': item.position == '3rd'}" class="col-sm-4 col-12 animated flipInX" v-for="(item, index) in stats">
           <h4 class="p-2 text-center bebas bg-dark text-white">{{item.player}}</h4>
-          <div class="d-flex flex-column justify-content-center align-items-center">
+          <div :class="{'gold': item.position == '1st','silver': item.position == '2nd','bronze': item.position == '3rd'}" class="d-flex flex-column justify-content-center align-items-center ">
             <img :src="players[item.pno-1].photo" width='120' height='120' class="img-fluid rounded-circle"
               :alt="players[item.pno-1].post_title|lowercase">
             <span class="d-block ml-5">

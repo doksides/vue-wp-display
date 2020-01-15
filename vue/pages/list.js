@@ -1,6 +1,6 @@
 let mapGetters = Vuex.mapGetters;
 // let LoadingAlert, ErrorAlert;
-import {LoadingAlert, ErrorAlert, LoginForm} from './alerts.js';
+import {LoadingAlert, ErrorAlert} from './alerts.js';
 let scrList = Vue.component('scrList', {
   template: `
   <div class="container-fluid">
@@ -21,14 +21,9 @@ let scrList = Vue.component('scrList', {
       <div class="row no-gutters">
         <div class="col-12 justify-content-center align-items-center">
           <b-breadcrumb :items="breadcrumbs" />
-        <div>
+        </div>
       </div>
-      <div class="row">
-        <div class="col-12 col-lg-10 offset-lg-1 justify-content-center align-items-center">
-          <loginform />
-        <div>
-      </div>
-      <div class="row">
+      <div class="row no-gutters">
         <div class="col-12 justify-content-center align-items-center">
             <h2 class="bebas text-center">
                 <i class="fa fa-trophy"></i> Tournaments
@@ -39,7 +34,7 @@ let scrList = Vue.component('scrList', {
             <div class="col-12 col-lg-10 offset-lg-1">
               <b-pagination align="center" :total-rows="+WPtotal" @change="fetchList" v-model="currentPage" :per-page="10"
                         :hide-ellipsis="false" aria-label="Navigation" />
-              <p class="text-muted"> You are on page {{currentPage}} of {{WPpages}} pages; <span class="emphasize">{{WPtotal}}</span> tournaments!</p>
+              <p class="text-muted">You are on page {{currentPage}} of {{WPpages}} pages; <span class="emphasize">{{WPtotal}}</span> tournaments!</p>
             </div>
         </div>
         <div class="row">
@@ -97,7 +92,6 @@ let scrList = Vue.component('scrList', {
   components: {
     loading: LoadingAlert,
     error: ErrorAlert,
-    loginform: LoginForm
   },
   data: function() {
     return {

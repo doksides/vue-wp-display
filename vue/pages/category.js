@@ -1,6 +1,7 @@
 import { Pairings, Standings, PlayerList, Results} from './playerlist.js';
 import {LoadingAlert, ErrorAlert} from './alerts.js';
 import { HiWins, LoWins, HiLoss, ComboScores, TotalScores, TotalOppScores, AveScores, AveOppScores, HiSpread, LoSpread } from './stats.js';
+import StatsProfile from './profile.js';
 import Scoreboard from './scoreboard.js';
 import RatingStats from './rating_stats.js';
 import topPerformers from './top.js';
@@ -25,7 +26,7 @@ let CateDetail = Vue.component('cate', {
         </div>
     </div>
     <template v-if="!(error||loading)">
-        <div class="row justify-content-center align-items-center">
+        <div v-if="viewIndex !=8 && viewIndex !=5" class="row justify-content-center align-items-center">
             <div class="col-12 col-lg-10 offset-lg-1">
               <div class="d-flex flex-column flex-lg-row align-content-center align-items-center justify-content-center" >
                 <div class="mr-lg-0">
@@ -43,24 +44,29 @@ let CateDetail = Vue.component('cate', {
             <div class="col-12 d-flex justify-content-center align-items-center">
                 <div class="text-center">
                 <b-button @click="viewIndex=0" variant="link" class="text-decoration-none" :disabled="viewIndex==0" :pressed="viewIndex==0"><i class="fa fa-users" aria-hidden="true"></i> Players</b-button>
-                <router-link :to="{ name: 'Scoresheet', params: {  event_slug:slug, pno:1}}">
-                <b-button variant="link" class="text-decoration-none"><i class="fas fa-clipboard" aria-hidden="true"></i> Scorecards</b-button>
-                </router-link>
                 <b-button @click="viewIndex=1" variant="link" class="text-decoration-none" :disabled="viewIndex==1" :pressed="viewIndex==1"> <i class="fa fa-user-plus"></i> Pairings</b-button>
-                <b-button @click="viewIndex=2" variant="link" class="text-decoration-none" :disabled="viewIndex==2" :pressed="viewIndex==2"><i class="fas fa-sticky-note" aria-hidden="true"></i> Results</b-button>
-                <b-button title="Round-By-Round Standings" @click="viewIndex=3" variant="link" class="text-decoration-none" :disabled="viewIndex==3" :pressed="viewIndex==3"><i class="fas fa-sort-numeric-down    "></i> Standings</b-button>
-                <b-button title="Category Statistics" @click="viewIndex=4" variant="link" class="text-decoration-none" :disabled="viewIndex==4" :pressed="viewIndex==4"><i class="fas fa-chart-pie"></i> Statistics</b-button>
-                <b-button title="Round-By-Round Scoreboard" @click="viewIndex=5" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==5" :pressed="viewIndex==5"><i class="fas fa-chalkboard-teacher"></i>
+                <b-button @click="viewIndex=2" variant="link" class="text-decoration-none" :disabled="viewIndex==2" :pressed="viewIndex==2"><b-icon icon="document-text"></b-icon> Results</b-button>
+                <b-button title="Round-By-Round Standings" @click="viewIndex=3" variant="link" class="text-decoration-none" :disabled="viewIndex==3" :pressed="viewIndex==3"><b-icon icon="list-ol"></b-icon> Standings</b-button>
+                <b-button title="Category Statistics" @click="viewIndex=4" variant="link" class="text-decoration-none" :disabled="viewIndex==4" :pressed="viewIndex==4"><b-icon icon="bar-chart-fill"></b-icon> Statistics</b-button>
+                <router-link :to="{ name: 'Scoresheet', params: {  event_slug:slug, pno:1}}">
+                <b-button variant="link" class="text-decoration-none"><b-icon icon="documents-alt"></b-icon> Scorecards</b-button>
+                </router-link>
+                <b-button title="Round-By-Round Scoreboard" @click="viewIndex=5" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==5" :pressed="viewIndex==5"><b-icon icon="display"></b-icon>
                 Scoreboard</b-button>
-                <b-button title="Top 3 Performances" @click="viewIndex=6" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==6" :pressed="viewIndex==6"><i class="fas fa-medal"></i>
+                <b-button title="Top 3 Performances" @click="viewIndex=6" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==6" :pressed="viewIndex==6"><b-icon icon="award"></b-icon>
                 Top Performers</b-button>
-                <b-button title="Post-tourney Rating Statistics" v-if="rating_stats" @click="viewIndex=7" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==7" :pressed="viewIndex==7"><i class="fas fa-stream"></i>
+                <b-button title="Post-tourney Rating Statistics" v-if="rating_stats" @click="viewIndex=7" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==7" :pressed="viewIndex==7">
+                <b-icon icon="graph-up"></b-icon>
                 Rating Stats</b-button>
+                <b-button title="Player Profile and Statistics"  @click="viewIndex=8" variant="link" class="text-decoration-none" active-class="currentView" :disabled="viewIndex==8" :pressed="viewIndex==8">
+                <b-icon icon="trophy"></b-icon>
+                Profile Stats</b-button>
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center align-items-center">
-            <div class="col-md-10 offset-md-1 col-12 d-flex flex-column">
+        <div class="row">
+            <div class="col-md-10 offset-md-1 col-12 justify-content-center align-items-center">
+            <div class="d-flex flex-column">
               <h3 class="text-center bebas p-0 m-0"> {{tab_heading}}
               <span v-if="viewIndex >0 && viewIndex < 4">
               {{ currentRound }}
@@ -72,8 +78,8 @@ let CateDetail = Vue.component('cate', {
                   </b-pagination>
               </template>
             </div>
+          </div>
         </div>
-
         <template v-if="viewIndex==0">
           <allplayers :slug="slug"></allplayers>
         </template>
@@ -84,8 +90,11 @@ let CateDetail = Vue.component('cate', {
           <ratings :caption="caption" :computed_items="computed_rating_items">
           </ratings>
         </template>
-        <template v-else-if="viewIndex==5">
-        <scoreboard></scoreboard>
+        <template v-if="viewIndex==8">
+           <profiles></profiles>
+        </template>
+        <template v-if="viewIndex==5">
+        <scoreboard :currentRound="currentRound"></scoreboard>
         </template>
         <div v-else-if="viewIndex==4" class="row d-flex justify-content-center align-items-center">
             <div class="col-md-10 offset-md-0 col">
@@ -129,9 +138,9 @@ let CateDetail = Vue.component('cate', {
         </div>
         <div v-else class="row justify-content-center align-items-center">
             <div class="col-md-8 offset-md-2 col-12">
-                <pairings v-if="viewIndex==1" :currentRound="currentRound" :resultdata="resultdata" :caption="caption"></pairings>
-                <results v-if="viewIndex==2" :currentRound="currentRound" :resultdata="resultdata" :caption="caption"></results>
-                <standings v-if="viewIndex==3" :currentRound="currentRound" :resultdata="resultdata" :caption="caption"></standings>
+                <pairings :currentRound="currentRound" :resultdata="resultdata" :caption="caption" v-if="viewIndex==1"></pairings>
+                <results :currentRound="currentRound" :resultdata="resultdata" :caption="caption" v-if="viewIndex==2"></results>
+                <standings :currentRound="currentRound" :resultdata="resultdata" :caption="caption" v-if="viewIndex==3"></standings>
           </div>
         </div>
     </template>
@@ -159,6 +168,7 @@ let CateDetail = Vue.component('cate', {
     // 'tuffluck-table': TuffLuckTable
     scoreboard: Scoreboard,
     performers: topPerformers,
+    profiles: StatsProfile
   },
   data: function() {
     return {
@@ -180,8 +190,6 @@ let CateDetail = Vue.component('cate', {
     };
   },
   created: function() {
-    console.log('Category mounted');
-    console.log(this.players);
     var p = this.slug.split('-');
     p.shift();
     this.tourney_slug = p.join('-');
@@ -254,6 +262,11 @@ let CateDetail = Vue.component('cate', {
           this.tab_heading = 'Standings after Round - ';
           this.caption = 'Standings';
           break;
+        case 5:
+          this.showPagination = true;
+          this.tab_heading = null;
+          this.caption = null;
+          break;
         case 7:
           this.showPagination = false;
           this.tab_heading = 'Post Tournament Rating Statistics';
@@ -261,8 +274,8 @@ let CateDetail = Vue.component('cate', {
           break;
         default:
           this.showPagination = false;
-          this.tab_heading = '';
-          this.caption = '';
+          this.tab_heading = null;
+          this.caption = null;
           break;
       }
       // return true
@@ -339,7 +352,7 @@ let CateDetail = Vue.component('cate', {
       // return true
     },
     roundChange: function(page) {
-      // console.log(page);
+      console.log(page);
       // console.log(this.currentRound);
       this.currentRound = page;
     },

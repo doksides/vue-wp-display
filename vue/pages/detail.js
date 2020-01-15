@@ -73,7 +73,7 @@ let tDetail = Vue.component('tdetail', {
     };
   },
   beforeUpdate: function () {
-    document.title = this.tourney.title;
+    document.title = `Tournament: ${this.tourney.title}`;
   },
   created: function() {
     this.fetchData();
@@ -94,7 +94,6 @@ let tDetail = Vue.component('tdetail', {
           console.log(e);
           console.log(time_elapsed);
           this.tourney = e;
-
         } else {
         this.$store.dispatch('FETCH_DETAIL', this.slug);
         }
@@ -142,4 +141,5 @@ let tDetail = Vue.component('tdetail', {
     },
   },
 });
- export default tDetail;
+
+export default tDetail;
