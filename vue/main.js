@@ -13,17 +13,36 @@ Vue.filter('abbrv', function (value) {
   return first + ". " + last;
 });
 
+// Vue.filter('capitalize', function (string) {
+//   var capitalFirst = string.charAt(0).toUpperCase()
+//   var noCaseTail = string.slice(1, string.length)
+//   return capitalFirst + noCaseTail
+// });
+
+// Vue.filter('toPlural', function (value, sing) {
+//   if (!value) return '';
+//   if (value <= 1) {
+//     return sing;
+//   }
+//   let n = sing.length - 1;
+//   if ((sing.charAt(n) =='s') && (value > 1)) {
+//     return `${sing}es`;
+//   }
+
+//   return `${sing}s`;
+// });
+
 Vue.filter('firstchar', function (value) {
     if (!value) return '';
     value = value.toString();
     return value.charAt(0).toUpperCase();
   });
 
-Vue.filter('lowercase', function (value) {
-  if (!value) return '';
-  value = value.toString();
-  return value.toLowerCase();
-});
+// Vue.filter('lowercase', function (value) {
+//   if (!value) return '';
+//   value = value.toString();
+//   return value.toLowerCase();
+// });
 
 Vue.filter('addplus', function (value) {
   if (!value) return '';
@@ -79,6 +98,7 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: document.querySelector('#app'),
   router,
+  mixins: [Vue2Filters.mixin],
   store
 });
 

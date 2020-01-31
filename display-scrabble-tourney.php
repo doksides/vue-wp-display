@@ -60,6 +60,7 @@ function func_load_vuescripts()
   wp_enqueue_style('flag-icon', plugin_dir_url(__FILE__) . 'assets/css/flag-icon.min.css', 'bootstrap');
   wp_enqueue_style('font-awesome5', plugin_dir_url(__FILE__) . 'assets/css/font-awesome/css/all.min.css');
   wp_enqueue_style('animatecss', plugin_dir_url(__FILE__) . 'assets/css/animate.min.css');
+  wp_enqueue_style('vue-simple-suggest', plugin_dir_url(__FILE__) . 'assets/css/vue-simple-suggest.css');
   wp_enqueue_style('display-scrabble', plugin_dir_url(__FILE__) . 'assets/css/site.css', 'bootstrap');
 
   // cached version used if possible
@@ -69,6 +70,12 @@ $vuejs = date("ymd-Gis", filemtime(plugin_dir_path(__FILE__) . 'assets/js/vue.js
   wp_register_script('vue-router', plugin_dir_url(__FILE__) . 'assets/js/vue-router.min.js', 'vuejs', true);
   wp_register_script('vuex', plugin_dir_url(__FILE__) . 'assets/js/vuex.min.js', 'vuejs', true);
   wp_register_script('vuejs', plugin_dir_url(__FILE__) . 'assets/js/vue.js', [], $vuejs);
+  // Vue Simple-suggest js
+  // https://unpkg.com/vue-simple-suggest/dist/iife.js
+  wp_register_script('vueSimpleSuggest', plugin_dir_url(__FILE__) . 'assets/js/vue-simple-suggest-iife.js', [], $vuejs);
+  // Vue 2 Filters
+  // https://cdn.jsdelivr.net/npm/vue2-filters/dist/vue2-filters.min.js
+  wp_register_script('vue2Filters', plugins_url('assets/js/vue2-filters.min.js', __FILE__), [], $vuejs);
   wp_register_script('apexCharts', plugins_url('assets/js/apexcharts.min.js', __FILE__), [], $vuejs);
   wp_register_script('dst-lodash', plugins_url('assets/js/lodash.min.js', __FILE__), [], $vuejs);
   wp_register_script('vueApexCharts', plugins_url('assets/js/vue-apexcharts.js', __FILE__), [], $vuejs);
@@ -92,7 +99,9 @@ wp_register_script('es6-promise', plugin_dir_url(__FILE__) . 'assets/js/es6-prom
   wp_enqueue_script('vueApexCharts');
   // Add VueRouter
   wp_enqueue_script('vue-router');
+  wp_enqueue_script('vue2Filters');
   wp_enqueue_script('vuex');
+  wp_enqueue_script('vueSimpleSuggest');
   wp_enqueue_script('es6-promise');
   wp_enqueue_script('momentjs');
   wp_enqueue_script('popperjs');
@@ -134,7 +143,9 @@ function scrabtou_hidden_plugin_12345($r, $url)
 	return $r;
 }
 
-add_filter('http_request_args', 'scrabtou_hidden_plugin_12345', 5, 2);  *  */
+add_filter('http_request_args', 'scrabtou_hidden_plugin_12345', 5, 2);
+
+*/
 
 function scrabtou_custom_templates($template)
 {
