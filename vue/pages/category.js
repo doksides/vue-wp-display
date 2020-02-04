@@ -465,7 +465,7 @@ let CateDetail = Vue.component('cate', {
       tourney_title: 'TOURNEY_TITLE',
       logo: 'LOGO_URL',
     }),
-    breadcrumbs: function() {
+    breadcrumbs: function () {
       return [
         {
           text: 'NSF News',
@@ -487,7 +487,8 @@ let CateDetail = Vue.component('cate', {
           },
         },
         {
-          // text: _.capitalize(this.category),
+          //text: _.capitalize(this.category),
+          // let category = _.capitalize(this.category);
           text: `${_.capitalize(this.category)} - Results and Stats`,
           active: true,
         },

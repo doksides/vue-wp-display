@@ -46,7 +46,7 @@ let tDetail = Vue.component('tdetail', {
             <ul class="list-inline text-center cate-list">
               <li v-for="(cat, c) in tourney.tou_categories" :key="c" class="list-inline-item">
                 <template v-if="cat.event_id">
-                  <router-link :to="{ name: 'CateDetail', params: { slug: tourney.slug , event_slug:cat.event_slug}}">
+                  <router-link :to="{ name: 'CateDetail', params: {  event_slug:cat.event_slug }}">
                     <span>{{cat.cat_name}}</span>
                   </router-link>
                 </template>

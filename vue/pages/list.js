@@ -30,7 +30,7 @@ let scrList = Vue.component('scrList', {
             </h2>
         </div>
       </div>
-      <div class="row justify-content-center align-items-center">
+      <div class="row justify-content-start align-items-center">
             <div class="col-12 col-lg-10 offset-lg-1">
               <b-pagination align="center" :total-rows="+WPtotal" @change="fetchList" v-model="currentPage" :per-page="10"
                         :hide-ellipsis="false" aria-label="Navigation" />
@@ -109,7 +109,7 @@ let scrList = Vue.component('scrList', {
       //this.$store.dispatch('FETCH_API', pageNum, {
         // timeout: 3600000 //1 hour cache
      // });
-      this.currentRound = pageNum;
+      this.currentPage = pageNum;
       this.$store.dispatch('FETCH_API', pageNum);
       console.log('done!');
     },

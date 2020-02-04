@@ -13,9 +13,9 @@ let RatingStats = Vue.component('rating_stats', {
            'text-success': data.item.rating_change > 0 }">
             {{data.item.rating_change}}
             <i v-bind:class="{
-             'fa fa-long-arrow-left':data.item.rating_change == 0,
-             'fa fa-long-arrow-down': data.item.rating_change < 0,
-             'fa fa-long-arrow-up': data.item.rating_change > 0 }" aria-hidden="true"></i>
+             'fas fa-long-arrow-left':data.item.rating_change == 0,
+             'fas fa-long-arrow-down': data.item.rating_change < 0,
+             'fas fa-long-arrow-up': data.item.rating_change > 0 }" aria-hidden="true"></i>
            </span>
           </template>
           <template v-slot:cell(name)="data">

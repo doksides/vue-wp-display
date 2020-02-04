@@ -166,6 +166,7 @@ const store = new Vuex.Store({
       state.total_rounds = payload;
     },
     SET_CATEGORY: (state, payload) => {
+      // var category =  payload.toLowerCase().split(' ').map((s)  =>s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
       state.category = payload;
     },
     SET_TOURNEY_TITLE: (state, payload) => {

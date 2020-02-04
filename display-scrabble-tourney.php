@@ -4,9 +4,9 @@
  Plugin Name:Scrabble Tournament Display
  Plugin URI:http://www.site-zoom.com/projects/plugins
  Description:Display Scrabble Tournaments on Pages with Shortcodes
- Version:1.1
+ Version:1.4
  Author:David Okunmuyide
- Author URI:www.site-zoom.com
+ Author URI:https://www.esteloi.com
  License:GPL v2 or later
  License URI:http://www.gnu.org/licenses/gpl-2.0.txt
  Text Domain:scratoudisplay
@@ -56,6 +56,7 @@ if ( ! function_exists('vue_log'))
 function func_load_vuescripts()
 {
   wp_enqueue_style('bootstrap', plugin_dir_url(__FILE__) . 'assets/css/bootswatch_themes/materia/bootstrap.min.css', []);
+  // Bootstrap-Vue CSS //unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css
   wp_enqueue_style('bootstrap-vue', plugin_dir_url(__FILE__) . 'assets/css/bootstrap-vue.min.css', 'bootstrap');
   wp_enqueue_style('flag-icon', plugin_dir_url(__FILE__) . 'assets/css/flag-icon.min.css', 'bootstrap');
   wp_enqueue_style('font-awesome5', plugin_dir_url(__FILE__) . 'assets/css/font-awesome/css/all.min.css');
@@ -65,24 +66,27 @@ function func_load_vuescripts()
 
   // cached version used if possible
   wp_register_script('bootstrap-vue-polyfill', '//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver', 'bootstrap-vuejs', false);
+  // Vue.js //unpkg.com/vue@latest/dist/vue.min.js
 $vuejs = date("ymd-Gis", filemtime(plugin_dir_path(__FILE__) . 'assets/js/vue.js'));
   wp_register_script('axios', plugins_url('assets/js/axios/axios.js', __FILE__));
-  wp_register_script('vue-router', plugin_dir_url(__FILE__) . 'assets/js/vue-router.min.js', 'vuejs', true);
-  wp_register_script('vuex', plugin_dir_url(__FILE__) . 'assets/js/vuex.min.js', 'vuejs', true);
-  wp_register_script('vuejs', plugin_dir_url(__FILE__) . 'assets/js/vue.js', [], $vuejs);
+  wp_register_script('vue-router', plugin_dir_url(__FILE__) . 'assets/js/vue-router.min.js', [$vuejs]);
+  wp_register_script('vuex', plugin_dir_url(__FILE__) . 'assets/js/vuex.min.js', [$vuejs]);
+  wp_register_script('vuejs', plugin_dir_url(__FILE__) . 'assets/js/vue.js');
   // Vue Simple-suggest js
   // https://unpkg.com/vue-simple-suggest/dist/iife.js
-  wp_register_script('vueSimpleSuggest', plugin_dir_url(__FILE__) . 'assets/js/vue-simple-suggest-iife.js', [], $vuejs);
+  wp_register_script('vueSimpleSuggest', plugin_dir_url(__FILE__) . 'assets/js/vue-simple-suggest-iife.js',  [$vuejs]);
   // Vue 2 Filters
   // https://cdn.jsdelivr.net/npm/vue2-filters/dist/vue2-filters.min.js
-  wp_register_script('vue2Filters', plugins_url('assets/js/vue2-filters.min.js', __FILE__), [], $vuejs);
-  wp_register_script('apexCharts', plugins_url('assets/js/apexcharts.min.js', __FILE__), [], $vuejs);
-  wp_register_script('dst-lodash', plugins_url('assets/js/lodash.min.js', __FILE__), [], $vuejs);
-  wp_register_script('vueApexCharts', plugins_url('assets/js/vue-apexcharts.js', __FILE__), [], $vuejs);
+  wp_register_script('vue2Filters', plugins_url('assets/js/vue2-filters.min.js', __FILE__),  [$vuejs]);
+  wp_register_script('apexCharts', plugins_url('assets/js/apexcharts.min.js', __FILE__),  [$vuejs]);
+  wp_register_script('dst-lodash', plugins_url('assets/js/lodash.min.js', __FILE__),[$vuejs]);
+  wp_register_script('vueApexCharts', plugins_url('assets/js/vue-apexcharts.js', __FILE__),  [$vuejs]);
+  //Bootstrap-Vue //unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js
   wp_register_script('bootstrap-vuejs', plugin_dir_url(__FILE__) . 'assets/js/bootstrap-vue.min.js', 'popperjs', true);
 wp_register_script('es6-promise', plugin_dir_url(__FILE__) . 'assets/js/es6-promise.auto.js', 'vuex', true);
   wp_register_script('popperjs', plugin_dir_url(__FILE__) . 'assets/js/popper.min.js', 'vuejs', true);
  wp_register_script('momentjs', plugin_dir_url(__FILE__) . 'assets/js/moment.min.js', 'vuejs', true);
+ // Bootstrap-Vue-Icons //unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js
  wp_register_script('bootstrap-vue-icons', plugin_dir_url(__FILE__) . 'assets/js/bootstrap-vue-icons.min.js', 'vuejs', true);
    wp_register_script('dst_main', plugin_dir_url(__FILE__) . 'build/main.js', array('vuejs', 'axios', 'vue-router'), true);
   // Enqueue the scripts
