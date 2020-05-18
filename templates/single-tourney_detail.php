@@ -5,9 +5,9 @@
  * This file is a custom header file
  *
  * @package  WP-NSFTourneyApp
- * @author   David Okunmuyide https://www.site-zoom.com
+ * @author   David Okunmuyide https://www.esteloi.com
  * @license  http://www.opensource.org/licenses/gpl-license.php GPL v2.0 (or later)
- * @link     http://site-zoom.com
+ * @link     https://esteloi.com
  * @version 1.21
  */
 
@@ -22,22 +22,16 @@
 	<?php wp_head(); ?>
 </head>
 <body>
-<?php /* Template Part: Vue */?>
 <!--This is the vue template-->
-<div id='app'>
 <?php
 $the_query = new WP_Query('pagename=tournaments');
 while ($the_query-> have_posts()):
     $the_query-> the_post();
     the_content();
 endwhile;
-?>
-</div>
-<?php
 /* Restore original Post Data */
 wp_reset_postdata();
-?>
-<?php /** Footer */ ?>
+ /** Footer */ ?>
 <div id="footer">
   <div class="container-fluid">
     <div class="row">

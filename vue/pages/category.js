@@ -9,7 +9,7 @@ export { CateDetail as default };
 let CateDetail = Vue.component('cate', {
   template: `
     <div class="container-fluid">
-    <div v-if="resultdata" class="row no-gutters justify-content-center align-items-top">
+    <div v-if="resultdata" class="row no-gutters justify-content-center align-items-center">
         <div class="col-12">
             <b-breadcrumb :items="breadcrumbs" />
         </div>
@@ -30,7 +30,7 @@ let CateDetail = Vue.component('cate', {
             <div class="col-12 col-lg-10 offset-lg-1">
               <div class="d-flex flex-column flex-lg-row align-content-center align-items-center justify-content-center" >
                 <div class="mr-lg-0">
-                  <b-img fluid class="thumbnail logo" :src="logo" :alt="event_title" />
+                  <b-img fluid thumbnail class="logo" :src="logo" :alt="event_title" />
                 </div>
                 <div class="mx-auto">
                   <h2 class="text-center bebas">{{ event_title }}

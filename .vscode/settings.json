@@ -1,6 +1,6 @@
 {
     "eslint.enable": true,
-    "window.zoomLevel": 1,
+    "window.zoomLevel": 0,
     "files.trimTrailingWhitespace": true,
     "prettier.singleQuote": true,
     "prettier.trailingComma": "es5",
@@ -36,5 +36,47 @@
             "language": "vue"
         }
     ],
-    "attrsSorter.order": ["is", "v-for", "v-if", "v-else-if", "v-else", "v-show", "v-cloak", "v-once", "v-pre", "id", "ref", "key", "slot", "v-model", "v-model.+", "v-bind", "v-bind.+", ":.+", "v-text", "v-text.+", "v-html", "v-html.+", "class", "v-on.+", "@.+", "name", "data-.+", "ng-.+", "src", "for", "type", "href", "values", "title", "alt", "role", "aria-.+", "$unknown$"]
+    "attrsSorter.order": [
+        "is",
+        "v-for",
+        "v-if",
+        "v-else-if",
+        "v-else",
+        "v-show",
+        "v-cloak",
+        "v-once",
+        "v-pre",
+        "id",
+        "ref",
+        "key",
+        "slot",
+        "v-model",
+        "v-model.+",
+        "v-bind",
+        "v-bind.+",
+        ":.+",
+        "v-text",
+        "v-text.+",
+        "v-html",
+        "v-html.+",
+        "class",
+        "v-on.+",
+        "@.+",
+        "name",
+        "data-.+",
+        "ng-.+",
+        "src",
+        "for",
+        "type",
+        "href",
+        "values",
+        "title",
+        "alt",
+        "role",
+        "aria-.+",
+        "$unknown$"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }
 }

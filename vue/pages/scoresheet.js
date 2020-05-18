@@ -4,11 +4,6 @@ export { Scoresheet as default };
 let Scoresheet = Vue.component('scoreCard', {
   template: `
   <div class="container-fluid">
-    <div v-if="resultdata" class="row no-gutters justify-content-center align-items-top">
-        <div class="col-12">
-            <b-breadcrumb :items="breadcrumbs" />
-        </div>
-    </div>
     <template v-if="loading||error">
     <div class="row justify-content-center align-content-center align-items-center">
         <div v-if="loading" class="col align-self-center">
@@ -23,15 +18,22 @@ let Scoresheet = Vue.component('scoreCard', {
     </div>
     </template>
     <template v-else>
-    <div class="row justify-content-center align-items-center">
-      <div class="col-12 d-flex">
-        <b-img class="thumbnail logo ml-auto" :src="logo" :alt="event_title" />
-        <h2 class="text-center bebas">{{ event_title }}
-        <span class="text-center d-block">Scorecards <i class="fas fa-clipboard"></i></span>
-        </h2>
+    <div class="row no-gutters">
+      <div class="col-12 justify-content-center align-items-center">
+        <b-breadcrumb :items="breadcrumbs" />
       </div>
     </div>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-12">
+        <div class="d-flex">
+          <b-img fluid thumbnail class="logo ml-auto" :src="logo" :alt="event_title" />
+          <h2 class="text-center bebas">{{ event_title }}
+          <span class="text-center d-block">Scorecards <i class="fas fa-clipboard"></i></span>
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-between">
       <div class="col-md-2 col-12">
       <!-- player list here -->
         <ul class=" p-2 mb-5 bg-white rounded">
@@ -42,7 +44,7 @@ let Scoresheet = Vue.component('scoreCard', {
         </ul>
       </div>
       <div class="col-md-10 col-12">
-      <template v-if="resultdata">
+      <template v-if="mPlayer">
         <h4 class="green">Scorecard: <b-img :alt="mPlayer.player" class="mx-2" :src="mPlayer.photo" style="width:60px; height:60px"></b-img> {{mPlayer.player}}</h4>
         <b-table responsive="md" small hover foot-clone head-variant="light" bordered table-variant="light" :fields="fields" :items="scorecard" id="scorecard" class="bebas shadow p-4 mx-auto" style="width:90%; text-align:center; vertical-align: middle">
         <!-- A custom formatted column -->

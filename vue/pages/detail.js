@@ -25,14 +25,14 @@ let tDetail = Vue.component('tdetail', {
       </div>
       <div class="row">
         <div class="col-12 justify-content-center align-items-center">
-          <div class="p-5 text-center d-flex flex-column flex-lg-row align-content-center align-items-center justify-content-lg-center justify-content-start">
-            <b-img slot="aside" vertical-align="center" class="align-self-center mr-3 rounded img-fluid"
-              :src="tourney.event_logo" width="150" height="150" :alt="tourney.event_logo_title" />
-            <h4 class="mx-1 display-4">
+          <div class="p-3 text-center d-flex flex-column flex-lg-row align-content-center align-items-center justify-content-lg-center justify-content-start">
+            <b-img fluid thumbnail slot="aside" vertical-align="center" class="align-self-center mr-1 logo-medium"
+              :src="tourney.event_logo" :alt="tourney.event_logo_title" />
+            <h3 class="mx-1">
               {{tourney.title}}
-            </h4>
+            </h3>
           </div>
-          <div class="p-5 d-flex flex-column justify-content-center align-items-center">
+          <div class="p-2 d-flex flex-column justify-content-center align-items-center">
             <ul class="list-inline text-center" id="event-details">
               <li class="list-inline-item" v-if="tourney.start_date"><i class="fa fa-calendar"></i>
                 {{tourney.start_date}}</li>

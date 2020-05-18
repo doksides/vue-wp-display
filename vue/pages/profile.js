@@ -19,10 +19,10 @@ let StatsProfile = Vue.component('stats_profile', {
 
     <template v-if="view ==='profile'">
       <div v-if="view ==='profile' && (all_players.length <=0)" class="my-5 mx-auto d-flex flex-row align-items-center justify-content-center">
-          <b-spinner variant="primary" style="width: 7rem; height: 7rem;" label="Loading players"></b-spinner>
+          <b-spinner variant="primary" style="width: 6rem; height: 6rem;" label="Loading players"></b-spinner>
       </div>
-      <div v-else class="my-5 mx-auto w-50 d-md-flex flex-md-row align-items-center justify-content-center">
-        <div class="mr-md-2 mb-sm-2">
+      <div v-else class="my-5 mx-auto w-75 d-md-flex flex-md-row align-items-center justify-content-center">
+        <div class="mr-md-3 mb-sm-2">
           <label for="search">Player name:</label>
         </div>
         <div class="ml-md-2 flex-grow-1">
@@ -45,7 +45,7 @@ let StatsProfile = Vue.component('stats_profile', {
         <div class="d-flex flex-md-row-reverse my-2 justify-content-center align-items-center">
         <span class="text-success" v-show="psearch && !notfound">Searching <em>{{psearch}}</em>...</span>
         <span class="text-danger" v-show="psearch && notfound"><em>{{psearch}}</em> not found!</span>
-        <b-spinner v-show="!notfound" style="width: 7rem; height: 7rem;" type="grow" variant="success" label="Busy"></b-spinner>
+        <b-spinner v-show="!notfound" style="width: 6rem; height: 6rem;" type="grow" variant="success" label="Busy"></b-spinner>
         </div>
       </div>
       <div v-if="pdata.player" class="p-2 mx-auto d-md-flex flex-md-row align-items-start justify-content-around">

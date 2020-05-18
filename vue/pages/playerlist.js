@@ -154,7 +154,8 @@ var PlayerStats = Vue.component('playerstats', {
             <div class="d-flex align-items-center justify-content-center">
               <div>
                 <b-button @click="updateChart('mixed')" variant="link" class="text-decoration-none ml-1"
-                  :disabled="chartModel=='mixed'" :pressed="chartModel=='mixed'"><i class="fas fa-file-csv"
+                   :disabled="chartModel=='mixed'"
+                   :pressed="chartModel=='mixed'"><i class="fas fa-file-csv"
                     aria-hidden="true"></i> Mixed Scores</b-button>
                 <b-button @click="updateChart('rank')" variant="link" class="text-decoration-none ml-1"
                   :disabled="chartModel=='rank'" :pressed="chartModel=='rank'"><i class="fas fa-chart-line"
@@ -165,8 +166,7 @@ var PlayerStats = Vue.component('playerstats', {
               </div>
             </div>
             <div id="chart">
-              <apexchart v-if="chartModel=='mixed'" type=line height=400 :options="chartOptions"
-                :series="seriesMixed" />
+              <apexchart v-if="chartModel=='mixed'" type=line height=400 :options="chartOptions"                :series="seriesMixed" />
               <apexchart v-if="chartModel=='rank'" type='line' height=400 :options="chartOptionsRank"
                 :series="seriesRank" />
               <apexchart v-if="chartModel=='wins'" type=radialBar height=400 :options="chartOptRadial"

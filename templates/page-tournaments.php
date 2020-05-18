@@ -4,9 +4,9 @@
  * This file is a custom header file
  *
  * @package  WP-NSFTourneyApp
- * @author   David Okunmuyide https://www.site-zoom.com
+ * @author   David Okunmuyide https://www.esteloi.com
  * @license  http://www.opensource.org/licenses/gpl-license.php GPL v2.0 (or later)
- * @link     http://site-zoom.com
+ * @link     http://esteloi.com
  * @version 1.21
  */
 
@@ -21,16 +21,13 @@
 	<?php wp_head(); ?>
 </head>
 <body>
-<?php /* Template Part: Tournament App */?>
 <!-- This is the tournament app template -->
-<div id='app'>
 <?php
   /* Start the Loop */
-while (have_posts()) : the_post(); ?>
-    <?php the_content(); ?>
-<?php endwhile; ?>
-</div>
-<?php /** Footer */ ?>
+while (have_posts()) : the_post();
+     the_content();
+ endwhile;
+/** Footer */ ?>
 <div id="footer">
   <div class="container-fluid">
     <div class="row">

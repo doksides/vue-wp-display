@@ -35,12 +35,7 @@
     src: url("../myfonts/Bebas/BebasNeue-webfont.ttf");
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+#app h1, #app h2, #app h3, #app h4, #app h5, #app h6 {
     margin: .1em auto;
     font-weight: 500;
     text-align: center;
@@ -48,7 +43,7 @@ h6 {
 }
 
 body {
-background: whitesmoke;
+background: white;
 color: #555;
 font-family: Geneva, 'Helvetica Neue', Helvetica, FreeSans, Verdana, sans-serif;
 font-size: 16px;
@@ -56,6 +51,7 @@ width: 100vw;
 /* height: 100vh; */
 overflow-x: hidden;
 }
+
 #app{
     margin-top: 0 !important;
     font-size: 1.26em;
@@ -64,30 +60,38 @@ overflow-x: hidden;
     -moz-osx-font-smoothing: grayscale;
 }
 
-.breadcrumb{
-    margin: 0 0 .8em 0 !important;
-    padding:0.5em 0.2em;
+#app .breadcrumb{
+    margin: .2em 0 .5em 0 !important;
+    padding: .2em;
+    font-size: .9em;
+    background-color: transparent !important;
+    border-radius: 0 !important;
 }
-.bebas{
+#app .bebas{
     font-family: Bebas, Geneva, FreeSans, sans-serif !important;
 }
-.oswald{
+#app .oswald{
     font-family: Oswald, Geneva, FreeSans, sans-serif !important;
 }
-.yanone{
+#app .yanone{
     font-family: Yanone, Geneva, FreeSans, sans-serif !important;
 }
-section.jumbotron{
+#app section.jumbotron{
    font-family:  Bebas, Helvetica, FreeSans, Verdana, sans-serif;
    color: #555;
 }
 
-ul li{list-style-type: none;}
+#app ul li{list-style-type: none;}
 
-button{
+#app button{
     cursor: pointer;
     text-transform: none !important;
     padding: .6em !important;
+}
+
+.tagbutton{
+    box-shadow:none;
+    padding:.5em;
 }
 
 .navbar .active>a,
@@ -150,90 +154,97 @@ nav,
 }
 
 /* List Components CSS */
-.tourney-list {
+#app .tourney-list {
     font-size: 1.4rem;
 }
 
 a, a:link, a:visited, a:hover{text-decoration: none !important}
 
-#top-btn-group .btn{ text-align: left !important; color: #fff;}
+#app #top-btn-group .btn{ text-align: left !important; color: #fff;}
 
-.media {
+#app .media {
     margin-bottom: .2rem;
 }
 
-.tourney-list ul li {
+#app .tourney-list ul li {
     color: tomato;
     font-size: 1.1em;
     text-transform: uppercase;
 }
-.cate-list li,.cate-list li a {
-    font-size: 1.3em
+#app .cate-list li,.cate-list li a {
+    font-size: 1.2em
 }
 
-.tourney-list div small {
+#app .tourney-list div small {
     color: seagreen;
     font-size: 1em;
 }
 
-.category-list {
+#app .category-list {
     width: 100%;
     margin: .5em auto;
     padding-bottom: 1em;
 }
-.green {
+#app .green {
     color: #228B22;
   }
-.gold {
+
+#app .gold {
     background-color: gold;
 }
-.goldcol {
+
+#app .goldcol {
     color: gold;
 }
-.silver {
+
+#app .silver {
     background-color: silver;
 }
-.silvercol {
+
+#app .silvercol {
     color: silver;
 }
-.bronze {
+#app .bronze {
     background-color: #cd7f32;
 }
-.bronzecol {
+#app .bronzecol {
     color: #cd7f32;
 }
-.emphasize {
+#app .emphasize {
     color: tomato !important;
     font-weight: 700 !important;
 }
-.pagination * {
-    z-index: 0;
-}
-img.logo {
+
+#app img.logo {
     width: 80px;
     height: 80px;
 }
 
-h2>span {
+#app img.logo-medium {
+    width: 100px;
+    height: 100px;
+}
+
+#app h2>span {
     font-size: 1.5rem;
     font-weight: 100;
 }
 
-.pteam {
+#app .pteam {
     font-size: 1.1em;
     color: darkgreen;
 }
 
-.qstats h4 {
+#app .qstats h4 {
     font-size: 1.2em;
 }
 
-.qstats h4>span {
+#app .qstats h4>span {
     font-size: 3em;
     font-weight: 600;
 }
 
-.stats li span {
+#app .stats li span {
     font-size: 1.5em;
     color: darkolivegreen;
     font-weight: bold;
@@ -241,45 +252,40 @@ h2>span {
     margin-left: 2em;
 }
 
-span.summary {
+#app span.summary {
     font-weight: 100;
 }
 
-i.loading {
+#app i.loading {
     color: darkgreen;
 }
 /* Form elements */
-label{
+#app label{
     font-weight: 100 !important;
     font-size: 1em;
     color: darkgray;
 }
-input#search{
-    color:darkgray;
+#app input[type="search"]{
+    color:rgb(129, 126, 126);
+    font-size: 1.5em !important;
 }
-.z-1000 {
+#app .z-1000 {
     z-index: 1000;
 }
-.hover {
+#app .hover {
     background-color:#f6f6f6;
     color: #555;
     cursor: pointer;
 }
-.list-item{
+#app .list-item{
     cursor: pointer;
     z-index: inherit;
 }
-.pagination * {
+#app .pagination * {
     z-index: 0;
 }
-.player-modals {
-    z-index: 999;
-}
-.modal-title {
-    text-align: center;
-}
 
-#p-list div{
+#app #p-list div{
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
@@ -287,25 +293,25 @@ input#search{
     align-content: space-around;
 }
 
-.playerCols {
+#app .playerCols {
     display: block;
     flex: 0 0 18%;
     align-self: center;
 }
 
-.playerCols h4{
+#app .playerCols h4{
     font-family: Geneva, FreeSans, sans-serif !important;
     font-size: 1.4em;
 }
 
-.statTabs td{
+#app .statTabs td{
     font-size:2vw !important;
 }
-.btn-link.active{
+#app .btn-link.active{
     color: tomato !important;
 }
 
-#canvas {
+#app #canvas {
     /*background-color: black;*/
     width: 100%;
     height: 100%;
@@ -317,12 +323,12 @@ input#search{
     left: 0;
 }
 
-#scoreboard {
+#app #scoreboard {
     background-color: powderblue;
     /* height: calc(100vh - 70px); */
 }
 
-#scoreboard .media {
+#app #scoreboard .media {
     /* height: calc((100vh - 70px) / 3);
      width: calc((100vw - 5px) / 6);
     width: 99%;
@@ -334,72 +340,72 @@ input#search{
     background-color: azure;
 }
 
-#masthead {
+#app #masthead {
     background-color: darkcyan;
     /* max-height: 70px; */
 }
 
-#scoreboard h3 {
+#app #scoreboard h3 {
     margin-bottom: 0;
     font-size: 1.2em;
 }
 
-#masthead span>a {
+#app #masthead span>a {
     font-weight: 600;
     color: #fff
 }
 
-#scoreboard h5 {
+#app #scoreboard h5 {
     text-align: left;
     color: darkslategrey;
 }
 
-#scoreboard span.sdata {
+#app #scoreboard span.sdata {
     font-family: Lato;
     color: darkgreen;
     font-weight: 60;
 }
 
-#scoreboard span.mar,
-#scoreboard span.points {
+#app #scoreboard span.mar,
+#app #scoreboard span.points {
     color: firebrick;
     font-weight: 100;
 }
 
-#scoreboard .position {
+#app #scoreboard .position {
     font-family: Yanone;
     font-weight: 600;
     font-size: 2rem;
 }
 
-#scoreboard .position>i {
+#app #scoreboard .position>i {
     font-size: 0.9em;
 }
 
-#scoreboard span.points {
+#app #scoreboard span.points {
     color: firebrick;
 }
 
-#scoreboard span.opp {
+#app #scoreboard span.opp {
     color: black;
     font-size: .9em;
 }
 
-#scoreboard .sdata-res,
-#scoreboard .card-text {
+#app #scoreboard .sdata-res,
+#app #scoreboard .card-text {
     font-size: .8em;
 }
 
-#scoreboard .sdata-res {
+#app #scoreboard .sdata-res {
     display: flex;
     width: 1.5em;
 }
 
-#scoreboard span.result {
+#app #scoreboard span.result {
     width: 1.5em;
 }
 
-#scoreboard button {
+#app #scoreboard button {
     /* font-variant: normal; */
     text-transform: none;
 }
@@ -415,12 +421,12 @@ input#search{
     animation-delay: 650ms;
 }
 
-.players-list-move {
+#app .players-list-move {
     transition: transform  1.25s;
   }
 /* Add Zoom Animation */
 
-.avatar {
+#app .avatar {
     -webkit-animation: animatezoom 0.8s;
     animation: animatezoom 0.8s
 }
@@ -443,11 +449,11 @@ input#search{
     }
 }
 /* Sticky Header */
-#pheader {
+#app #pheader {
     transition: 0.2s; /* Add a transition effect (when scrolling - and font size is decreased) */
   }
 
-.sticky {
+#app .sticky {
     position: fixed;
     top: 1rem;
     left: 0;
@@ -457,57 +463,57 @@ input#search{
     padding-top: 10px;
   }
 
-.sticky img {
+#app .sticky img {
     height: 50px;
     width: 50px;
 }
 
-.sticky div:first-of-type{margin-right: 1em;}
-.sticky div:last-of-type{margin-left: 1em;}
+#app .sticky div:first-of-type{margin-right: 1em;}
+#app .sticky div:last-of-type{margin-left: 1em;}
 
-.sticky div{
+#app .sticky div{
     justify-content: center !important;
 }
 
 /* Font Awesome Icons Styling */
-.navbar .fa-bars{
+#app .navbar .fa-bars{
     font-size:110%;
     margin-left:.4em;
 }
-.playerCols .fa-chart-bar,.playerCols .fa-clipboard{
+#app .playerCols .fa-chart-bar, #app .playerCols .fa-clipboard{
     color:  #556B2F;
     font-size: 120%;
     cursor: pointer;
 }
-.alert{
+#app .alert{
     margin: 0 auto;
     width: 50%;
 }
-.alert i {
+#app .alert i {
     margin-right: .5em;
     margin-left: .5em;
   }
-.alert-heading{
+#app .alert-heading{
      color: white;
  }
 @media all and (min-width: 960px) {
-    body{
+    #app{
         font-size: 18px;
     }
 }
 @media all and (max-width: 959px) and (min-width: 600px) {
-    body{
+    #app{
         font-size: 17px;
     }
-    .playerCols {
+    #app .playerCols {
         flex: 0 0 30%;
     }
 }
 @media all and (max-width: 599px) and (min-width: 300px) {
-    body{
+    #app{
         font-size: 15px;
     }
-    .playerCols {
+    #app .playerCols {
         flex: 0 0 80%;
     }
 }

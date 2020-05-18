@@ -5,6 +5,7 @@ const store = new Vuex.Store({
   strict: true,
   state: {
     touapi: [],
+    categories_count: {},
     touaccesstime: '',
     detail: [],
     lastdetailaccess: '',
@@ -65,6 +66,7 @@ const store = new Vuex.Store({
     WPTOTAL: state => state.WPtotal,
     WPPAGES: state => state.WPpages,
     CATEGORY: state => state.category,
+    CATEGORIES_COUNT: state => state.categories_count,
     TOTAL_ROUNDS: state => state.total_rounds,
     FINAL_ROUND_STATS: state => state.final_round_stats,
     PARENTSLUG: state => state.parentslug,
@@ -165,6 +167,9 @@ const store = new Vuex.Store({
     SET_TOTAL_ROUNDS: (state, payload) => {
       state.total_rounds = payload;
     },
+    SET_CATEGORIES_COUNT: (state, payload) => {
+      state.categories_count = payload;
+    },
     SET_CATEGORY: (state, payload) => {
       // var category =  payload.toLowerCase().split(' ').map((s)  =>s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
       state.category = payload;
@@ -193,15 +198,13 @@ const store = new Vuex.Store({
       let pdata = (state.playerdata = _.chain(state.result_data)
         .map(function (m) {
           return _.filter(m, { pno: player_tno });
-        })
-        .value());
+        }).value());
 
       let allScores = (state.player_stats.allScores = _.chain(pdata)
-        .map(function (m) {
+        .map(function(m) {
           let scores = _.flattenDeep(_.map(m, 'score'));
           return scores;
-        })
-        .value());
+        }).value());
 
       let allOppScores = (state.player_stats.allOppScores = _.chain(pdata)
         .map(function (m) {
@@ -406,13 +409,25 @@ const store = new Vuex.Store({
         context.commit('SET_ERROR', e.toString());
        }
     },
+    async FETCH_CATEGORIES (context, payload)  {
+      let url = `${baseURL}t_category`;
+      let response = await axios.get(url)
+      try{
+
+        let data = response.data;
+        context.commit('SET_CATEGORIES_COUNT', data);
+
+      }catch(err){
+        context.commit('SET_ERROR', err.toString());
+      }
+    },
     async FETCH_API (context, payload)  {
       context.commit('SET_LOADING', true);
       let url = `${baseURL}tournament`;
       // let token = context.getters.ACCESS_TOKEN
       let response = await axios
         .get(url, {
-          params: { page: payload },
+          params: { page: payload.page, t_category: payload.category },
           // headers: {'Authorization': `Bearer  ${token}`}
         })
          try {
