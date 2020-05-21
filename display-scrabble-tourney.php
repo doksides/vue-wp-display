@@ -2,11 +2,11 @@
 
 /*
  Plugin Name:Scrabble Tournament Display using Vue (Test)
- Plugin URI:http://www.esteloi.com/projects/plugins
- Description:Display Scrabble Tournaments on Pages with Shortcodes
+ Plugin URI:http://www.david-ok.com/projects/plugins
+ Description: Display Scrabble Tournaments on WP pages with Vue.js using Shortcodes
  Version:1.5
  Author:David Okunmuyide
- Author URI:https://www.esteloi.com
+ Author URI:https://www.david-ok.com
 License:GPL v2 or later
  License URI:http://www.gnu.org/licenses/gpl-2.0.txt
 Text Domain:scratoudisplay
