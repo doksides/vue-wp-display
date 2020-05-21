@@ -9,11 +9,11 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Display Scrabble Tournaments on WP pages with Vue.js using a single shortcode
-This is a custom plugin and may not work on all WP installs as it requires several customisations, creation of several Custom Post Types and some additional plugins (e.g PODS) to work.
+This is a custom plugin and may not work on all WP installs as it requires several customisations, creation of several Custom Post Types and some additional plugins (Scrabble Tou CPT and PODS) to work. Scrabble Tou CPT is a custom plugin.
 == Description ==
 
 Display Scrabble Tournaments on WP pages with Vue.js using a single shortcode [tournaments_display]. Data is fetched through the WP REST API. This plugin Requires
-three directories: 1. Player images/photo folder 2. Event photos 3. Json data files . These folders are created automatically on install. The image folder should be manually populated with player's photo and named in this manner Firstname-Surname.jpg (e.g Bob-James.jpg). POD Custom Post Type (CPT) plugin is required to create 'Players', 'Tournaments' and 'Tournament-Details' CPT. Also a custom taxonomy'Tournament Categories' is required. Some data manipulation and calculations are done in the custom (accompanying) plugin. This plugin further analyse and displays the Scrabble tournament data and stats in a nice and pleasing (easy to navigate) manner
+three directories: 1. Player images/photo folder 2. Event photos 3. Json data files . These folders are created automatically on install of the accompanying plugin (Scrabble Tou CPT). The image folder should be manually populated with player's photo and named in this manner Firstname-Surname.jpg (e.g Bob-James.jpg). POD Custom Post Type (CPT) plugin is required to create 'Players', 'Tournaments' and 'Tournament-Details' CPT. Also a custom taxonomy'Tournament Categories' is required. Some data manipulation and calculations are done in the custom (accompanying) plugin. This plugin further analyse and displays the Scrabble tournament data and stats in a nice and pleasing (easy to navigate) manner
 
 *   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
 *   "Tags" is a comma separated list of tags that apply to the plugin
