@@ -22,33 +22,6 @@ define('SCRATOUDISPLAY_DIR', plugin_dir_path(__FILE__));
 define('SCRATOUDISPLAY_TEMPLATE_DIR', SCRATOUDISPLAY_DIR . 'templates/');
 
 
-if ( ! function_exists('vue_log'))
-{
-
-  function vue_log($log)
-  {
-
-    if (true === WP_DEBUG)
-        {
-
-      if (is_array($log) || is_object($log))
-            {
-
-        error_log(print_r($log, true));
-
-      }else
-            {
-
-        error_log($log);
-
-      }
-
-    }
-
-  }
-
-}
-// vue_log(SCRATOUDISPLAY_TEMPLATE_DIR);
 
 //Register Scripts to use
 function func_load_vuescripts()
@@ -103,9 +76,7 @@ wp_register_script('es6-promise', $es6Promise, ['vuex'], false, true);
 wp_register_script('popperjs', $popperJs, ['vuejs'], false, true);
 wp_register_script('momentjs', $momentJs, ['vuejs'], false, true);
 wp_register_script('bootstrap-vue-icons', $bootstrapVueIcons, ['vuejs'], false, true);
-
-// wp_register_script('dst_main', $mainJs, array('dst-lodash',
-// 'vuejs', 'axios', 'vue-router', 'vuex', 'vue-router'));
+wp_register_script('dst_main', $mainJs, array( 'vuejs', ));
 
 // Enqueue the scripts
 
@@ -158,7 +129,7 @@ else
 
 add_action('wp_enqueue_scripts', 'func_load_vuescripts');
 
-// add_filter('template_include', 'scrabtou_custom_templates', 99);
+//add_filter('template_include', 'scrabtou_custom_templates', 99);
 
 function scrabtou_custom_templates($template)
 {
@@ -191,13 +162,13 @@ function scrabtou_custom_templates($template)
 //Add shortscode
 function add_scrabtou_vue_shortcode()
 {
-   $str = '<noscript>To view the tournaments, you must have JavaScript enabled. Please enable it to continue.</noscript>
-   <router-view></router-view>';
+   $str = '<noscript>To view the tournaments, you must have JavaScript enabled. Please enable it to continue.</noscript><div id="app">
+   <router-view></router-view></div>';
   return $str;
 }
 
 //Add shortcode to WordPress
-add_shortcode('tourney_display', 'add_scrabtou_vue_shortcode');
+add_shortcode('tournaments_display', 'add_scrabtou_vue_shortcode');
 
 add_filter('script_loader_tag', 'add_type_att_to_main_script', 10, 3);
 add_filter('script_loader_tag', 'add_type_att_to_polyfill', 10, 3);

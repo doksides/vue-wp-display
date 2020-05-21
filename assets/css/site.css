@@ -60,22 +60,24 @@ overflow-x: hidden;
     -moz-osx-font-smoothing: grayscale;
 }
 
-#app .breadcrumb{
-    margin: .2em 0 .5em 0 !important;
-    padding: .2em;
-    font-size: .9em;
-    background-color: transparent !important;
-    border-radius: 0 !important;
-}
 #app .bebas{
     font-family: Bebas, Geneva, FreeSans, sans-serif !important;
 }
 #app .oswald{
     font-family: Oswald, Geneva, FreeSans, sans-serif !important;
 }
+
 #app .yanone{
     font-family: Yanone, Geneva, FreeSans, sans-serif !important;
 }
+
+#app .breadcrumb{
+    margin: 0 0 .4em 0 !important;
+    padding: .5em .7em;
+    font-size: .9em;
+    background-color: floralwhite !important;
+}
+
 #app section.jumbotron{
    font-family:  Bebas, Helvetica, FreeSans, Verdana, sans-serif;
    color: #555;
@@ -164,6 +166,10 @@ a, a:link, a:visited, a:hover{text-decoration: none !important}
 
 #app .media {
     margin-bottom: .2rem;
+}
+
+#app .tou-details{
+    font-size: 0.8em;
 }
 
 #app .tourney-list ul li {

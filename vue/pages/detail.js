@@ -1,5 +1,6 @@
 import { LoadingAlert, ErrorAlert } from './alerts.js';
 import  baseURL  from '../config.js';
+export {tDetail as default};
 // let LoadingAlert, ErrorAlert;
 let tDetail = Vue.component('tdetail', {
   template: `
@@ -73,7 +74,7 @@ let tDetail = Vue.component('tdetail', {
     };
   },
   beforeUpdate: function () {
-    document.title = `Tournament: ${this.tourney.title}`;
+    document.title = `${this.tourney.title} `;
   },
   created: function() {
     this.fetchData();
@@ -142,4 +143,4 @@ let tDetail = Vue.component('tdetail', {
   },
 });
 
-export default tDetail;
+

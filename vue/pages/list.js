@@ -32,21 +32,21 @@ let scrList = Vue.component('scrList', {
       </div>
       <div class="row">
         <div class="col-12 col-lg-10 offset-lg-1">
-          <div class="d-flex flex-column flex-lg-row align-items-center justify-content-around">
+          <div class="d-flex align-items-center justify-content-around">
             <div class="text-center my-4 mx-1" title="All tourneys">
-              <button type="button" class="tagbutton btn btn-light" @click="fetchList(currentPage)" :class="{'active':0 === activeList}"> All <span class="badge badge-dark">
+              <button type="button" class="tagbutton btn btn-light"  :class="{'active':0 === activeList}" @click="fetchList(currentPage)"> All <span class="badge badge-dark">
               {{total_tourneys}} </span>
               </button>
             </div>
             <div v-for="cat in categories"  :key="cat.id"
             class="text-center my-4 mx-1" v-if="cat.count>0">
-              <button type="button" @click="filterCat(cat.id)" class="  tagbutton btn" :class="{
-              'btn-light':cat.slug === 'general',
-              'btn-light':cat.slug === 'open',
-              'btn-light':cat.slug === 'intermediate',
-              'btn-light':cat.slug === 'masters',
-              'btn-light':cat.slug === 'ladies',
-              'btn-light':cat.slug === 'veterans',
+              <button type="button" @click="filterCat(cat.id)" class="tagbutton btn btn-light" :class="{
+              'active':cat.slug === 'general',
+              'active':cat.slug === 'open',
+              'active':cat.slug === 'intermediate',
+              'active':cat.slug === 'masters',
+              'active':cat.slug === 'ladies',
+              'active':cat.slug === 'veterans',
               'active':cat.id === activeList,
               }"> {{cat.name}} <span class="badge badge-dark"> {{cat.count}} </span></button>
             </div>
@@ -58,47 +58,45 @@ let scrList = Vue.component('scrList', {
           <div class="d-flex flex-column flex-lg-row justify-content-around align-items-center">
             <b-pagination :total-rows="+WPtotal" @change="fetchList" v-model="currentPage" :per-page="10"
             :hide-ellipsis="false" aria-label="Navigation" />
-            <p class="text-muted"><small>You are on page {{currentPage}} of {{WPpages}} pages. There are <span class="emphasize">{{WPtotal}}</span> total <em>{{activeCat}}</em> tournaments!</small></p>
+            <p class="text-muted"><small>You are on page {{currentPage}} of {{WPpages}} pages. There are <span class="emphasize">{{WPtotal}}</span> total (<em>{{activeCat}}</em>) tournaments!</small></p>
           </div>
         </div>
       </div>
       <div class="row">
-      <div class="col-12 col-lg-10 offset-lg-1" v-for="item in tourneys" :key="item.id">
-      <div class="d-flex flex-column flex-lg-row align-content-center align-items-center justify-content-lg-center justify-content-start tourney-list animated bounceInLeft" >
-        <div class="mr-lg-5">
+      <div :key="item.id" class="col-12 col-lg-10 offset-lg-1" v-for="item in tourneys">
+      <div class="d-flex flex-column flex-lg-row mb-4 align-content-center align-items-center justify-content-lg-center justify-content-center tourney-list animated bounceInLeft" >
+        <div class="mr-lg-0">
           <router-link :to="{ name: 'TourneyDetail', params: { slug: item.slug}}">
-          <b-img fluid thumbnail rounded="circle" class="logo"
-                :src="item.event_logo":alt="item.event_logo_title" />
-          </router-link>
+          <b-img :src="item.event_logo" :alt="item.event_logo_title" fluid  rounded="circle" class="logo"/></router-link>
         </div>
-        <div class="mr-lg-auto">
+        <div class="ml-lg-3 mb-2">
           <h4 class="mb-1">
-          <router-link v-if="item.slug" :to="{ name: 'TourneyDetail', params: { slug: item.slug}}">
+          <router-link :to="{ name: 'TourneyDetail', params: { slug: item.slug}}" v-if="item.slug">
               {{item.title}}
           </router-link>
           </h4>
-          <div class="text-center">
-          <div class="d-inline p-1">
+          <div class="text-center tou-details">
+            <div class="d-inline p-1">
               <small><i class="fa fa-calendar"></i>
                   {{item.start_date}}
               </small>
-          </div>
-        <div class="d-inline p-1">
-            <small><i class="fa fa-map-marker"></i>
-                {{item.venue}}
-            </small>
-        </div>
-        <div class="d-inline p-1">
-            <router-link v-if="item.slug" :to="{ name: 'TourneyDetail', params: { slug: item.slug}}">
+            </div>
+            <div class="d-inline p-1">
+              <small><i class="fa fa-map-marker"></i>
+                  {{item.venue}}
+              </small>
+            </div>
+            <div class="d-inline p-1">
+              <router-link :to="{ name: 'TourneyDetail', params: { slug: item.slug}}" v-if="item.slug">
                 <small title="Browse tourney"><i class="fa fa-link"></i>
                 </small>
-            </router-link>
-        </div>
-        <ul class="list-unstyled list-inline text-center category-list">
-            <li class="list-inline-item mx-1"
-            v-for="category in item.tou_categories">{{category.cat_name}}</li>
-        </ul>
-        </div>
+              </router-link>
+            </div>
+            <ul class="list-unstyled list-inline text-center category-list">
+                <li class="list-inline-item mx-1"
+                v-for="category in item.tou_categories">{{category.cat_name}}</li>
+            </ul>
+          </div>
         </div>
       </div>
       </div>
@@ -107,7 +105,7 @@ let scrList = Vue.component('scrList', {
         <div class="col-12 col-lg-10 offset-lg-1">
           <b-pagination :total-rows="+WPtotal" @change="fetchList" v-model="currentPage" :per-page="10"
           :hide-ellipsis="false" aria-label="Navigation" />
-          <p class="text-muted"><small>You are on page {{currentPage}} of {{WPpages}} pages. There are <span class="emphasize">{{WPtotal}}</span> total <em>{{activeCat}}</em> tournaments!</small></p>
+          <p class="text-muted"><small>You are on page {{currentPage}} of {{WPpages}} pages. There are <span class="emphasize">{{WPtotal}}</span> total (<em>{{activeCat}}</em>) tournaments!</small></p>
         </div>
       </div>
    </template>

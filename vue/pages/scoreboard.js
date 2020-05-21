@@ -1,5 +1,7 @@
-
 import baseURL from '../config.js';
+export { Scoreboard as default};
+
+
 let Scoreboard = Vue.component('scoreboard', {
   template: `
   <div class="row d-flex align-items-center justify-content-center">
@@ -229,5 +231,3 @@ let Scoreboard = Vue.component('scoreboard', {
     },
   },
 });
-
-export default Scoreboard;

@@ -59,8 +59,9 @@ let StatsProfile = Vue.component('stats_profile', {
             </h5>
             <img :src='pdata.photo' :alt="pdata.player" v-bind="imgProps"></img>
             <div class="text-uppercase text-left" style="font-size:0.9em;">
-              <div class="lead text-center">{{pdata.total_tourneys | pluralize('tourney',{ includeNumber: true })}}
+              <div v-if="pdata.total_tourneys" class="lead text-center">{{pdata.total_tourneys | pluralize('tourney',{ includeNumber: true })}}
               </div>
+              <div v-else class="lead text-center">No rated competition</div>
               <div class="d-block text-primary font-weight-light">
                Tourney <span class="text-capitalize">(All Time)</span> Honors:
                 <ul class="list-inline">
@@ -78,18 +79,24 @@ let StatsProfile = Vue.component('stats_profile', {
                   </li>
                 </ul>
               </div>
+              <template v-if="pdata.total_games">
               <span class="d-block text-info font-weight-light text-capitalize">{{pdata.total_games | pluralize('game',{ includeNumber: true })}}</span>
-              <span class="d-block text-success font-weight-light text-capitalize">{{pdata.total_wins | pluralize('win',{ includeNumber: true })}} <em>({{pdata.percent_wins}}%)</em></span>
+              <span  class="d-block text-success font-weight-light text-capitalize">{{pdata.total_wins | pluralize('win',{ includeNumber: true })}} <em>({{pdata.percent_wins}}%)</em></span>
               <span class="d-block text-warning font-weight-light text-capitalize"> {{pdata.total_draws | pluralize('draw',{ includeNumber: true })}}</span>
-              <span class="d-block text-danger font-weight-light text-capitalize"> {{pdata.total_losses | pluralize(['loss','losses'],{ includeNumber: true })}}</span>
+              <span  class="d-block text-danger font-weight-light text-capitalize"> {{pdata.total_losses | pluralize(['loss','losses'],{ includeNumber: true })}}</span>
               <span class="d-block text-primary font-weight-light text-capitalize">Ave Score: {{pdata.ave_score}}</span>
               <span class="d-block text-primary font-weight-light text-capitalize">Ave Opponents Score: {{pdata.ave_opp_score}}</span>
               <span class="d-block text-primary font-weight-light text-capitalize">Ave Cum. Mar: {{pdata.ave_margin}}</span>
+              </template>
+              <template v-else>
+              <span class="d-block text-info font-weight-light text-capitalize">No Stats Available</span>
+              </template>
             </div>
           </div>
         <div>
           <div v-show="!loading">
           <h4 title="Performance summary per tourney">Competitions</h4>
+            <template v-if="pdata.competitions">
             <div class="p-1 mb-1 bg-light" v-for="(c, tindex) in pdata.competitions" :key="c.id">
               <h5 class="oswald text-left">{{c.title}}
               <b-badge title="Final Rank">{{c.final_rd.rank}}</b-badge></h5>
@@ -152,6 +159,10 @@ let StatsProfile = Vue.component('stats_profile', {
                   </div>
                 </b-collapse>
             </div>
+          </template>
+          <template v-else>
+            <div class="p-1 mb-1 bg-light">No Competition so far!</div>
+          </template>
           </div>
         </div>
       </div>
